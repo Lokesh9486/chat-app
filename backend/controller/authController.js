@@ -4,6 +4,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const sendEmail = require("../utils/sendOTPMail");
 const crypto = require("crypto");
 const sendToken = require("../utils/jwt");
+const { Error } = require("mongoose");
 
 exports.getAllUser = catchAsyncError(async (req, res, next) => {
   const users = await User.find();
@@ -14,15 +15,23 @@ const generateOTP = crypto.randomInt(1000, 10000).toString();
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
   const { name, email, password } = req.body;
-  const user = await User.create({
-    name,
-    email,
-    password,
-    OTP: generateOTP,
-  });
-
-  res.status(200).write("successfully registered");
-  sendEmail({ email: user.email, generateOTP, res });
+  try {
+    const user = await User.create({
+      name,
+      email,
+      password,
+      OTP: generateOTP,
+    });
+    sendEmail({
+      email: user.email,
+      res,
+      subject: `OTP sended by chat-app`,
+      message: `<h1>${generateOTP}</h1>`,
+    });
+    res.status(200).json(`Register successfully and OTP send ${email}`);
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 404));
+  }
 });
 
 exports.OTPVerification = catchAsyncError(async (req, res, next) => {
@@ -35,11 +44,11 @@ exports.OTPVerification = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Invalid user", 404));
   }
   if (user.OTP != otp) {
-    return next(new ErrorHandler("OTP not match with user",404));
+    return next(new ErrorHandler("OTP not match with user", 404));
   }
   user.OTPVerifed = true;
   await user.save({
-    validateBefore: false,
+    validateBeforeSave: false,
   });
   sendToken(user, 200, res, "OTP verified sucessfully");
 });
@@ -57,18 +66,84 @@ exports.login = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Invalid email or password", 400));
   }
   if (!user.OTPVerifed) {
-    user.OTP=generateOTP;
+    user.OTP = generateOTP;
     await user.save({
-      validateBefore:true
-    })
-    return sendEmail({ email: user.email, generateOTP, res });
+      validateBefore: true,
+    });
+     sendEmail({
+      email: user.email,
+      res,
+      subject: `OTP sended by chat-app`,
+      message: `<h1>${generateOTP}</h1>`,
+    });
+   return res.status(200).json(`Login successfully and OTP send ${email}`);
   }
   return sendToken(user, 200, res, "Login successfully");
 });
 
-exports.logout=(req,res,next)=>{
-   res.cookie('token',null,{
-    expires:new Date(Date.now()),
-    httpsOnly:true
-   }).send("logout successful");
-}
+exports.logout = (req, res, next) => {
+  res
+    .cookie("token", null, {
+      expires: new Date(Date.now()),
+      httpsOnly: true,
+    })
+    .send("logout successful");
+};
+
+exports.forgotPassword = catchAsyncError(async (req, res, next) => {
+  const { email } = req.body;
+  if (!email) {
+    return next(new ErrorHandler("Please enter email ", 400));
+  }
+  const user = await User.findOne({ email });
+  if (!user) {
+    return next(new ErrorHandler(" Email does not match with user", 400));
+  }
+  const resetToken = user.resetToken();
+  console.log(`exports.forgotPassword=catchAsyncError ~ resetToken:`, resetToken)
+  await user.save({ validateBeforeSave: false });
+  let resetUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/chat/reset/${resetToken}`;
+  const message = `Password reset URL \n\n<b>${resetUrl}</b>`;
+
+  try {
+    sendEmail({
+      email: user.email,
+      res,
+      subject: `Password reset url`,
+      message,
+    });
+    return res.status(200).json(`Email sent to ${email} ${resetToken}`);
+  } catch (error) {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordTokenExpire = undefined;
+    await user.save({ validateBeforeSave: false });
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
+
+exports.resetPassword=catchAsyncError(async(req,res,next)=>{
+  const {params:{resetToken},body:{password,confirmPassword}}=req;
+  if(!password || !confirmPassword){
+    return next(new ErrorHandler("Enter password and confirmPassword"));
+  }
+  const resetPasswordToken=crypto.createHash('sha256').update(resetToken).digest('hex');
+  const user=await User.findOne({
+    resetPasswordToken,
+    resetPasswordTokenExpire:{
+      $gt:Date.now()
+    }
+  })
+  if(!user){
+    return next(new ErrorHandler('password reset token is invalid or expires',404))
+  }
+  if(password != confirmPassword){
+    return next(new ErrorHandler("Password does not match"));
+  }
+  user.password=password;
+  user.resetPasswordToken=undefined;
+  user.resetPasswordTokenExpire=undefined;
+  await user.save({validateBeforeSave:false});
+  return sendToken(user, 200, res, "Password reseted successfully");
+})

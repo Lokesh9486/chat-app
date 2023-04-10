@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const bcrypt=require("bcrypt");
 const jwt=require("jsonwebtoken");
+const crypto=require("crypto");
 
 const schema=new Schema({
     name:{
@@ -21,7 +22,9 @@ const schema=new Schema({
     },
     OTP:Number,
     OTPExpires:Date,
-    OTPVerifed:Boolean
+    OTPVerifed:Boolean,
+    resetPasswordToken:String,
+    resetPasswordTokenExpire:Date
 })
 
 schema.pre("save",async function(next){
@@ -39,6 +42,13 @@ schema.methods.jsonWebToken=function(){
 
 schema.methods.isValidPassword=async function(password){
     return await bcrypt.compare(password,this.password);
+}
+
+schema.methods.resetToken=function(){
+    const token=crypto.randomBytes(20).toString("hex");
+    this.resetPasswordToken=crypto.createHash('sha256').update(token).digest('hex');
+    this.resetPasswordTokenExpire=Date.now()+30*60*1000;
+    return token
 }
 
 const userschema=model('user',schema);
