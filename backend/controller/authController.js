@@ -4,7 +4,6 @@ const ErrorHandler = require("../utils/errorHandler");
 const sendEmail = require("../utils/sendOTPMail");
 const crypto = require("crypto");
 const sendToken = require("../utils/jwt");
-const { Error } = require("mongoose");
 
 exports.getAllUser = catchAsyncError(async (req, res, next) => {
   const users = await User.find();
@@ -21,6 +20,7 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
       email,
       password,
       OTP: generateOTP,
+      OTPExpires:Date.now()+30*60*1000
     });
     sendEmail({
       email: user.email,
@@ -39,9 +39,9 @@ exports.OTPVerification = catchAsyncError(async (req, res, next) => {
   if (!email || !otp) {
     next(new ErrorHandler("Please enter email and otp", 400));
   }
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email,OTPExpires:{$gt:Date.now()} });
   if (!user) {
-    return next(new ErrorHandler("Invalid user", 404));
+    return next(new ErrorHandler("Invalid user or OTP expired", 404));
   }
   if (user.OTP != otp) {
     return next(new ErrorHandler("OTP not match with user", 404));
@@ -62,11 +62,12 @@ exports.login = catchAsyncError(async (req, res, next) => {
   if (!user) {
     return next(new ErrorHandler("Invalid email or password", 400));
   }
-  if (!user.isValidPassword(password)) {
+  if (!await user.isValidPassword(password)) {
     return next(new ErrorHandler("Invalid email or password", 400));
   }
   if (!user.OTPVerifed) {
     user.OTP = generateOTP;
+    user.OTPExpires=Date.now()+30*60*1000;
     await user.save({
       validateBefore: true,
     });
@@ -146,4 +147,24 @@ exports.resetPassword=catchAsyncError(async(req,res,next)=>{
   user.resetPasswordTokenExpire=undefined;
   await user.save({validateBeforeSave:false});
   return sendToken(user, 200, res, "Password reseted successfully");
+})
+
+exports.getUserProfile=catchAsyncError(async(req,res,next)=>{
+   const user=await User.findById(req.user.id);
+   res.status(200).json({
+    success:true,
+    user
+   })
+})
+
+exports.chagePassword=catchAsyncError(async(req,res,next)=>{
+  const {user:{id},body:{password,oldpassword}}=req;
+  console.log(`exports.chagePassword=catchAsyncError ~ id:`, id)
+  const user=await User.findById(id).select('+password');
+  if(!await user.isValidPassword(oldpassword)){
+    return next(new ErrorHandler('Old password is incorrect',401));
+  }
+  user.password=password;
+  await user.save();
+  res.status(200).send("Password changed successfully");
 })

@@ -24,7 +24,11 @@ const schema=new Schema({
     OTPExpires:Date,
     OTPVerifed:Boolean,
     resetPasswordToken:String,
-    resetPasswordTokenExpire:Date
+    resetPasswordTokenExpire:Date,
+    createdAt:{
+        type:Date,
+        default:Date.now()
+    }
 })
 
 schema.pre("save",async function(next){

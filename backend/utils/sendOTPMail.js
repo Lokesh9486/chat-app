@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 
 const sendEmail = async (options) => {
+  
   const transport = {
     service: "hotmail",
     auth: {
@@ -8,6 +9,7 @@ const sendEmail = async (options) => {
       pass: process.env.EMAIL_PASSWORD,
     },
   };
+
   const transporter = nodemailer.createTransport(transport);
 
   const mailOptions = {
