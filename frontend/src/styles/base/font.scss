@@ -1,0 +1,20 @@
+@function FontSize($fs) {
+    $percentageCalc: calc(((1920 - 1200) / 1920) * 100);
+    $remainingPercent: calc(100 - $percentageCalc);
+    $fontPercent: calc(($remainingPercent / 100) * $fs);
+    $min-font-size: calc($fontPercent) + px;
+    $font_vw: ($fs + vw);
+    $font_mx: ($fs + px);
+  
+    @return clamp(($min-font-size), calc(($font_vw) * 100 / 1920), $font_mx);
+  }
+  // @function FontSize($fs) {
+  
+  //   $min-font-size: calc(($fs - (0.337 * $fs)) / 10) + rem;
+  //   $font_vw: ($fs + vw);
+  //   $font_mx: (($fs) + rem);
+  
+  //   @return clamp(($min-font-size), calc(($font_vw) * 100 / 1920), $font_mx);
+  // }
+  
+  //https://wetransfer.com/downloads/4f4df90d990473967b99fbdb6fbb3d6f20230410074256/6998fd
