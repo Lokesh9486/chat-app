@@ -1,10 +1,13 @@
 
 .log-input{
     width: FontSize(400);
-    padding: FontSize(8);
+    padding: FontSize(8) FontSize(13);
     border-radius: 4px;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
     border: 0;
+    &::placeholder{
+        text-transform: capitalize;
+    }
 }
 .log-btn{
     padding: FontSize(5);

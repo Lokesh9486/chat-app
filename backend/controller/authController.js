@@ -14,7 +14,7 @@ const generateOTP = crypto.randomInt(1000, 10000).toString();
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
   const { name, email, password } = req.body;
-  try {
+  // try {
     const user = await User.create({
       name,
       email,
@@ -29,9 +29,10 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
       message: `<h1>${generateOTP}</h1>`,
     });
     res.status(200).json(`Register successfully and OTP send ${email}`);
-  } catch (error) {
-    return next(new ErrorHandler(error.message, 404));
-  }
+  // } catch (error) {
+  //   console.log(`exports.registerUser=catchAsyncError ~ error:`, error)
+  //   return next(new ErrorHandler(error, 404));
+  // }
 });
 
 exports.OTPVerification = catchAsyncError(async (req, res, next) => {

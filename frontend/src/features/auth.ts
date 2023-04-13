@@ -1,11 +1,23 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { RootState, authInitialStateType } from "../types";
 
-export const store=configureStore({
-    reducer:{
 
+const initialState:authInitialStateType={
+    register:""
+}
+
+const authSlice=createSlice({
+    name:"authSlice",
+    initialState,
+    reducers:{
+       signUpAction:(state,{payload})=>{
+        state.register=payload
+       }
     }
 })
 
-export type RoootState=ReturnType<typeof store.getState>
+export const {signUpAction}=authSlice.actions;
 
-export type AppDispatch=typeof store.dispatch
+export const getSingupDat=(state:RootState)=>state.auth.register;
+
+export default authSlice.reducer;

@@ -14,6 +14,7 @@ module.exports=(err,req,res,next) => {
         err.statusCode=400;
     }
     if(err.code==11000){
+        console.log(err+"DSfsdsdfsds");
         err.statusCode=400;
         message=`${Object.keys(err.keyValue)} already exits`;
         error=new Error(message);

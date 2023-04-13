@@ -17,30 +17,30 @@
         box-shadow: $box-shadow;
         position: relative;
         transform-style: preserve-3d;
-        &::after{
-            content:" ";
-            transform: translate(-1px);
-            position:absolute;
-            width: 150px;
-            height: 150px;
-            // top: -15%;
-            // right: 90% ;
-            background-color: var(--priamry-color);
-            filter: blur(4px);
-            border-radius: 50%;
-        }
-        &::before{
-            content:" ";
-            position:absolute;
-            width: 150px;
-            height: 150px;
-            // bottom:-15%;
-            // left: 90% ;
-            filter: blur(4px);
-            background-color: #fff;
-            filter: blur(4px);
-            border-radius: 50%;
-        }
+        // &::after{
+        //     content:" ";
+        //     transform: translate(-1px);
+        //     position:absolute;
+        //     width: 150px;
+        //     height: 150px;
+        //     top: -15%;
+        //     right: 90% ;
+        //     background-color: var(--priamry-color);
+        //     filter: blur(4px);
+        //     border-radius: 50%;
+        // }
+        // &::before{
+        //     content:" ";
+        //     position:absolute;
+        //     width: 150px;
+        //     height: 150px;
+        //     bottom:-15%;
+        //     left: 90% ;
+        //     filter: blur(4px);
+        //     background-color: #caf0f8;
+        //     filter: blur(4px);
+        //     border-radius: 50%;
+        // }
         .logo{
             width: FontSize(50);
         }
