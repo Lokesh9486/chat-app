@@ -5,11 +5,58 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+   
     form{
         display: flex;
         justify-content: center;
         flex-direction: column;
         gap: FontSize(20);
-        
+        background-color: #fff;
+        padding:2% 3% 3%;
+        border-radius: 10px;
+        box-shadow: $box-shadow;
+        position: relative;
+        transform-style: preserve-3d;
+        &::after{
+            content:" ";
+            transform: translate(-1px);
+            position:absolute;
+            width: 150px;
+            height: 150px;
+            // top: -15%;
+            // right: 90% ;
+            background-color: var(--priamry-color);
+            filter: blur(4px);
+            border-radius: 50%;
+        }
+        &::before{
+            content:" ";
+            position:absolute;
+            width: 150px;
+            height: 150px;
+            // bottom:-15%;
+            // left: 90% ;
+            filter: blur(4px);
+            background-color: #fff;
+            filter: blur(4px);
+            border-radius: 50%;
+        }
+        .logo{
+            width: FontSize(50);
+        }
+        .logo-topic{
+            font-family: "DynaPuff";
+        }
+        .sign-info{
+            text-align: center; 
+        }
+        .log-btn{
+            border: 0;
+            background-color: var(--priamry-color);
+            padding: FontSize(8);
+            font-size: FontSize(20);
+            color: #fff;
+            border-radius: 6px;
+        }
     }
 }
