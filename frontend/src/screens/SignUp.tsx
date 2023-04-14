@@ -1,9 +1,9 @@
-import { useState,useEffect } from "react";
+import { useState,useEffect, useRef } from "react";
 import logo from "../assets/images/logo1.png";
 import { Link,useNavigate } from "react-router-dom";
 import { signUpInterface } from "../types";
-import { useAppDispatch } from "../app/hooks";
 import { useRegisterMutation } from "../app/authApi";
+import anime from "animejs";
 
 const SignUp = () => {
   const [signUp,{data,isError,isLoading,isSuccess,error,}]=useRegisterMutation();
@@ -33,7 +33,25 @@ const SignUp = () => {
       if(isSuccess){
         history('/otp',{state:{email:signUpdetail[1].value}});
       }
-  },[isSuccess])
+  },[isSuccess]);
+
+  const [animationRef, setAnimationRef] = useState<ReturnType<typeof anime> | undefined>();
+
+  useEffect(()=>{
+    setAnimationRef(
+      anime({
+        targets: ".blur-round1",
+        translateX: 500,
+        translateY: 500,
+        delay: function(el:HTMLElement, i:number) {
+          return i * 100;
+        },
+        loop: true,
+        direction: "alternate",
+        easing: "easeInOutSine"
+      }),
+  );
+  },[])
  
   function inputChange(trigger: string, value: string) {
     const filterData = signUpdetail.map((item) => {
@@ -46,7 +64,6 @@ const SignUp = () => {
     setSignUpdetail(filterData);
   }
   
-
   function registerSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     signUp({
@@ -55,6 +72,7 @@ const SignUp = () => {
       password:signUpdetail[2].value
     })
   }
+
   return (
     <section className="sign-screen">
       <form action="" onSubmit={registerSubmit}>
@@ -86,6 +104,8 @@ const SignUp = () => {
           <Link to="/">Sign in</Link>
         </div>
       </form>
+      <div className="blur-round1"></div>
+      <div className="blur-round2"></div>
     </section>
   );
 };
