@@ -17,9 +17,9 @@ router.route("/getalluser").get(getAllUser);
 
 router.route("/register").post(registerUser);
 
-router.route("/otpVerify").get(OTPVerification);
+router.route("/otpVerify").post(OTPVerification);
 
-router.route("/login").get(login);
+router.route("/login").post(login);
 
 router.route("/logout").get(logout);
 
