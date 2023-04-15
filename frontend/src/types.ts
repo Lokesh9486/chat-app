@@ -12,6 +12,8 @@ export interface signUpInterface {
     name: string;
     palceholder: string;
     value?: string;
+    error:boolean;
+    errMessage:string
   };
 
   export interface registerApiData{

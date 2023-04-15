@@ -4,6 +4,7 @@ import SignUp from "./screens/SignUp";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/style.scss";
 import OTP from "./screens/OTP";
+import Chat from "./screens/Chat";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
     <Route path="/" element={<Layout/>}>
        <Route index  element={<SignUp/>}/>
        <Route path="/otp"  element={<OTP/>}/>
+       <Route path="/chat"  element={<Chat/>}/>
     </Route>
     </Routes>
     </BrowserRouter>

@@ -1,12 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Concert+One&family=DynaPuff&family=Pacifico&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Concert+One&family=DynaPuff&family=Pacifico&display=swap");
 
 :root {
   --background-color: #eaedf2;
-  --priamry-color:#5fc4be;
-  p{
+  --priamry-color: #5fc4be;
+  --red-color: #f93131;
+  p {
     margin-bottom: 0;
   }
-
 }
 
 $box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+@mixin signUp-layout {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: FontSize(20);
+    background-color: #fff;
+    padding: 2% 3% 3%;
+    border-radius: 10px;
+    box-shadow: $box-shadow;
+    z-index: 3;
+    .logo {
+      width: FontSize(50);
+    }
+    .logo-topic {
+      font-family: "DynaPuff";
+    }
+    .sign-info {
+      text-align: center;
+    }
+    .log-btn {
+      border: 0;
+      background-color: var(--priamry-color);
+      padding: FontSize(8);
+      font-size: FontSize(20);
+      color: #fff;
+      border-radius: 6px;
+    }
+  }
+}

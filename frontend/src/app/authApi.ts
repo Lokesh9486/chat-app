@@ -17,7 +17,14 @@ export const authApi = createApi({
         body: data,
       }),
     }),
+    otpVerification:builder.mutation<string,{email:string,otp:string}>({
+      query: (data) => ({
+        url: "/otpVerify",
+        method: "POST",
+        body: data,
+      }),
+    })
   }),
 });
 
-export const { useRegisterMutation } = authApi;
+export const { useRegisterMutation,useOtpVerificationMutation } = authApi;

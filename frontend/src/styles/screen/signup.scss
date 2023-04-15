@@ -1,58 +1,40 @@
-.sign-screen{
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    position: relative;
-    .blur-round1{
-        position:absolute;
-        width: 150px;
-        height: 150px;
-        top: -15%;
-        right: 90% ;
-        background-color: var(--priamry-color);
-        filter: blur(4px);
-        border-radius: 50%;
+.sign-screen {
+  @include signUp-layout;
+  .blur-round1 {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    top: -15%;
+    right: 90%;
+    background-color: var(--priamry-color);
+    filter: blur(4px);
+    border-radius: 50%;
+  }
+  .blur-round2 {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    top: -15%;
+    right: 90%;
+    filter: blur(4px);
+    background-color: #caf0f8;
+    filter: blur(4px);
+    border-radius: 50%;
+  }
+  #register-img-upload {
+    display: none;
+  }
+  .upload-img {
+    border: 1px dashed #ccc;
+    padding: FontSize(13);
+    font-size: FontSize(19);
+    img {
+      margin-right: 5%;
     }
-    .blur-round2{
-        position:absolute;
-        width: 150px;
-        height: 150px;
-        top: -15%;
-        right: 90% ;
-        filter: blur(4px);
-        background-color: #caf0f8;
-        filter: blur(4px);
-        border-radius: 50%;
-    }
-    form{
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        gap: FontSize(20);
-        background-color: #fff;
-        padding:2% 3% 3%;
-        border-radius: 10px;
-        box-shadow: $box-shadow;
-        z-index: 3;
-        .logo{
-            width: FontSize(50);
-        }
-        .logo-topic{
-            font-family: "DynaPuff";
-        }
-        .sign-info{
-            text-align: center; 
-        }
-        .log-btn{
-            border: 0;
-            background-color: var(--priamry-color);
-            padding: FontSize(8);
-            font-size: FontSize(20);
-            color: #fff;
-            border-radius: 6px;
-        }
-    }
+  }
+  .profile-img-upload{
+    width: FontSize(50);
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+  }
 }

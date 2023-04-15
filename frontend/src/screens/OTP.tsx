@@ -1,15 +1,40 @@
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import logo from "../assets/images/logo1.png";
-import {useLocation} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import { useOtpVerificationMutation } from "../app/authApi";
 const OTP = () => {
-    const {state:{email}}=useLocation()
+    const {state:{email}}=useLocation();
+    const history = useNavigate();
+    const [otp,setOtp]=useState<string>("");
+    const [error,setError]=useState<boolean>(false);
+    const  [otpVerfy,{data,isError,isLoading,isSuccess}]=useOtpVerificationMutation();
+    const otpSubmit=(e:SyntheticEvent)=>{
+      e.preventDefault();
+      if(!otp.match(/[0-9]{4}/)){
+        setError(true)              
+      }
+      else{
+        setError(false) ;
+        otpVerfy({email,otp});
+      }
+    }
+    useEffect(()=>{
+       if(!otp){
+        history("/chat");
+       }
+    },[isSuccess])
   return (
     <section className="otp-screen">
-        <form action="" >
+        <form action="" onSubmit={otpSubmit}>
         <img src={logo} alt="logo" className="logo" />
-        <p className="secondary-topic logo-topic">Sign Up</p>
-        <input type="number" />
-        <button type="button">Submit</button>
-        </form>  
+        <p className="secondary-topic logo-topic">OTP verification</p>
+        <div className="position-relative">
+        <input type="number"  className="log-input" onChange={(e:ChangeEvent<HTMLInputElement>)=>setOtp(e.target.value)} value={otp}/>
+        {(isError|| error) &&<p className="error-msg">*OTP does not match or expired</p>}
+        </div>
+        <button type="submit" className="log-btn">Submit</button>
+        <Link to="/">Resend OTP</Link>
+        </form>   
     </section>
   )
 }
