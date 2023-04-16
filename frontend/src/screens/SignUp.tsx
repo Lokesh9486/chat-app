@@ -5,6 +5,7 @@ import { signUpInterface } from "../types";
 import { useRegisterMutation } from "../app/authApi";
 import anime from "animejs";
 import  uploadImg from "../assets/images/uploadimage.png";
+import user from "../assets/images/user.png";
 
 const SignUp = () => {
   const [signUp, { data, isError, isLoading, isSuccess, error }] =
@@ -163,9 +164,9 @@ const SignUp = () => {
           <img src={uploadImg} alt="uploadImg" />
           Choose file
         </label>
-        <div>
-        <img src={preview} alt="preview"  className="profile-img-upload"/>
-        <p className="image-name">{proifle?.name}</p>
+        <div className="d-flex align-items-center  gap-3">
+        <img src={preview||user} alt="preview"  className="profile-img-upload"/>
+        <p className="image-name">{proifle?.name || "Image name"}</p>
         </div>
         <button type="submit" className="log-btn">
           SignUp
