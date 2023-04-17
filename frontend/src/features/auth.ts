@@ -3,7 +3,7 @@ import { RootState, authInitialStateType } from "../types";
 
 
 const initialState:authInitialStateType={
-    register:""
+    register:false
 }
 
 const authSlice=createSlice({
@@ -18,6 +18,6 @@ const authSlice=createSlice({
 
 export const {signUpAction}=authSlice.actions;
 
-export const getSingupDat=(state:RootState)=>state.auth.register;
+export const getSingupData=(state:RootState)=>state.auth.register;
 
 export default authSlice.reducer;

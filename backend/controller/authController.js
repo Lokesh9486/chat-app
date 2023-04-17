@@ -14,25 +14,28 @@ const generateOTP = crypto.randomInt(1000, 10000).toString();
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
   const { name, email, password } = req.body;
-  // try {
+  console.log(`exports.registerUser=catchAsyncError ~ name, email, password:`, name, email, password)
+  let profile;
+  console.log("req.file",req.file);
+  if(req.file){
+    profile=`${req.protocol}://${req.host}/uploads/user/${req.file.originalname}`
+  }
+  console.log("profile",profile);
     const user = await User.create({
       name,
       email,
       password,
+      profile,
       OTP: generateOTP,
       OTPExpires:Date.now()+30*60*1000
     });
-    sendEmail({
-      email: user.email,
-      res,
-      subject: `OTP sended by chat-app`,
-      message: `<h1>${generateOTP}</h1>`,
-    });
+    // sendEmail({
+    //   email: user.email,
+    //   res,
+    //   subject: `OTP sended by chat-app`,
+    //   message: `<h1>${generateOTP}</h1>`,
+    // });
     res.status(200).json(`Register successfully and OTP send ${email}`);
-  // } catch (error) {
-  //   console.log(`exports.registerUser=catchAsyncError ~ error:`, error)
-  //   return next(new ErrorHandler(error, 404));
-  // }
 });
 
 exports.OTPVerification = catchAsyncError(async (req, res, next) => {

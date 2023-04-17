@@ -12,10 +12,23 @@ const {
 } = require("../controller/authController");
 const { isAuthenticateUser } = require("../middleware/authentication");
 const router = express.Router();
+const multer=require("multer");
+const path = require("path");
+
+const upload=multer({storage:multer.diskStorage({
+  destination:function(req,file,cb){
+    console.log("req",req); 
+    cb(null,path.join(__dirname,"..","uploads"))
+  },
+  filename:function(req,file,cb){
+    console.log(`file.originalname:`, file.originalname)
+    cb(null,file.originalname);
+  }
+})})
 
 router.route("/getalluser").get(getAllUser);
 
-router.route("/register").post(registerUser);
+router.route("/register").post(upload.single("profile"),registerUser);
 
 router.route("/otpVerify").post(OTPVerification);
 

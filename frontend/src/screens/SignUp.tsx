@@ -8,8 +8,7 @@ import  uploadImg from "../assets/images/uploadimage.png";
 import user from "../assets/images/user.png";
 
 const SignUp = () => {
-  const [signUp, { data, isError, isLoading, isSuccess, error }] =
-    useRegisterMutation();
+  const [signUp, { data, isError, isLoading, isSuccess, error ,isUninitialized}] =useRegisterMutation();
   const history = useNavigate();
   const [signUpdetail, setSignUpdetail] = useState<signUpInterface[]>([
     {
@@ -42,7 +41,8 @@ const SignUp = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      history("/otp", { state: { email: signUpdetail[1].value } });
+      console.log(`useEffect ~ isSuccess:`, isSuccess)
+      // history("/otp", { state: { email: signUpdetail[1].value } });
     }
   }, [isSuccess]);
 
@@ -111,11 +111,14 @@ const SignUp = () => {
     setSignUpdetail(errorMap);
     const errorValu = errorMap.every(({ error }) => !error);
     if (errorValu) {
-      signUp({
-        name: signUpdetail[0].value,
-        email: signUpdetail[1].value,
-        password: signUpdetail[2].value,
-      });
+      const formData=new FormData();
+      formData.append("name",signUpdetail[0].value)
+      formData.append("email",signUpdetail[1].value)
+      formData.append("password",signUpdetail[2].value)
+      formData.append("profile",preview);
+      console.log(formData,signUpdetail[0].value,signUpdetail[1].value,signUpdetail[2].value);
+      
+      signUp(formData);
     }
   }
   const fileOnChange=(e:ChangeEvent<HTMLInputElement>)=>{

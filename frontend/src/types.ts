@@ -4,14 +4,14 @@ export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
 export interface authInitialStateType{
-    register:string
+    register:boolean
 }
 
 export interface signUpInterface {
     type: string;
     name: string;
     palceholder: string;
-    value?: string;
+    value: any ;
     error:boolean;
     errMessage:string
   };

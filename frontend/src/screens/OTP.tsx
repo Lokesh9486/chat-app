@@ -20,7 +20,7 @@ const OTP = () => {
     }
     useEffect(()=>{
        if(!otp){
-        history("/chat");
+        // history("/chat");
        }
     },[isSuccess])
   return (

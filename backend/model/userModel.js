@@ -20,6 +20,7 @@ const schema=new Schema({
         unique:true,
         select:false,
     },
+    profile:String,
     OTP:Number,
     OTPExpires:Date,
     OTPVerifed:Boolean,
