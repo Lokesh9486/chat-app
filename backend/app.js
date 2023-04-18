@@ -1,18 +1,27 @@
-const express=require("express");
-const app= express();
-const auth=require("./routes/auth");
-const erroMiddleware=require("./middleware/error");
+const express = require("express");
+const app = express();
+const auth = require("./routes/auth");
+const erroMiddleware = require("./middleware/error");
 const cookieParser = require("cookie-parser");
-const chat=require("./routes/chat");
+const chat = require("./routes/chat");
 app.use(express.json());
-app.use(cookieParser());
+const multer = require("multer");
+const bodyParser=require("body-parser")
 const path = require("path");
-app.use('/uploads',express.static(path.join(__dirname,'uploads')));
+app.use(cookieParser());
+app.use(
+    bodyParser.urlencoded({
+      extended: true,
+    })
+  );
 
-app.use("/chat",auth);
 
-app.use("/chat",chat);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use("/chat", auth);
+
+app.use("/chat", chat);
 
 app.use(erroMiddleware);
 
-module.exports=app;
+module.exports = app;

@@ -37,7 +37,7 @@ const SignUp = () => {
     },
   ]);
   const [preview,setPreview]=useState<any>("");
-  const [proifle,setProfile]=useState<File | undefined>(undefined);
+  const [proifle,setProfile]=useState<any>(undefined);
 
   useEffect(() => {
     if (isSuccess) {
@@ -115,7 +115,7 @@ const SignUp = () => {
       formData.append("name",signUpdetail[0].value)
       formData.append("email",signUpdetail[1].value)
       formData.append("password",signUpdetail[2].value)
-      formData.append("profile",preview);
+      formData.append("profile",proifle);
       console.log(formData,signUpdetail[0].value,signUpdetail[1].value,signUpdetail[2].value);
       
       signUp(formData);

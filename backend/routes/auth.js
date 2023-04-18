@@ -1,3 +1,4 @@
+
 const express = require("express");
 const {
   registerUser,
@@ -15,16 +16,16 @@ const router = express.Router();
 const multer=require("multer");
 const path = require("path");
 
-const upload=multer({storage:multer.diskStorage({
-  destination:function(req,file,cb){
-    console.log("req",req); 
-    cb(null,path.join(__dirname,"..","uploads"))
+const upload = multer({storage: multer.diskStorage({
+  destination: function(req, file, cb) {
+      cb(null, path.join( __dirname,'..' , 'uploads/user' ) )
   },
-  filename:function(req,file,cb){
-    console.log(`file.originalname:`, file.originalname)
-    cb(null,file.originalname);
+  filename: function(req, file, cb ) {
+    console.log("file:", file)
+      cb(null, file.originalname)
   }
-})})
+}) 
+})
 
 router.route("/getalluser").get(getAllUser);
 
