@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { nanoid } from '@reduxjs/toolkit';
 
 interface register {
   name: string | undefined;
@@ -12,21 +11,21 @@ export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "/chat",
-    // prepareHeaders: (headers, { getState }) => {
-    //   const boundaryString = `multipart/form-data; boundary=${nanoid()}`;
-    //   headers.set('Content-Type', boundaryString);
-    //   return headers;
-    // },
   }),
   endpoints: (builder) => ({
     register: builder.mutation<string, FormData>({
-      query: (data) => (
-        console.log(data),
-      {
+      query: (data) => ({
         url: "/register",
         method: "POST",
         body: data,
       }),
+    }),
+    login:builder.mutation<string,{[email:string]:string,password:string}>({
+      query:(data)=>({
+        url:"/login",
+        method:"POST",
+        body:data
+      })
     }),
     otpVerification: builder.mutation<string, { email: string; otp: string }>({
       query: (data) => ({
@@ -38,4 +37,4 @@ export const authApi = createApi({
   }),
 });
 
-export const { useRegisterMutation, useOtpVerificationMutation } = authApi;
+export const { useRegisterMutation, useOtpVerificationMutation,useLoginMutation } = authApi;

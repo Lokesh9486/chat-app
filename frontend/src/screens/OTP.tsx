@@ -8,21 +8,24 @@ const OTP = () => {
     const [otp,setOtp]=useState<string>("");
     const [error,setError]=useState<boolean>(false);
     const  [otpVerfy,{data,isError,isLoading,isSuccess}]=useOtpVerificationMutation();
+
+    useEffect(()=>{
+      if(isSuccess){
+        history("/chat");
+       }
+    },[isSuccess])
+
     const otpSubmit=(e:SyntheticEvent)=>{
       e.preventDefault();
       if(!otp.match(/[0-9]{4}/)){
         setError(true)              
       }
       else{
-        setError(false) ;
+        setError(false);
         otpVerfy({email,otp});
       }
     }
-    useEffect(()=>{
-       if(!otp){
-        // history("/chat");
-       }
-    },[isSuccess])
+    
   return (
     <section className="otp-screen">
         <form action="" onSubmit={otpSubmit}>

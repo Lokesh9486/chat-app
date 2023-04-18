@@ -1,0 +1,95 @@
+.chat-page {
+  display: flex;
+  height: 100vh;
+  // align-items: center;
+  aside {
+    width: FontSize(400);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    background-color: var(--white-color);
+    .side-bar-header {
+      padding: FontSize(30);
+      display: flex;
+      border-bottom: 1px solid var(--background-color);
+      input {
+        padding-left: FontSize(20);
+        border: 1px solid #ccc;
+        border-radius: 30px;
+        font-size: FontSize(22);
+      }
+    }
+    .side-bar-body {
+      padding: FontSize(30);
+      ul {
+        padding: 0;
+        li {
+          list-style: none;
+          display: flex;
+          align-items: center;
+          gap: 4%;
+          padding-block: FontSize(15);
+          
+        }
+      }
+    }
+  }
+  .chat-container {
+    width: calc(100% - FontSize(400));
+    .chat-header {
+      padding: FontSize(30);
+      display: flex;
+      align-items: center;
+      gap: FontSize(30);
+      border-bottom: 1px solid var(--blue-color);
+    }
+    .chat-body{
+        padding: FontSize(30);
+        .other-chat-list,.user-chat-list{
+          display: flex;
+          align-items: center;
+          gap:FontSize(15);
+          .message{
+            border-radius: 4px;
+            padding: FontSize(15);
+          }
+        }
+        .other-chat-list{
+            .message{
+               background-color: var(--white-color);
+            }
+        }
+        .user-chat-list{
+            justify-content: end;
+            .message{
+                background-color: var(--blue-color);
+                color: var(--white-color);
+             }
+        }
+        .user-message-conatiner{
+            display: flex;
+            align-items: center;
+            position: absolute;
+            bottom: FontSize(30);
+            width:calc(100% - FontSize(400) - FontSize(30) * 2);
+            background-color: #fff;
+            padding: FontSize(20);
+            border-radius: 5px;
+            input{
+                border: 0;
+                width: 100%;
+                outline: 0;
+            }
+            button{
+                text-transform: uppercase;
+                border: 0;
+                background-color: var(--blue-color);
+                color: var(--white-color);
+                padding:FontSize(6) FontSize(20);
+                border-radius: 5px;
+                font-size: FontSize(20);
+            }
+        }
+    }
+  }
+}

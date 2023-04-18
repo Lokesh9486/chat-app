@@ -29,3 +29,23 @@
 .secondary-topic{
    font-size: FontSize(30);           
 }
+.profile-img-upload{
+    width: FontSize(50);
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+}
+
+.ternary-topic{
+    font-size: FontSize(30);
+    font-weight: 500;
+    color: var(--blue-color);
+}
+
+.user-name {
+    font-size: FontSize(23);
+    font-weight: 500;
+  }
+  .last-message {
+    font-size: FontSize(19);
+    color: #939191;
+  }

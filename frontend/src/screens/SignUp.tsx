@@ -33,7 +33,7 @@ const SignUp = () => {
       value: "",
       palceholder: " password",
       error: false,
-      errMessage:"Passwrod must contain 5-15 character"
+      errMessage:"Passwrod must contain 8-15 character"
     },
   ]);
   const [preview,setPreview]=useState<any>("");
@@ -41,8 +41,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log(`useEffect ~ isSuccess:`, isSuccess)
-      // history("/otp", { state: { email: signUpdetail[1].value } });
+      history("/otp", { state: { email: signUpdetail[1].value } });
     }
   }, [isSuccess]);
 
@@ -94,7 +93,7 @@ const SignUp = () => {
     const errorMap: signUpInterface[] = signUpdetail.map((item) => {
       const { type, value } = item;
       if (type === "text") {
-        return errorFunc(/[a-zA-Z]{5,15}/, value, item);
+        return errorFunc(/[a-zA-Z]{3,15}/, value, item);
       }
       if (type === "email") {
         return errorFunc(
@@ -116,8 +115,6 @@ const SignUp = () => {
       formData.append("email",signUpdetail[1].value)
       formData.append("password",signUpdetail[2].value)
       formData.append("profile",proifle);
-      console.log(formData,signUpdetail[0].value,signUpdetail[1].value,signUpdetail[2].value);
-      
       signUp(formData);
     }
   }
@@ -130,7 +127,6 @@ const SignUp = () => {
       }
     }
     if(e.target?.files){
-      console.log(`fileOnChange ~ e.target?.files:`, e.target?.files)
       reader.readAsDataURL(e.target.files?.[0])
     }
   }
@@ -162,13 +158,13 @@ const SignUp = () => {
 
           )
         )}
-        <input type="file" id="register-img-upload" onChange={fileOnChange}/>
+        <input type="file" accept="image/*" id="register-img-upload" onChange={fileOnChange}/>
         <label htmlFor="register-img-upload" className="upload-img">
           <img src={uploadImg} alt="uploadImg" />
           Choose file
         </label>
         <div className="d-flex align-items-center  gap-3">
-        <img src={preview||user} alt="preview"  className="profile-img-upload"/>
+        <img src={preview||user} alt="preview"   className="profile-img-upload"/>
         <p className="image-name">{proifle?.name || "Image name"}</p>
         </div>
         <button type="submit" className="log-btn">
@@ -177,7 +173,7 @@ const SignUp = () => {
         <p>Once sign up you receive OTP to email</p>
         <p>OTP expires in 30 minutes</p>
         <div className="split-topic">
-          <Link to="/">Sign in</Link>
+          <Link to="/signin">Sign in</Link>
         </div>
       </form>
       <div className="blur-round1"></div>

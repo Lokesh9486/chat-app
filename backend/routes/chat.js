@@ -1,7 +1,10 @@
 const express = require("express");
 const { isAuthenticateUser } = require("../middleware/authentication");
-const { sendMessage, getMessage, updateMessage, deleteMessage } = require("../controller/chatController");
+const { sendMessage, getMessage, updateMessage, deleteMessage, getAllMessage } = require("../controller/chatController");
 const router = express.Router();
+
+
+router.route("/message").get(isAuthenticateUser,getAllMessage);
 
 router
   .route("/message/:toId")

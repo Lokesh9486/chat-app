@@ -38,15 +38,25 @@ exports.getMessage = catchAsyncError(async (req, res, next) => {
 });
 
 exports.updateMessage = catchAsyncError(async (req, res, next) => {
-  const {id,message} = req.body;
-  const chat = await Chat.findByIdAndUpdate(id,{message},{
-    new:true
-  });
-  return res.status(200).json({chat})
+  const { id, message } = req.body;
+  const chat = await Chat.findByIdAndUpdate(
+    id,
+    { message },
+    {
+      new: true,
+    }
+  );
+  return res.status(200).json({ chat });
 });
 
 exports.deleteMessage = catchAsyncError(async (req, res, next) => {
-  const {id} = req.body;
+  const { id } = req.body;
   await Chat.findByIdAndDelete(id);
   return res.status(200).json("Message deleted successfully");
+});
+
+exports.getAllMessage = catchAsyncError(async (req, res, next) => {
+  const { user } = req;
+  const message = await Chat.find({ from: user.id });
+  return res.status(202).json({ message,user });
 });

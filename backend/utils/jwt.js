@@ -6,7 +6,7 @@ const sendToken = (user, statusCode, res, message) => {
     ),
     HttpOnly: true,
   };
-  res.status(statusCode).cookie("token", token, options).send(message);
+ return res.status(statusCode).cookie("token", token, options).json(message);
 };
 
 module.exports = sendToken;

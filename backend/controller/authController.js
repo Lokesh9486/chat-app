@@ -14,14 +14,10 @@ const generateOTP = crypto.randomInt(1000, 10000).toString();
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
   const { name, email, password } = req.body;
-  console.log("exports.registerUser=catchAsyncError ~ req:", req.body)
-  // console.log(`exports.registerUser=catchAsyncError ~ name, email, password:`, name, email, password)
   let profile;
-  console.log("req.file",req.file);
   if(req.file){
     profile=`${req.protocol}://${req.get("host")}/uploads/user/${req.file.originalname}`
   }
-  console.log("profile",profile);
     const user = await User.create({
       name,
       email,
