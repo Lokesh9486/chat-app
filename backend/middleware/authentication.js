@@ -10,5 +10,8 @@ exports.isAuthenticateUser=catchAsyncError(async(req,res,next)=>{
     }
     const {id}=jwt.verify(token,process.env.JWT_SECERT);
     req.user=await User.findById(id);
+    if(!req.user){
+        return next(new ErrorHandler("Login to handle resource",401));
+    }
     next();
 });

@@ -3,19 +3,21 @@ const {Schema,model,SchemaTypes}=require('mongoose');
 const chatSchema=new Schema({
     from:{
         type:SchemaTypes.ObjectId,
-        required:true
+        required:true,
+        ref:"user"
     },
     to:{
         type:SchemaTypes.ObjectId,
-        required:true
+        required:true,
+        ref:"user"
     },
     message:{
         type:String,
         required:true,
     },
-    createdAt:{
+    created_at:{
         type:Date,
-        default:Date.now()
+        default:Date.now
     }
 })
 

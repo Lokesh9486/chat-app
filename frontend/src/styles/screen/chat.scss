@@ -21,15 +21,22 @@
     }
     .side-bar-body {
       padding: FontSize(30);
+      .ternary-topic{
+        padding-block: FontSize(30);
+      }
       ul {
         padding: 0;
         li {
+          padding: FontSize(15) FontSize(30);
+          border-radius: 5px;
           list-style: none;
           display: flex;
           align-items: center;
           gap: 4%;
           padding-block: FontSize(15);
-          
+          &.active{
+            background-color: aliceblue;
+          }
         }
       }
     }
@@ -49,6 +56,7 @@
           display: flex;
           align-items: center;
           gap:FontSize(15);
+          margin-bottom: FontSize(20);
           .message{
             border-radius: 4px;
             padding: FontSize(15);
@@ -60,6 +68,7 @@
             }
         }
         .user-chat-list{
+          flex-direction: row-reverse;
             justify-content: end;
             .message{
                 background-color: var(--blue-color);

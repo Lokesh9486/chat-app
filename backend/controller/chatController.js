@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const { catchAsyncError } = require("../middleware/catchAsyncError");
 const Chat = require("../model/chatModel");
 const User = require("../model/userModel");
@@ -57,6 +58,70 @@ exports.deleteMessage = catchAsyncError(async (req, res, next) => {
 
 exports.getAllMessage = catchAsyncError(async (req, res, next) => {
   const { user } = req;
-  const message = await Chat.find({ from: user.id });
-  return res.status(202).json({ message,user });
+  console.log(`exports.getAllMessage=catchAsyncError ~ user:`, user);
+  const userId = new mongoose.Types.ObjectId(user.id);
+  // const message = await Chat.aggregate([
+  //   {
+  //     $match: {
+  //       $or: [{ from: userId }, { to: userId }],
+  //     },
+  //   },
+  //   { $sort: { "created_at": -1 } },
+  //   {
+  //     $group: {
+  //       _id: {
+  //         $cond: { if: { $eq: [userId, "$from"] }, then: "$to", else: "$from" },
+  //       },
+  //     },
+  //   }
+  // ]);
+
+  const message = await Chat.aggregate([
+    {
+      $match: {
+        $or: [{ from: userId }, { to: userId }],
+      },
+    },
+    {
+      $addFields:{
+        nameField: { $cond: { if: { $eq: [userId, "$from"] }, then: "$to", else: "$from" } },
+      }
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "nameField",
+        foreignField: "_id",
+        as: "user"
+      }
+    },
+    {
+      $unwind: "$user"
+    },
+    {$sort:{"created_at":1}},
+    {
+      $group: {
+        _id: "$user._id",
+        name: { $first: "$user.name" },
+        message: {
+          $push: {
+            type: {
+              $cond: {
+                if: { $eq: [userId, "$from"] },
+                then: "send",
+                else: "received",
+              },
+            },
+            id:"$_id",
+            message: "$message",
+            createdAt: "$created_at",
+          },
+        },
+      },
+    },
+  ]);
+
+  console.log(message);
+
+  return res.status(202).json(message);
 });

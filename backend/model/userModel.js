@@ -26,9 +26,9 @@ const schema=new Schema({
     OTPVerifed:Boolean,
     resetPasswordToken:String,
     resetPasswordTokenExpire:Date,
-    createdAt:{
+    created_at:{
         type:Date,
-        default:Date.now()
+        default:Date.now
     }
 })
 

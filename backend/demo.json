@@ -1,12 +1,52 @@
 [
   {
-    "name": "vicky",
-    "others": [
-      { "message": "hello", "created": 12 },
-      { "message": "hi", "created": 33 }
-    ],
-    "user":[
-        
-    ]
+    "_id": {
+      "$oid": "6440c470c4442f968bb7400a"
+    },
+    "name": "thor",
+    "email": "thor.apr24@gmail.com",
+    "password": "$2b$10$.v2BE0komLmJYsjFSVU2i.JqNpFNXnr5UzSEG9EcRRnMxYXgzMrQO",
+    "OTP": 5639,
+    "OTPExpires": {
+      "$date": "2023-04-20T05:19:52.759Z"
+    },
+    "created_at": {
+      "$date": "2023-04-20T04:49:52.766Z"
+    },
+    "__v": 0,
+    "OTPVerifed": true
+  },
+  {
+    "_id": {
+      "$oid": "6440c67126f088183440d1f5"
+    },
+    "name": "loky",
+    "email": "loky.apr24@gmail.com",
+    "password": "$2b$10$4.vy70ri6lVoOGf0TqUo3eIRIr93FldvSE56.sxtzcOoJYPgvVDq6",
+    "OTP": 7288,
+    "OTPExpires": {
+      "$date": "2023-04-20T05:28:25.450Z"
+    },
+    "created_at": {
+      "$date": "2023-04-20T04:58:25.451Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6440c64026f088183440d1f1"
+    },
+    "name": "odin",
+    "email": "odin.apr24@gmail.com",
+    "password": "$2b$10$P7jk4igq7wtXROD4Z8ui7e6f1vNbqE7gtJjemRV.lZYi/OWhi01cy",
+    "OTP": 7288,
+    "OTPExpires": {
+      "$date": "2023-04-20T05:27:36.888Z"
+    },
+    "created_at": {
+      "$date": "2023-04-20T04:57:36.895Z"
+    },
+    "__v": 0,
+    "OTPVerifed": true
   }
 ]
