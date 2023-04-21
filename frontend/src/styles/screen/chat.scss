@@ -51,8 +51,9 @@
       border-bottom: 1px solid var(--blue-color);
     }
     .chat-body{
-      height: 85vh;
-    overflow-y: scroll;
+      height: 75vh;
+      overflow-y: scroll;
+      @include scroll-bar;
         padding: FontSize(30);
         .other-chat-list,.user-chat-list{
           display: flex;
@@ -63,10 +64,28 @@
             border-radius: 4px;
             padding: FontSize(15);
           }
+          .message-time{
+            font-size: FontSize(20);
+            color: #6f6f6f;
+            font-weight: 500;
+          }
+          .chat-user-img-con{
+            display: flex;
+            align-items: flex-start;
+            .more-btn{
+              visibility: hidden;
+            }
+          }
+          &:hover{
+            .chat-user-img-con{
+              .more-btn{
+                visibility: visible;
+              }
+            }
+          }
         }
         .other-chat-list{
           .message-con{
-
             .message{
                background-color: var(--white-color);
             }
@@ -83,6 +102,9 @@
                 background-color: var(--blue-color);
                 color: var(--white-color);
              }
+            }
+            .chat-user-img-con{
+              flex-direction: row-reverse;
             }
         }
         .user-message-conatiner{
