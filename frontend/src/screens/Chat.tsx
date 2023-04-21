@@ -1,12 +1,13 @@
 import { useGetChatDetailsQuery, useSendMessageMutation } from "../app/chatApi";
 import user from "../assets/images/user.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { messageType, registerApiData, sidebarDataType } from "../types";
 const Chat = () => {
+  const ulElement = useRef<HTMLInputElement | null>(null);
   const {
     data,
     // , isError, isFetching, isLoading, isSuccess
-  } = useGetChatDetailsQuery();
+  } =useGetChatDetailsQuery()
   // useGetChatDetailsQuery(
   //   "asdas", {
   //   pollingInterval: 3000,
@@ -41,6 +42,11 @@ const Chat = () => {
   >();
   const [userSendMessage, setUserSendMaessage] = useState<string>("");
 
+  ulElement?.current?.scrollTo({
+    top: ulElement?.current?.scrollHeight,
+    behavior: "smooth",
+  });
+  
   useEffect(() => {
     if (currentChat === undefined) {
       setCurrentChat(sidebarData?.[0]?.id);
@@ -52,7 +58,8 @@ const Chat = () => {
       const chatData: any = data?.filter(({ _id }) => _id === currentChat);
       setCurrentChatData(chatData?.[0].message);
     }
-  }, [data]);
+  }, [data,userSendMessage]);
+
 
   useEffect(() => {
     if (currentChat) {
@@ -65,6 +72,10 @@ const Chat = () => {
     sendMessage({ currentChat, userSendMessage });
     setUserSendMaessage("");
   };
+
+  const shortTime = new Intl.DateTimeFormat("en", {
+    timeStyle: "short",
+  });
 
   return (
     <div className="chat-page">
@@ -104,9 +115,10 @@ const Chat = () => {
             </p>
           </div>
         </div>
-        <div className="chat-body">
+        <div className="chat-body" ref={ulElement}>
           {currentChatData?.map(({ type, message, createdAt }, index) => {
             return (
+              <>
               <div
                 key={index}
                 className={
@@ -114,14 +126,19 @@ const Chat = () => {
                 }
               >
                 <img src={user} alt="user" className="profile-img-upload" />
+                <div className="message-con">
                 <p className="message">{message}</p>
+                 <p>{shortTime.format(new Date(createdAt))}</p>
+                </div>
               </div>
+              </>
             );
           })}
           <div className="user-message-conatiner">
             <input
               type="text"
               className="message-input"
+              value={userSendMessage}
               placeholder="Type your Message here..."
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setUserSendMaessage(e.target?.value)

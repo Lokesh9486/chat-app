@@ -51,10 +51,12 @@
       border-bottom: 1px solid var(--blue-color);
     }
     .chat-body{
+      height: 85vh;
+    overflow-y: scroll;
         padding: FontSize(30);
         .other-chat-list,.user-chat-list{
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           gap:FontSize(15);
           margin-bottom: FontSize(20);
           .message{
@@ -63,17 +65,25 @@
           }
         }
         .other-chat-list{
+          .message-con{
+
             .message{
                background-color: var(--white-color);
             }
+          }
         }
         .user-chat-list{
           flex-direction: row-reverse;
             justify-content: end;
+            .message-con{
+              display: flex;
+              flex-direction: column;
+              align-items: end;
             .message{
                 background-color: var(--blue-color);
                 color: var(--white-color);
              }
+            }
         }
         .user-message-conatiner{
             display: flex;

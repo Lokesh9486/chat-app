@@ -155,7 +155,6 @@ const SignUp = () => {
              error && <p className="error-msg">{errMessage}</p>
             }
             </div>
-
           )
         )}
         <input type="file" accept="image/*" id="register-img-upload" onChange={fileOnChange}/>

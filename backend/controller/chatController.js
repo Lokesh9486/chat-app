@@ -60,22 +60,6 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
   const { user } = req;
   console.log(`exports.getAllMessage=catchAsyncError ~ user:`, user);
   const userId = new mongoose.Types.ObjectId(user.id);
-  // const message = await Chat.aggregate([
-  //   {
-  //     $match: {
-  //       $or: [{ from: userId }, { to: userId }],
-  //     },
-  //   },
-  //   { $sort: { "created_at": -1 } },
-  //   {
-  //     $group: {
-  //       _id: {
-  //         $cond: { if: { $eq: [userId, "$from"] }, then: "$to", else: "$from" },
-  //       },
-  //     },
-  //   }
-  // ]);
-
   const message = await Chat.aggregate([
     {
       $match: {
@@ -83,26 +67,28 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
       },
     },
     {
-      $addFields:{
-        nameField: { $cond: { if: { $eq: [userId, "$from"] }, then: "$to", else: "$from" } },
-      }
+      $addFields: {
+        nameField: {
+          $cond: { if: { $eq: [userId, "$from"] }, then: "$to", else: "$from" },
+        },
+      },
     },
     {
       $lookup: {
         from: "users",
         localField: "nameField",
         foreignField: "_id",
-        as: "user"
-      }
+        as: "user",
+      },
     },
     {
-      $unwind: "$user"
+      $unwind: "$user",
     },
-    {$sort:{"created_at":1}},
     {
       $group: {
         _id: "$user._id",
         name: { $first: "$user.name" },
+        createdAt: { $first: "$created_at" },
         message: {
           $push: {
             type: {
@@ -112,14 +98,60 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
                 else: "received",
               },
             },
-            id:"$_id",
+            id: "$_id",
             message: "$message",
             createdAt: "$created_at",
           },
         },
       },
     },
+    { $sort: { createdAt: 1 } },
   ]);
+
+  // const message = await Chat.aggregate([
+  //   {
+  //     $match: {
+  //       $or: [{ from: userId }, { to: userId }],
+  //     },
+  //   },
+  //   {
+  //     $addFields:{
+  //       nameField: { $cond: { if: { $eq: [userId, "$from"] }, then: "$to", else: "$from" } },
+  //     }
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "users",
+  //       localField: "nameField",
+  //       foreignField: "_id",
+  //       as: "user"
+  //     }
+  //   },
+  //   {
+  //     $unwind: "$user"
+  //   },
+  //   {$sort:{"created_at":1}},
+  //   {
+  //     $group: {
+  //       _id: "$user._id",
+  //       name: { $first: "$user.name" },
+  //       message: {
+  //         $push: {
+  //           type: {
+  //             $cond: {
+  //               if: { $eq: [userId, "$from"] },
+  //               then: "send",
+  //               else: "received",
+  //             },
+  //           },
+  //           id:"$_id",
+  //           message: "$message",
+  //           createdAt: "$created_at",
+  //         },
+  //       },
+  //     },
+  //   },
+  // ]);
 
   console.log(message);
 
