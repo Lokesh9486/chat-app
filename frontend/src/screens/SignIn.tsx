@@ -40,7 +40,7 @@ const SignIn = () => {
   }, [errorState]);
   useEffect(() => {
     if (isSuccess) {
-      return history("/chat");
+      return history("/");
     }
   }, [isSuccess]);
   return (

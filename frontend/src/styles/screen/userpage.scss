@@ -1,0 +1,24 @@
+.user-page{
+    padding: FontSize(10);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .user-page-logo{
+        width: 40vw;
+        border: 1px solid;
+        border-radius: 50%;
+    }
+    form{
+        width: 50vw;
+        display: flex;
+        flex-direction: column;
+         gap: FontSize(30);
+         .log-label{
+             padding-bottom: FontSize(20);
+         }
+         input{
+            width: 70%;
+            padding: FontSize(15);
+         }
+    }
+}

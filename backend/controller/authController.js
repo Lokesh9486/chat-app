@@ -167,5 +167,11 @@ exports.chagePassword=catchAsyncError(async(req,res,next)=>{
   }
   user.password=password;
   await user.save();
-  res.status(200).send("Password changed successfully");
+  res.status(200).json("Password changed successfully");
+})
+
+exports.searchUserProfile=catchAsyncError(async(req,res,next)=>{
+   const {user}=req.params;
+  const users=  await User.find( { name:  new RegExp(`${user}`, "i")} );
+  return res.status(200).json(users);
 })

@@ -10,6 +10,7 @@ const {
   resetPassword,
   getUserProfile,
   chagePassword,
+  searchUserProfile,
 } = require("../controller/authController");
 const { isAuthenticateUser } = require("../middleware/authentication");
 const router = express.Router();
@@ -44,5 +45,7 @@ router.route("/reset/:resetToken").post(resetPassword);
 router.route("/getuser").get(isAuthenticateUser,getUserProfile);
 
 router.route("/change-password").put(isAuthenticateUser,chagePassword);
+
+router.route("/search/:user").get(isAuthenticateUser,searchUserProfile);
 
 module.exports = router;

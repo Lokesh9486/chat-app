@@ -52,6 +52,7 @@ exports.updateMessage = catchAsyncError(async (req, res, next) => {
 
 exports.deleteMessage = catchAsyncError(async (req, res, next) => {
   const { id } = req.body;
+  console.log("exports.deleteMessage ~ id:", id)
   await Chat.findByIdAndDelete(id);
   return res.status(200).json("Message deleted successfully");
 });
@@ -157,3 +158,4 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
 
   return res.status(202).json(message);
 });
+

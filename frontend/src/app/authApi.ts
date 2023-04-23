@@ -34,7 +34,13 @@ export const authApi = createApi({
         body: data,
       }),
     }),
+    getUserProfile:builder.query<any,void>({
+      query:()=>"/getuser"
+    }),
+    searchUser:builder.query<any,string>({
+      query:(data)=>`/search/${data}`
+    })
   }),
 });
 
-export const { useRegisterMutation, useOtpVerificationMutation,useLoginMutation } = authApi;
+export const { useRegisterMutation, useOtpVerificationMutation,useLoginMutation,useGetUserProfileQuery,useSearchUserQuery } = authApi;

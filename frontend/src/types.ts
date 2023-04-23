@@ -20,6 +20,7 @@ export interface messageType {
   type: string;
   message: string;
   createdAt: Date;
+  id:string
 }
 export interface registerApiData {
   _id: string;

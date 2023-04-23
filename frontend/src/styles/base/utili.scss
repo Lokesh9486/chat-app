@@ -18,6 +18,14 @@
     }
   }
 }
+.log-input-con{
+  display: flex;
+  flex-direction: column;
+
+}
+.log-label{
+  
+}
 .error-msg {
   position: absolute;
   color: var(--red-color);
@@ -29,6 +37,9 @@
 }
 .secondary-topic {
   font-size: FontSize(30);
+}
+.general-text{
+  font-size: FontSize(20);
 }
 .profile-img-upload {
   width: FontSize(50);
@@ -55,5 +66,25 @@
   background-color: transparent;
   img {
     width: FontSize(20);
+  }
+}
+
+header{
+  padding: FontSize(15);
+  &>div{
+    box-shadow: $box-shadow;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: FontSize(20) FontSize(30);
+    background-color: #fff;
+    border-radius: 10px;
+    .logo-img{
+      background-color: transparent;
+      border: 0;
+      img {
+        width: FontSize(50);
+      }
+    }
   }
 }
