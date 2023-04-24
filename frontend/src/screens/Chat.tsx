@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { useGetUserProfileQuery, useSearchUserQuery } from "../app/authApi";
 import UserImgCon from "../components/UserImgCon";
 import link from "../assets/images/link.png";
+import dotLoader from "../assets/images/dotloader.gif";
 
 const Chat = () => {
   const ulElement = useRef<HTMLInputElement | null>(null);
@@ -29,10 +30,11 @@ const Chat = () => {
   // );
 
   const [sendMessage, { data: value, isError, isLoading, isSuccess }] = useSendMessageMutation();
+  console.log(`Chat ~ isSuccess:`, isSuccess,isLoading)
   const [deleteMsg] = useDeleteMessageMutation();
-  const { data: userSeacrh } = useSearchUserQuery(searchUser, {
+  const { data: userSeacrh,isLoading:searchUserLoading } = useSearchUserQuery(searchUser, {
     skip: searchUser ? false : true,
-  });
+  })
 
   const {data:userDetails}=useGetUserProfileQuery();
 
@@ -118,6 +120,7 @@ const Chat = () => {
           </div>
           <div className="side-bar-body">
             {(userSeacrh?.length &&searchUser) ? (
+              searchUserLoading?<img src={dotLoader} alt="" />:
               <>
                 <p className="side-bar-topic ternary-topic">Users</p>
                 <ul>
@@ -269,8 +272,12 @@ const Chat = () => {
               />
               <label htmlFor="upload-img" className="upload-img-label" ><img src={link} alt="link"  /></label>
               <input type="file" id="upload-img" accept="image/*"/>
-              <button type="submit">Send</button>
+              {
+                isLoading?<img src={dotLoader} alt="" className="loader-img"/>:
+                <button type="submit">Send</button>
+              }
             </form>
+            
           </div>
         </section>
       </section>

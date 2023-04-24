@@ -5,23 +5,6 @@
     justify-content: space-evenly;
     height: 100vh;
     padding: FontSize(15);
-    nav{
-      height:calc(100vh - FontSize(15) * 3) ;
-      padding: FontSize(15);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      .main-icons{
-        display: grid;
-        place-items: center;
-        gap: FontSize(30);
-        a{
-          img{
-            width: FontSize(25);
-          }
-        }
-      }
-    }
     aside {
       width: FontSize(350);
       position: sticky;
@@ -58,7 +41,6 @@
             align-items: center;
             gap: 4%;
             padding-block: FontSize(15);
-            
             .last-message{
               width: 140px;
               white-space: nowrap;
@@ -67,10 +49,8 @@
             }
             &.active {
               background-color: aliceblue;
-              box-shadow: $box-shadow;
-              
+              box-shadow: rgba(100, 100, 111, 0.2) 0px 5px 13px 0px;
             }
-            
           }
         }
       }
@@ -193,9 +173,6 @@
           }
           .upload-img-label{
             margin-right: FontSize(25);
-            img{
-              width: FontSize(30);
-            }
           }
           button {
             text-transform: uppercase;

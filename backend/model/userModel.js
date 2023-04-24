@@ -17,7 +17,6 @@ const schema=new Schema({
     password:{
         type:String,
         required:[true,'please enter password'],
-        unique:true,
         select:false,
     },
     active:Date,

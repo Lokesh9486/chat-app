@@ -6,6 +6,7 @@ import { useRegisterMutation } from "../app/authApi";
 import anime from "animejs";
 import  uploadImg from "../assets/images/uploadimage.png";
 import user from "../assets/images/user.png";
+import dotLoader from "../assets/images/dotloader.gif";
 
 const SignUp = () => {
   const [signUp, { data, isError, isLoading, isSuccess, error ,isUninitialized}] =useRegisterMutation();
@@ -166,9 +167,9 @@ const SignUp = () => {
         <img src={preview||user} alt="preview"   className="profile-img-upload"/>
         <p className="image-name">{proifle?.name || "Image name"}</p>
         </div>
-        <button type="submit" className="log-btn">
+        {isLoading? <img src={dotLoader} alt="" className="loader-img m-auto"/>:<button type="submit" className="log-btn">
           SignUp
-        </button>
+        </button>}
         <p>Once sign up you receive OTP to email</p>
         <p>OTP expires in 30 minutes</p>
         <div className="split-topic">
