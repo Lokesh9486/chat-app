@@ -25,8 +25,10 @@ export interface messageType {
 export interface registerApiData {
   _id: string;
   name: string;
+  active:string;
   message: messageType[];
+  profile:string
 }
 
 
-export interface sidebarDataType{name: string, lastmessage: string,id:string}
+export interface sidebarDataType{name: string, lastmessage: string,id:string,active:boolean,profile:string}

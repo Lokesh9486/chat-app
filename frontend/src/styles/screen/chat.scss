@@ -40,6 +40,7 @@
           border: 1px solid #ccc;
           border-radius: 30px;
           font-size: FontSize(22);
+          outline: 0;
         }
       }
       .side-bar-body {
@@ -57,17 +58,19 @@
             align-items: center;
             gap: 4%;
             padding-block: FontSize(15);
+            
             .last-message{
               width: 140px;
               white-space: nowrap;
               overflow: hidden !important;
               text-overflow: ellipsis;
-
             }
             &.active {
               background-color: aliceblue;
               box-shadow: $box-shadow;
+              
             }
+            
           }
         }
       }
@@ -95,19 +98,10 @@
           p{
             padding: FontSize(6) FontSize(15);
             border-radius: 30px;
-            // border: 1px solid var(--blue-color);
             font-size: FontSize(16);
             background-color: var(--white-color);
             z-index: 2;
           }
-          // &::after{
-          //   z-index: -1;
-          //   position: absolute;
-          //   content: "";
-          //   top: 50%;
-          //   border-top: 1px solid var(--blue-color);
-          //   width: 100%;
-          // }
         }
         .other-chat-list,
         .user-chat-list {
@@ -193,6 +187,15 @@
             border: 0;
             width: 100%;
             outline: 0;
+          }
+          #upload-img{
+            display: none;
+          }
+          .upload-img-label{
+            margin-right: FontSize(25);
+            img{
+              width: FontSize(30);
+            }
           }
           button {
             text-transform: uppercase;

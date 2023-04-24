@@ -61,6 +61,9 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
   const { user } = req;
   console.log(`exports.getAllMessage=catchAsyncError ~ user:`, user);
   const userId = new mongoose.Types.ObjectId(user.id);
+
+  await User.findByIdAndUpdate(userId,{active:Date.now()},{new :true});
+  
   const message = await Chat.aggregate([
     {
       $match: {
@@ -90,6 +93,8 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
         _id: "$user._id",
         name: { $first: "$user.name" },
         createdAt: { $first: "$created_at" },
+        active: { $first: "$user.active" },
+        profile:{ $first:"$user.profile"},
         message: {
           $push: {
             type: {
@@ -102,6 +107,7 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
             id: "$_id",
             message: "$message",
             createdAt: "$created_at",
+           
           },
         },
       },
