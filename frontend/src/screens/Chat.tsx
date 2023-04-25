@@ -15,6 +15,8 @@ import { useGetUserProfileQuery, useSearchUserQuery } from "../app/authApi";
 import UserImgCon from "../components/UserImgCon";
 import link from "../assets/images/link.png";
 import dotLoader from "../assets/images/dotloader.gif";
+import happyemoji from "../assets/images/happyemoji.png";
+import Modal from "../components/Modal";
 
 const Chat = () => {
   const ulElement = useRef<HTMLInputElement | null>(null);
@@ -29,23 +31,30 @@ const Chat = () => {
   // }
   // );
 
-  const [sendMessage, { data: value, isError, isLoading, isSuccess }] = useSendMessageMutation();
-  console.log(`Chat ~ isSuccess:`, isSuccess,isLoading)
+  const [sendMessage, { data: value, isError, isLoading, isSuccess }] =
+    useSendMessageMutation();
+  console.log(`Chat ~ isSuccess:`, data, value, isSuccess, isLoading);
   const [deleteMsg] = useDeleteMessageMutation();
-  const { data: userSeacrh,isLoading:searchUserLoading } = useSearchUserQuery(searchUser, {
-    skip: searchUser ? false : true,
-  })
+  const { data: userSeacrh, isLoading: searchUserLoading } = useSearchUserQuery(
+    searchUser,
+    {
+      skip: searchUser ? false : true,
+    }
+  );
 
-  const {data:userDetails}=useGetUserProfileQuery();
+  const { data: userDetails } = useGetUserProfileQuery();
 
   const sidebarData = data?.reduce(
-    (array: sidebarDataType[], { name, message, _id,active,profile }: registerApiData) => {
+    (
+      array: sidebarDataType[],
+      { name, message, _id, active, profile }: registerApiData
+    ) => {
       array.push({
         name,
-        active: Date.now()-Number(new Date(active))<20*1000,
+        active: Date.now() - Number(new Date(active)) < 20 * 1000,
         lastmessage: message[message.length - 1].message,
         id: _id,
-        profile
+        profile,
       });
       return array;
     },
@@ -53,8 +62,12 @@ const Chat = () => {
   );
 
   const [currentChat, setCurrentChat] = useState<string | undefined>();
-  const [currentChatData, setCurrentChatData] = useState<{message?:messageType[],profile?:string}>({});
+  const [currentChatData, setCurrentChatData] = useState<{
+    message?: messageType[];
+    profile?: string;
+  }>({});
   const [userSendMessage, setUserSendMaessage] = useState<string>("");
+  const [showModal , setShowModal]=useState<boolean>(false);
 
   const shortTime = new Intl.DateTimeFormat("en", {
     timeStyle: "short",
@@ -72,13 +85,19 @@ const Chat = () => {
         ({ _id }) => _id === sidebarData?.[0]?.id
       );
       console.log(chatData);
-      
-      setCurrentChatData({message:chatData?.[0]?.message,profile:chatData?.[0]?.profile});
+
+      setCurrentChatData({
+        message: chatData?.[0]?.message,
+        profile: chatData?.[0]?.profile,
+      });
     } else {
       const chatData: registerApiData[] | undefined = data?.filter(
         ({ _id }) => _id === currentChat
       );
-      setCurrentChatData({message:chatData?.[0]?.message,profile:chatData?.[0]?.profile});
+      setCurrentChatData({
+        message: chatData?.[0]?.message,
+        profile: chatData?.[0]?.profile,
+      });
     }
     // currentChatData
   }, [data, userSendMessage]);
@@ -88,7 +107,10 @@ const Chat = () => {
       const chatData: registerApiData[] | undefined = data?.filter(
         ({ _id }) => _id === currentChat
       );
-      setCurrentChatData({message:chatData?.[0]?.message,profile:chatData?.[0]?.profile});
+      setCurrentChatData({
+        message: chatData?.[0]?.message,
+        profile: chatData?.[0]?.profile,
+      });
     }
   }, [currentChat]);
 
@@ -101,9 +123,7 @@ const Chat = () => {
     e.preventDefault();
     sendMessageFun();
   };
-  
-  console.log(currentChatData);
-  
+
   // let renderDate = "";
 
   return (
@@ -111,7 +131,14 @@ const Chat = () => {
       <section className="chat-pages-main">
         <aside>
           <div className="side-bar-header">
-            <img src={userDetails?.user.profile??user} alt="user" className="profile-img-upload" />
+            <button type="button" className="primary-transparent-btn"
+            onClick={()=>setShowModal(true)}>
+            <img
+              src={userDetails?.user.profile ?? user}
+              alt="user"
+              className="profile-img-upload"
+            />
+            </button>
             <input
               type="search"
               placeholder="Search for contact..."
@@ -119,168 +146,198 @@ const Chat = () => {
             />
           </div>
           <div className="side-bar-body">
-            {(userSeacrh?.length &&searchUser) ? (
-              searchUserLoading?<img src={dotLoader} alt="" />:
-              <>
-                <p className="side-bar-topic ternary-topic">Users</p>
-                <ul>
-                  {userSeacrh?.map(({ name, email ,_id:id }, index) => {
-                    return (
-                      <li
-                        key={index}
-                        className={currentChat === id ? "active" : ""}
-                        onClick={() => setCurrentChat(id)}
-                      >
-                        <img
-                          src={user}
-                          alt="user"
-                          className="profile-img-upload"
-                        />
-                        <div>
-                          <p className="user-name">{name}</p>
-                          <p className="last-message">{email}</p>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </>
+            {searchUser ? (
+              searchUserLoading ? (
+                <img src={dotLoader} alt="" className="loader-img" />
+              ) : (
+                <>
+                  <p className="side-bar-topic ternary-topic">Users</p>
+                  <ul>
+                    {userSeacrh?.map(({ name, email, _id: id }, index) => {
+                      return (
+                        <li
+                          key={index}
+                          className={currentChat === id ? "active" : ""}
+                          onClick={() => setCurrentChat(id)}
+                        >
+                          <img
+                            src={user}
+                            alt="user"
+                            className="profile-img-upload"
+                          />
+                          <div>
+                            <p className="user-name">{name}</p>
+                            <p className="last-message">{email}</p>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </>
+              )
             ) : (
               ""
             )}
             <p className="side-bar-topic ternary-topic">Chats</p>
             <ul>
-              {sidebarData?.map(({ name, lastmessage, id,active,profile }, index) => {
-                return (
-                  <li
-                    key={index}
-                    className={(currentChat === id? "active" :"")}
-                    onClick={() => setCurrentChat(id)}
-                  >
-                    <UserImgCon profile={profile} status={active? " currently-active":""}/>
-                    <div>
-                      <p className="user-name">{name}</p>
-                      <p className="last-message">{lastmessage}</p>
-                    </div>
-                  </li>
-                );
-              })}
+              {sidebarData?.map(
+                ({ name, lastmessage, id, active, profile }, index) => {
+                  return (
+                    <li
+                      key={index}
+                      className={currentChat === id ? "active" : ""}
+                      onClick={() => setCurrentChat(id)}
+                    >
+                      <UserImgCon
+                        profile={profile}
+                        status={active ? " currently-active" : ""}
+                      />
+                      <div>
+                        <p className="user-name">{name}</p>
+                        <p className="last-message">{lastmessage}</p>
+                      </div>
+                    </li>
+                  );
+                }
+              )}
             </ul>
           </div>
         </aside>
         <section className="chat-container">
-          <div className="chat-header">
-          {
-            (()=>
-            sidebarData?.filter(({ id }) => id === currentChat)?.map(({active,id,lastmessage,name,profile})=>{
-             return  <>
-              <UserImgCon profile={profile} status={active? " currently-active":""}/>
-              <p className="user-name">
-                {name}
-              </p>
-              </>
-              })
-            )()
-          }
-          </div>
-          <div className="chat-body" ref={ulElement}>
-            {(() => {
-              const messsage = [];
-              const renderDateArr: string[] = [];
-              let renderDate = "";
-              for (const [
-                index,
-                { type, message, createdAt, id },
-              ] of currentChatData?.message?.entries() ?? []) {
-                const date = new Date(createdAt).toLocaleString("en-US", {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                });
-                renderDate = date;
-                if (renderDateArr.includes(date)) {
-                  renderDate = "";
-                }
-                messsage.push(
-                  <Fragment key={index}>
-                    {renderDate && (
-                      <div className="unique-date">
-                        <p>{renderDate}</p>
-                      </div>
-                    )}
-                    <div
-                      className={
-                        type === "received"
-                          ? "other-chat-list"
-                          : "user-chat-list"
-                      }
-                    >
-                      <div className="chat-user-img-con">
-                        <div className="dropdown">
-                          <button
-                            type="button"
-                            className="more-btn dropdown-toggle"
-                            data-bs-toggle="dropdown"
-                          >
-                            <img src={more} alt="" />
-                          </button>
-                          <ul className="dropdown-menu">
-                            <li>
-                              <button type="button">
-                                <p>Edit</p> <img src={edit} alt="edit" />
-                              </button>
-                            </li>
-                            <li>
+          {currentChat ? (
+            <>
+              <div className="chat-header">
+                {(() =>
+                  sidebarData
+                    ?.filter(({ id }) => id === currentChat)
+                    ?.map(({ active, id, lastmessage, name, profile }) => {
+                      return (
+                        <>
+                          <UserImgCon
+                            profile={profile}
+                            status={active ? " currently-active" : ""}
+                          />
+                          <p className="user-name">{name}</p>
+                        </>
+                      );
+                    }))()}
+              </div>
+              <div className="chat-body" ref={ulElement}>
+                {(() => {
+                  const messsage = [];
+                  const renderDateArr: string[] = [];
+                  let renderDate = "";
+                  for (const [
+                    index,
+                    { type, message, createdAt, id },
+                  ] of currentChatData?.message?.entries() ?? []) {
+                    const date = new Date(createdAt).toLocaleString("en-US", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    });
+                    renderDate = date;
+                    if (renderDateArr.includes(date)) {
+                      renderDate = "";
+                    }
+                    messsage.push(
+                      <Fragment key={index}>
+                        {renderDate && (
+                          <div className="unique-date">
+                            <p>{renderDate}</p>
+                          </div>
+                        )}
+                        <div
+                          className={
+                            type === "received"
+                              ? "other-chat-list"
+                              : "user-chat-list"
+                          }
+                        >
+                          <div className="chat-user-img-con">
+                            <div className="dropdown">
                               <button
                                 type="button"
-                                onClick={() => deleteMsg(id)}
+                                className="more-btn dropdown-toggle"
+                                data-bs-toggle="dropdown"
                               >
-                                <p>Delete</p> <img src={trash} alt="trash" />
+                                <img src={more} alt="" />
                               </button>
-                            </li>
-                          </ul>
+                              <ul className="dropdown-menu">
+                                <li>
+                                  <button type="button">
+                                    <p>Edit</p> <img src={edit} alt="edit" />
+                                  </button>
+                                </li>
+                                <li>
+                                  <button
+                                    type="button"
+                                    onClick={() => deleteMsg(id)}
+                                  >
+                                    <p>Delete</p>{" "}
+                                    <img src={trash} alt="trash" />
+                                  </button>
+                                </li>
+                              </ul>
+                            </div>
+                            <img
+                              src={
+                                (type !== "received"
+                                  ? userDetails?.user.profile
+                                  : currentChatData?.profile) ?? user
+                              }
+                              alt="user"
+                              className="profile-img-upload"
+                            />
+                          </div>
+                          <div className="message-con">
+                            <p className="message">{message}</p>
+                            <p className="message-time">
+                              {shortTime.format(new Date(createdAt))}
+                            </p>
+                          </div>
                         </div>
-                        <img
-                          src={(type !== "received"?userDetails?.user.profile:currentChatData?.profile)??user}
-                          alt="user"
-                          className="profile-img-upload"
-                        />
-                      </div>
-                      <div className="message-con">
-                        <p className="message">{message}</p>
-                        <p className="message-time">
-                          {shortTime.format(new Date(createdAt))}
-                        </p>
-                      </div>
-                    </div>
-                  </Fragment>
-                );
-                renderDateArr.push(date);
-              }
-              return messsage;
-            })()}
-            <form onSubmit={formSubmitFunc} className="user-message-conatiner">
-              <input
-                type="text"
-                className="message-input"
-                value={userSendMessage}
-                placeholder="Type your Message here..."
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setUserSendMaessage(e.target?.value)
-                }
-              />
-              <label htmlFor="upload-img" className="upload-img-label" ><img src={link} alt="link"  /></label>
-              <input type="file" id="upload-img" accept="image/*"/>
-              {
-                isLoading?<img src={dotLoader} alt="" className="loader-img"/>:
-                <button type="submit">Send</button>
-              }
-            </form>
-            
-          </div>
+                      </Fragment>
+                    );
+                    renderDateArr.push(date);
+                  }
+                  return messsage;
+                })()}
+                <form
+                  onSubmit={formSubmitFunc}
+                  className="user-message-conatiner"
+                >
+                  <input
+                    type="text"
+                    className="message-input"
+                    value={userSendMessage}
+                    placeholder="Type your Message here..."
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setUserSendMaessage(e.target?.value)
+                    }
+                  />
+                  <label htmlFor="upload-img" className="upload-img-label">
+                    <img src={link} alt="link" className="loader-img" />
+                  </label>
+                  <input type="file" id="upload-img" accept="image/*" />
+                  {isLoading ? (
+                    <img src={dotLoader} alt="" className="loader-img" />
+                  ) : (
+                    <button type="submit">Send</button>
+                  )}
+                </form>
+              </div>
+            </>
+          ) : (
+            <div className="message-not-found">
+              <img src={happyemoji} alt="happyemoji" className="happyemoji"/>
+              <p className="ternary-topic text-center">Search for other users in our chat and<br/> start a conversation with<br/> someone new</p>
+            </div>
+          )}
         </section>
       </section>
+      <Modal show={showModal}/>
     </div>
   );
 };

@@ -14,38 +14,42 @@
       border-radius: 10px;
       box-shadow: $box-shadow;
       .side-bar-header {
-        padding: FontSize(20);
+        padding: FontSize(16);
         display: flex;
+        align-items: center;
         border-bottom: 1px solid var(--background-color);
+        gap: 10px;
         input {
           width: 100%;
-          padding-left: FontSize(15);
+          padding: FontSize(9) FontSize(14);
+          padding-left: FontSize(17);
           border: 1px solid #ccc;
           border-radius: 30px;
-          font-size: FontSize(22);
+          font-size: FontSize(18);
           outline: 0;
         }
       }
       .side-bar-body {
         padding: FontSize(30);
         .ternary-topic {
-          padding-bottom: FontSize(30);
+          font-size: FontSize(22);
         }
         ul {
           padding: 0;
           li {
-            padding: FontSize(15) FontSize(30);
+            padding: FontSize(10) FontSize(25);
             border-radius: 5px;
             list-style: none;
             display: flex;
             align-items: center;
-            gap: 4%;
-            padding-block: FontSize(15);
+            gap: 6%;
+            font-size: FontSize(18);
             .last-message{
               width: 140px;
               white-space: nowrap;
               overflow: hidden !important;
               text-overflow: ellipsis;
+              font-size: FontSize(17);
             }
             &.active {
               background-color: aliceblue;
@@ -68,7 +72,7 @@
         height: 75vh;
         overflow-y: scroll;
         @include scroll-bar;
-        padding: FontSize(30);
+        padding: FontSize(20);
         padding-right: 0;
         .unique-date{
           display: flex;
@@ -76,9 +80,9 @@
           justify-content: center;
           position: relative;
           p{
-            padding: FontSize(6) FontSize(15);
+            padding: FontSize(5) FontSize(15);
             border-radius: 30px;
-            font-size: FontSize(16);
+            font-size: FontSize(15);
             background-color: var(--white-color);
             z-index: 2;
           }
@@ -89,12 +93,14 @@
           align-items: flex-start;
           gap: FontSize(15);
           margin-bottom: FontSize(20);
+          margin-top: 10px;
           .message {
             border-radius: 4px;
-            padding: FontSize(15);
+            font-size:FontSize(17);
+            padding: FontSize(10) FontSize(15);
           }
           .message-time {
-            font-size: FontSize(20);
+            font-size: FontSize(15);
             color: #6f6f6f;
             font-weight: 500;
           }
@@ -160,7 +166,7 @@
           bottom: FontSize(30);
           width: calc(100% - FontSize(400) - FontSize(30) * 2);
           background-color: #fff;
-          padding: FontSize(20);
+          padding: FontSize(13) FontSize(20);
           border-radius: 5px;
           box-shadow: $box-shadow;
           input {
@@ -181,9 +187,20 @@
             color: var(--white-color);
             padding: FontSize(6) FontSize(20);
             border-radius: 5px;
-            font-size: FontSize(20);
+            font-size: FontSize(18);
           }
         }
+      }
+    }
+    .message-not-found{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap:5%;
+      height: 100%;
+      .happyemoji{
+        width: FontSize(300);
       }
     }
   }

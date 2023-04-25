@@ -167,6 +167,9 @@ const SignUp = () => {
         <img src={preview||user} alt="preview"   className="profile-img-upload"/>
         <p className="image-name">{proifle?.name || "Image name"}</p>
         </div>
+        {isError&&<div className="position-relative">
+             <p className="error-msg">{(error as any)?.data}</p>
+            </div>}
         {isLoading? <img src={dotLoader} alt="" className="loader-img m-auto"/>:<button type="submit" className="log-btn">
           SignUp
         </button>}
@@ -176,8 +179,6 @@ const SignUp = () => {
           <Link to="/signin">Sign in</Link>
         </div>
       </form>
-      <div className="blur-round1"></div>
-      <div className="blur-round2"></div>
     </section>
   );
 };

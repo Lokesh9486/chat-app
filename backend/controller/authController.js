@@ -10,7 +10,7 @@ exports.getAllUser = catchAsyncError(async (req, res, next) => {
   res.status(200).json(users);
 });
 
-const generateOTP = crypto.randomInt(1000, 10000).toString();
+// const generateOTP = crypto.randomInt(1000, 10000).toString();
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -23,14 +23,15 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
       email,
       password,
       profile,
-      OTP: generateOTP,
+      OTP: crypto.randomInt(1000, 10000).toString(),
       OTPExpires:Date.now()+30*60*1000
     });
+    
     // sendEmail({
     //   email: user.email,
     //   res,
     //   subject: `OTP sended by chat-app`,
-    //   message: `<h1>${generateOTP}</h1>`,
+    //   message: `<h1>${crypto.randomInt(1000, 10000).toString()}</h1>`,
     // });
     res.status(200).json(`Register successfully and OTP send ${email}`);
 });
@@ -67,17 +68,17 @@ exports.login = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Invalid email or password", 400));
   }
   if (!user.OTPVerifed) {
-    user.OTP = generateOTP;
+    user.OTP = crypto.randomInt(1000, 10000).toString();
     user.OTPExpires=Date.now()+30*60*1000;
     await user.save({
       validateBefore: true,
     });
-     sendEmail({
-      email: user.email,
-      res,
-      subject: `OTP sended by chat-app`,
-      message: `<h1>${generateOTP}</h1>`,
-    });
+    //  sendEmail({
+    //   email: user.email,
+    //   res,
+    //   subject: `OTP sended by chat-app`,
+    //   message: `<h1>${crypto.randomInt(1000, 10000).toString()}</h1>`,
+    // });
    return res.status(200).json(`Login successfully and OTP send ${email}`);
   }
   return sendToken(user, 200, res, "Login successfully");

@@ -10,8 +10,6 @@ const OTP = () => {
     const [otp,setOtp]=useState<string>("");
     const [error,setError]=useState<boolean>(false);
     const  [otpVerfy,{data,isError,isLoading,isSuccess,error:otpError}]=useOtpVerificationMutation();
-    console.log(`OTP ~ otpError:`, otpError)
-
     
     useEffect(()=>{
       if(isSuccess){

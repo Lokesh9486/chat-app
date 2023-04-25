@@ -21,11 +21,8 @@
 .log-input-con{
   display: flex;
   flex-direction: column;
+}
 
-}
-.log-label{
-  
-}
 .error-msg {
   position: absolute;
   color: var(--red-color);
@@ -36,13 +33,13 @@
   padding: FontSize(5);
 }
 .secondary-topic {
-  font-size: FontSize(30);
-}
-.general-text{
   font-size: FontSize(20);
 }
+.general-text{
+  font-size: FontSize(16);
+}
 .profile-img-upload {
-  width: FontSize(50);
+  width: FontSize(30);
   aspect-ratio: 1/1;
   border-radius: 50%;
 }
@@ -54,7 +51,7 @@
 }
 
 .user-name {
-  font-size: FontSize(23);
+  font-size: FontSize(20);
   font-weight: 500;
 }
 .last-message {
@@ -116,5 +113,10 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 }
 
 .loader-img{
-  width: FontSize(30);
+  width: FontSize(23);
+}
+
+.primary-transparent-btn{
+  background-color: transparent;
+  border: 0;
 }

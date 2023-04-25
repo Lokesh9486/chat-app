@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo1.png";
 import { SyntheticEvent, useState, useEffect } from "react";
 import { useLoginMutation } from "../app/authApi";
+import dotLoader from "../assets/images/dotloader.gif";
 
 const SignIn = () => {
   const history = useNavigate();
@@ -15,7 +16,6 @@ const SignIn = () => {
   }>({ email: false, password: false });
   const [loginApi, { data, isError, isLoading, isSuccess, error, status }] =
     useLoginMutation();
-  console.log(data, isError, isLoading, isSuccess, error, status);
 
   const errorHandler = (match: string, regex: RegExp) => {
     if (!state[match].match(regex)) {
@@ -38,11 +38,13 @@ const SignIn = () => {
       loginApi(state);
     }
   }, [errorState]);
+  
   useEffect(() => {
     if (isSuccess) {
       return history("/");
     }
   }, [isSuccess]);
+
   return (
     <section className="sign-in">
       <form action="" onSubmit={formSubmit}>
@@ -70,9 +72,13 @@ const SignIn = () => {
             <p className="error-msg">Passwrod must contain 8-15 character</p>
           )}
         </div>
-        <button type="submit" className="log-btn">
-          Sign In
-        </button>
+        {isLoading ? (
+          <img src={dotLoader} alt="" className="loader-img" />
+        ) : (
+          <button type="submit" className="log-btn">
+            Sign In
+          </button>
+        )}
         <div className="position-relative">
           <p className="error-msg">{(error as any)?.data}</p>
         </div>

@@ -1,26 +1,5 @@
 .sign-screen {
   @include signUp-layout;
-  .blur-round1 {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    top: -15%;
-    right: 90%;
-    background-color: var(--priamry-color);
-    filter: blur(4px);
-    border-radius: 50%;
-  }
-  .blur-round2 {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    top: -15%;
-    right: 90%;
-    filter: blur(4px);
-    background-color: #caf0f8;
-    filter: blur(4px);
-    border-radius: 50%;
-  }
   #register-img-upload {
     display: none;
   }
@@ -32,5 +11,4 @@
       margin-right: 5%;
     }
   }
-  
 }
