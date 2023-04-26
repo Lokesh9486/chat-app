@@ -5,6 +5,8 @@ export type RootState = ReturnType<typeof store.getState>;
 
 export interface authInitialStateType {
   register: boolean;
+  modalShow: boolean;
+  sideBarUserID:string
 }
 
 export interface signUpInterface {

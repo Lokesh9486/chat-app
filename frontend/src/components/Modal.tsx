@@ -1,11 +1,13 @@
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { getModalShow, modalAction } from "../features/auth";
 
-const Modal = ({show}:{show:boolean}) => {
-  return (
-<div>
+const Modal = () => {
   
-</div>
+  return (
+    <div className="modal-container">
+      
+    </div>
+  );
+};
 
-  )
-}
-
-export default Modal
+export default Modal;

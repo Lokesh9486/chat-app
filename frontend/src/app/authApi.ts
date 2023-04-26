@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-interface register {
-  name: string | undefined;
-  email: string | undefined;
-  password: string | undefined;
-  profile: any;
+interface foundUser {
+    _id: string,
+    name: string,
+    email: string,
+    profile: string,
+    active:Date
 }
 
 export const authApi = createApi({
@@ -43,6 +44,9 @@ export const authApi = createApi({
     searchUser: builder.query<{ email: string; name: string; _id:string }[], string>({
       query: (data) => `/search/${data}`,
     }),
+    foundUser:builder.query<foundUser,string>({
+      query: (data) => `/get-single-user/${data}`,
+    })
   }),
 });
 
@@ -52,4 +56,5 @@ export const {
   useLoginMutation,
   useGetUserProfileQuery,
   useSearchUserQuery,
+  useFoundUserQuery
 } = authApi;

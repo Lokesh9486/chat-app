@@ -11,6 +11,7 @@ const {
   getUserProfile,
   chagePassword,
   searchUserProfile,
+  getSingleUser,
 } = require("../controller/authController");
 const { isAuthenticateUser } = require("../middleware/authentication");
 const router = express.Router();
@@ -47,5 +48,7 @@ router.route("/getuser").get(isAuthenticateUser,getUserProfile);
 router.route("/change-password").put(isAuthenticateUser,chagePassword);
 
 router.route("/search/:user").get(isAuthenticateUser,searchUserProfile);
+
+router.route("/get-single-user/:id").get(isAuthenticateUser,getSingleUser);
 
 module.exports = router;

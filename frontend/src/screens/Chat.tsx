@@ -17,6 +17,8 @@ import link from "../assets/images/link.png";
 import dotLoader from "../assets/images/dotloader.gif";
 import happyemoji from "../assets/images/happyemoji.png";
 import Modal from "../components/Modal";
+import { getModalShow, modalAction } from "../features/auth";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 
 const Chat = () => {
   const ulElement = useRef<HTMLInputElement | null>(null);
@@ -24,10 +26,10 @@ const Chat = () => {
   const {
     data,
     // , isError, isFetching, isLoading, isSuccess
-  } = useGetChatDetailsQuery();
+  } = useGetChatDetailsQuery()
   // useGetChatDetailsQuery(
   //   "asdas", {
-  //   pollingInterval: 3000,
+  //   pollingInterval: 500,
   // }
   // );
 
@@ -67,7 +69,10 @@ const Chat = () => {
     profile?: string;
   }>({});
   const [userSendMessage, setUserSendMaessage] = useState<string>("");
-  const [showModal , setShowModal]=useState<boolean>(false);
+
+  const dispatch=useAppDispatch();
+
+  const modalShow=useAppSelector(getModalShow);
 
   const shortTime = new Intl.DateTimeFormat("en", {
     timeStyle: "short",
@@ -125,6 +130,7 @@ const Chat = () => {
   };
 
   // let renderDate = "";
+console.log(userDetails?.user._id);
 
   return (
     <div className="chat-page">
@@ -132,7 +138,7 @@ const Chat = () => {
         <aside>
           <div className="side-bar-header">
             <button type="button" className="primary-transparent-btn"
-            onClick={()=>setShowModal(true)}>
+            onClick={()=>dispatch(modalAction({modal:!modalShow,userID:userDetails?.user._id}))}>
             <img
               src={userDetails?.user.profile ?? user}
               alt="user"
@@ -164,6 +170,7 @@ const Chat = () => {
                             src={user}
                             alt="user"
                             className="profile-img-upload"
+                            onClick={()=>dispatch(modalAction({modal:!modalShow,userID:id}))}
                           />
                           <div>
                             <p className="user-name">{name}</p>
@@ -191,6 +198,7 @@ const Chat = () => {
                       <UserImgCon
                         profile={profile}
                         status={active ? " currently-active" : ""}
+                        id={id}
                       />
                       <div>
                         <p className="user-name">{name}</p>
@@ -210,15 +218,16 @@ const Chat = () => {
                 {(() =>
                   sidebarData
                     ?.filter(({ id }) => id === currentChat)
-                    ?.map(({ active, id, lastmessage, name, profile }) => {
+                    ?.map(({ active, id, lastmessage, name, profile },index) => {
                       return (
-                        <>
+                        <Fragment key={index}>
                           <UserImgCon
                             profile={profile}
                             status={active ? " currently-active" : ""}
+                            id={id}
                           />
                           <p className="user-name">{name}</p>
-                        </>
+                        </Fragment>
                       );
                     }))()}
               </div>
@@ -256,6 +265,8 @@ const Chat = () => {
                           }
                         >
                           <div className="chat-user-img-con">
+                            {
+                              type !== "received"?
                             <div className="dropdown">
                               <button
                                 type="button"
@@ -265,11 +276,6 @@ const Chat = () => {
                                 <img src={more} alt="" />
                               </button>
                               <ul className="dropdown-menu">
-                                <li>
-                                  <button type="button">
-                                    <p>Edit</p> <img src={edit} alt="edit" />
-                                  </button>
-                                </li>
                                 <li>
                                   <button
                                     type="button"
@@ -281,6 +287,8 @@ const Chat = () => {
                                 </li>
                               </ul>
                             </div>
+                            :null
+                            }
                             <img
                               src={
                                 (type !== "received"
@@ -317,10 +325,10 @@ const Chat = () => {
                       setUserSendMaessage(e.target?.value)
                     }
                   />
-                  <label htmlFor="upload-img" className="upload-img-label">
+                  {/* <label htmlFor="upload-img" className="upload-img-label">
                     <img src={link} alt="link" className="loader-img" />
                   </label>
-                  <input type="file" id="upload-img" accept="image/*" />
+                  <input type="file" id="upload-img" accept="image/*" /> */}
                   {isLoading ? (
                     <img src={dotLoader} alt="" className="loader-img" />
                   ) : (
@@ -337,7 +345,7 @@ const Chat = () => {
           )}
         </section>
       </section>
-      <Modal show={showModal}/>
+      
     </div>
   );
 };

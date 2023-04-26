@@ -1,9 +1,8 @@
-import { useState, useEffect, useRef, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import logo from "../assets/images/logo1.png";
 import { Link, useNavigate } from "react-router-dom";
 import { signUpInterface } from "../types";
 import { useRegisterMutation } from "../app/authApi";
-import anime from "animejs";
 import  uploadImg from "../assets/images/uploadimage.png";
 import user from "../assets/images/user.png";
 import dotLoader from "../assets/images/dotloader.gif";
@@ -45,26 +44,6 @@ const SignUp = () => {
       history("/otp", { state: { email: signUpdetail[1].value } });
     }
   }, [isSuccess]);
-
-  const [animationRef, setAnimationRef] = useState<
-    ReturnType<typeof anime> | undefined
-  >();
-
-  useEffect(() => {
-    //   setAnimationRef(
-    //     anime({
-    //       targets: ".blur-round1",
-    //       translateX: 500,
-    //       translateY: 500,
-    //       delay: function(el:HTMLElement, i:number) {
-    //         return i * 100;
-    //       },
-    //       loop: true,
-    //       direction: "alternate",
-    //       easing: "easeInOutSine"
-    //     }),
-    // );
-  }, []);
 
   function inputChange(trigger: string, value: string) {
     const filterData = signUpdetail.map((item) => {

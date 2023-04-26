@@ -84,7 +84,6 @@
             border-radius: 30px;
             font-size: FontSize(15);
             background-color: var(--white-color);
-            z-index: 2;
           }
         }
         .other-chat-list,
@@ -98,6 +97,7 @@
             border-radius: 4px;
             font-size:FontSize(17);
             padding: FontSize(10) FontSize(15);
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
           }
           .message-time {
             font-size: FontSize(15);
@@ -114,7 +114,8 @@
               }
             }
             .dropdown-menu{
-              border-radius: 20px;
+              min-width: 7rem;
+              border-radius: 10px;
               button{
                 display: flex;
                 justify-content: space-between;

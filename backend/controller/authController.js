@@ -176,3 +176,9 @@ exports.searchUserProfile=catchAsyncError(async(req,res,next)=>{
   const users=  await User.find( { name:  new RegExp(`${user}`, "i")} ).select('-OTP -OTPExpires -OTPVerifed -created_at -__v');
   return res.status(200).json(users);
 })
+
+exports.getSingleUser=catchAsyncError(async(req,res,next)=>{
+    const {id}=req.params;
+    const user=await User.findById(id).select("-OTP -OTPExpires -created_at -__v -OTPVerifed");
+    res.status(200).json(user);
+})

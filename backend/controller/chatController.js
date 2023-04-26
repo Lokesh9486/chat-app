@@ -112,7 +112,7 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
         },
       },
     },
-    { $sort: { createdAt: 1 } },
+    { $sort: { createdAt: -1 } },
   ]);
 
   // const message = await Chat.aggregate([
