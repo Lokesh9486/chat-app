@@ -19,6 +19,7 @@ import happyemoji from "../assets/images/happyemoji.png";
 import Modal from "../components/Modal";
 import { getModalShow, modalAction } from "../features/auth";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import Skeleton from "../components/Skeleton";
 
 const Chat = () => {
   const ulElement = useRef<HTMLInputElement | null>(null);
@@ -130,10 +131,11 @@ const Chat = () => {
   };
 
   // let renderDate = "";
-console.log(userDetails?.user._id);
 
   return (
     <div className="chat-page">
+      {
+        data?
       <section className="chat-pages-main">
         <aside>
           <div className="side-bar-header">
@@ -345,6 +347,9 @@ console.log(userDetails?.user._id);
           )}
         </section>
       </section>
+      :
+      <Skeleton/>
+      }
       
     </div>
   );

@@ -29,7 +29,7 @@ body {
     position: absolute;
     top: 0;
     right:-100%;
-    width: FontSize(350);
+    width: FontSize(400);
     height: 100vh;
     background-color: var(--white-color);
     transition: .5s all;
@@ -52,7 +52,7 @@ body {
       padding: FontSize(20);
       margin-top: 8%;
       .user-detail-profile{
-        width: 100%;
+        width: 80%;
         aspect-ratio: 1/1;
         border: 1px solid #ccc;
         border-radius: 10px;

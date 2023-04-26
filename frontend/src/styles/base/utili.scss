@@ -124,3 +124,13 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 .cancel-btn{
   // width: ;
 }
+
+.logout-btn{
+  border: 0;
+  background-color: var(--blue-color);
+  padding: FontSize(6);
+  color: var(--white-color);
+  border-radius: 5px;
+  font-size: FontSize(17);
+  margin-top: 10%;
+}

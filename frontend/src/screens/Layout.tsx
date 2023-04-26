@@ -60,15 +60,23 @@ const Layout = () => {
                   ((Date.now() - Number(new Date(data?.active?new Date(data?.active):""))) < 20 * 1000)? "Active":  "Away"
                 }
                 </p>
-              <div>
+              <div className="d-flex align-items-center">
               <img src={clock} alt="clock" /> 
-              <p className="user-detail-date">{data?.active?new Date(data?.active).toString():""} </p>
+              <p className="user-detail-date">{new Date(data?.active?data?.active:"").toLocaleString("en-US", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })} </p>
               </div>
             </div>
             <div className="user-detail-contact">
               <p className="user-detail-name">Contact</p>
               <p>{data?.email}</p>
             </div>
+            <button type="button" className="logout-btn">
+              Logout 
+            </button>
           </div>
         )}
       </div>

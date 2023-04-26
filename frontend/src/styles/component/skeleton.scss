@@ -1,0 +1,57 @@
+.skeleton{
+    .user-round{
+        width: FontSize(45);
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        background-color: #ccc;
+        animation: skeleton 2s ease-in-out infinite;
+        animation-timing-function: ease;
+    }
+    .input-round,.input-straight{
+        width: calc(100% - FontSize(45));
+        height: FontSize(40);
+        background-color: #ccc;
+        border-radius: 30px;
+        animation: skeleton 2s ease-in-out infinite;
+        animation-timing-function: ease;
+    }
+    .input-straight{
+        height: FontSize(20);
+        border-radius: 5px;
+    }
+    .split,.sidebar-header{
+        padding: FontSize(16);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .sidebar-header{
+        border-bottom: 1px solid var(--background-color);
+    }
+    .user-chat-list {
+        .split{
+            flex-direction: row-reverse;
+        }
+    }
+    .other-chat-list,.user-chat-list{
+        width: 100%;
+        .split{
+            width: 50%;
+        }
+    }
+    @keyframes skeleton {
+        0%{
+            opacity: .2;
+        }
+        25%{
+            opacity: .4;
+        }
+        50%{
+            opacity: .6;
+        }
+        50%{
+            opacity: .8;
+        }
+        100%{ opacity: 1;}
+    }
+}
