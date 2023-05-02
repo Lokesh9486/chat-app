@@ -4,7 +4,7 @@ import {
   useSendMessageMutation,
 } from "../app/chatApi";
 import user from "../assets/images/user.png";
-import { FormEvent, Fragment, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, Fragment, useEffect, useRef, useState } from "react";
 import { messageType, registerApiData, sidebarDataType } from "../types";
 import more from "../assets/images/more.png";
 import edit from "../assets/images/edit.gif";
@@ -27,7 +27,7 @@ const Chat = () => {
   const {
     data,
     // , isError, isFetching, isLoading, isSuccess
-  } = useGetChatDetailsQuery()
+  } =  useGetChatDetailsQuery()
   // useGetChatDetailsQuery(
   //   "asdas", {
   //   pollingInterval: 500,
@@ -36,7 +36,7 @@ const Chat = () => {
 
   const [sendMessage, { data: value, isError, isLoading, isSuccess }] =
     useSendMessageMutation();
-  console.log(`Chat ~ isSuccess:`, data, value, isSuccess, isLoading);
+  
   const [deleteMsg] = useDeleteMessageMutation();
   const { data: userSeacrh, isLoading: searchUserLoading } = useSearchUserQuery(
     searchUser,
@@ -70,6 +70,9 @@ const Chat = () => {
     profile?: string;
   }>({});
   const [userSendMessage, setUserSendMaessage] = useState<string>("");
+  const [preview,setPreview]=useState<string| ArrayBuffer | null>("");
+  const [uploadImg,setUploadImg]=useState<File | undefined>();
+
 
   const dispatch=useAppDispatch();
 
@@ -90,7 +93,6 @@ const Chat = () => {
       const chatData: registerApiData[] | undefined = data?.filter(
         ({ _id }) => _id === sidebarData?.[0]?.id
       );
-      console.log(chatData);
 
       setCurrentChatData({
         message: chatData?.[0]?.message,
@@ -121,14 +123,35 @@ const Chat = () => {
   }, [currentChat]);
 
   const sendMessageFun = () => {
-    sendMessage({ currentChat, userSendMessage });
+    const formData=new FormData();
+    formData.append("message",userSendMessage)
+    formData.append("image",(uploadImg as any))
+    sendMessage({ currentChat, formData });
     setUserSendMaessage("");
+    setPreview("");
+    setUploadImg(undefined)
   };
 
   const formSubmitFunc = (e: FormEvent) => {
     e.preventDefault();
     sendMessageFun();
   };
+
+  const imageUpload=(e:ChangeEvent<HTMLInputElement>)=>{
+    console.log(e);
+    const reader=new FileReader();
+    reader.onload=()=>{
+       if(reader.readyState===2){
+        setPreview(reader.result);
+        console.log(e.target.files?.[0]);
+        
+        setUploadImg(e.target.files?.[0]);
+       }
+      }
+      if(e.target?.files){
+       reader.readAsDataURL(e.target.files?.[0])
+     }
+  }
 
   // let renderDate = "";
 
@@ -240,7 +263,7 @@ const Chat = () => {
                   let renderDate = "";
                   for (const [
                     index,
-                    { type, message, createdAt, id },
+                    { type, message, createdAt, id,image },
                   ] of currentChatData?.message?.entries() ?? []) {
                     const date = new Date(createdAt).toLocaleString("en-US", {
                       weekday: "long",
@@ -302,7 +325,12 @@ const Chat = () => {
                             />
                           </div>
                           <div className="message-con">
-                            <p className="message">{message}</p>
+                            {
+                              message&&<p className="message">{message}</p>
+                            }
+                            {image &&<div className="uploaded-img-con">
+                            <img src={image} alt="" />
+                            </div>}
                             <p className="message-time">
                               {shortTime.format(new Date(createdAt))}
                             </p>
@@ -314,10 +342,16 @@ const Chat = () => {
                   }
                   return messsage;
                 })()}
+
                 <form
                   onSubmit={formSubmitFunc}
                   className="user-message-conatiner"
                 >
+                  {preview &&<div className="show-img-con">
+                    <img src={(preview as any)} alt="preview" />
+                    </div>}
+                  
+                  <div className="send-form-con">
                   <input
                     type="text"
                     className="message-input"
@@ -327,15 +361,16 @@ const Chat = () => {
                       setUserSendMaessage(e.target?.value)
                     }
                   />
-                  {/* <label htmlFor="upload-img" className="upload-img-label">
+                  <label htmlFor="upload-img" className="upload-img-label">
                     <img src={link} alt="link" className="loader-img" />
                   </label>
-                  <input type="file" id="upload-img" accept="image/*" /> */}
+                  <input type="file" id="upload-img" accept="image/*" onChange={imageUpload} />
                   {isLoading ? (
                     <img src={dotLoader} alt="" className="loader-img" />
                   ) : (
                     <button type="submit">Send</button>
                   )}
+                  </div>
                 </form>
               </div>
             </>

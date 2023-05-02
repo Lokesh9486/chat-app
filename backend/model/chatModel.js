@@ -11,10 +11,8 @@ const chatSchema=new Schema({
         required:true,
         ref:"user"
     },
-    message:{
-        type:String,
-        required:true,
-    },
+    image:String,
+    message:String,
     created_at:{
         type:Date,
         default:Date.now

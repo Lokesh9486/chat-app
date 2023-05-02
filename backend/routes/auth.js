@@ -26,7 +26,7 @@ const upload = multer({storage: multer.diskStorage({
     console.log("file:", file)
       cb(null, file.originalname)
   }
-}) 
+ }) 
 })
 
 router.route("/getalluser").get(getAllUser);

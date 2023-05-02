@@ -25,6 +25,7 @@ const Skeleton = () => {
         {
             [...Array(6)].map((_,index)=>
             <div
+            key={index}
               className={
                 index%2 ? "other-chat-list" : "user-chat-list"
               }

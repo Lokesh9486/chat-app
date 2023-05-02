@@ -56,7 +56,8 @@ body {
         aspect-ratio: 1/1;
         border: 1px solid #ccc;
         border-radius: 10px;
-        
+        margin-inline: auto;
+        display: flex;
       }
       .user-detail-contact{
         display: flex;

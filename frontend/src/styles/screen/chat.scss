@@ -161,34 +161,55 @@
           }
         }
         .user-message-conatiner {
-          display: flex;
-          align-items: center;
           position: absolute;
           bottom: FontSize(30);
           width: calc(100% - FontSize(400) - FontSize(30) * 2);
-          background-color: #fff;
-          padding: FontSize(13) FontSize(20);
-          border-radius: 5px;
-          box-shadow: $box-shadow;
-          input {
-            border: 0;
+          .show-img-con{
             width: 100%;
-            outline: 0;
+            background-color: #fff;
+            padding: 10px;
+            img{
+              width: 100px;
+              aspect-ratio: 1/1;
+            }
           }
-          #upload-img{
-            display: none;
-          }
-          .upload-img-label{
-            margin-right: FontSize(25);
-          }
-          button {
-            text-transform: uppercase;
-            border: 0;
-            background-color: var(--blue-color);
-            color: var(--white-color);
-            padding: FontSize(6) FontSize(20);
+          .send-form-con{
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: FontSize(13) FontSize(20);
             border-radius: 5px;
-            font-size: FontSize(18);
+            box-shadow: $box-shadow;
+            input {
+              border: 0;
+              width: 100%;
+              outline: 0;
+            }
+            #upload-img{
+              display: none;
+            }
+            .upload-img-label{
+              margin-right: FontSize(25);
+            }
+            button {
+              text-transform: uppercase;
+              border: 0;
+              background-color: var(--blue-color);
+              color: var(--white-color);
+              padding: FontSize(6) FontSize(20);
+              border-radius: 5px;
+              font-size: FontSize(18);
+            }
+          }
+        }
+        .uploaded-img-con{
+          // border: 1px solid var(--blue-color);
+          // background-color: var(--blue-color);
+          border-radius: 5px;
+          padding: 5%;
+          img{
+            width: 100px;
+            aspect-ratio: 1/1;
           }
         }
       }

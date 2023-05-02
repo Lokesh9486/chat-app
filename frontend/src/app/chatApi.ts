@@ -11,10 +11,10 @@ export const chatApi = createApi({
       query: () => "/message",
     }),
     sendMessage: builder.mutation({
-      query:(data)=>({
+      query:(data)=>(console.log(data),{
         url: `/message/${data.currentChat}`,
         method:"POST",
-        body:{message:data.userSendMessage}
+        body:data.formData
       })
     }),
     deleteMessage:builder.mutation({

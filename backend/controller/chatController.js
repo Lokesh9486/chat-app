@@ -10,15 +10,31 @@ exports.sendMessage = catchAsyncError(async (req, res, next) => {
     user: { id },
     body: { message },
   } = req;
+  console.log("sfadsgdsf",message);
+
+  let image;
+
+  if(req.file){
+    image=`${req.protocol}://${req.get("host")}/uploads/sharedImages/${req.file.originalname}`
+  }
+
   const toUser = await User.findById(toId);
+
   if (!toUser) {
     return next(new ErrorHandler("Reciveing ID is not found"));
   }
+
+  if(!message && !image){
+    return next(new ErrorHandler("Enter message or send image"));
+  }
+
   const chat = await Chat.create({
     from: id,
     to: toId,
-    message: message,
+    message:!message ? undefined : message,
+    image
   });
+
   return res.status(200).json({ message: "Message sended successfully", chat });
 });
 
@@ -107,7 +123,7 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
             id: "$_id",
             message: "$message",
             createdAt: "$created_at",
-           
+            image:"$image"
           },
         },
       },

@@ -21,6 +21,7 @@ export interface signUpInterface {
 export interface messageType {
   type: string;
   message: string;
+  image?:string;
   createdAt: Date;
   id:string
 }
