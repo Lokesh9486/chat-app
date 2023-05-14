@@ -13,6 +13,15 @@ const chatSchema=new Schema({
     },
     image:String,
     message:String,
+    location:{
+        type:{
+            type:String,
+            enum:['Point'],
+        },
+        coordinates:{
+            type:[Number]
+        }
+    },
     created_at:{
         type:Date,
         default:Date.now

@@ -1,11 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Concert+One&family=DynaPuff&family=Pacifico&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
 :root {
   --background-color: #eaedf2;
   --white-color:#ffff;
   --priamry-color: #5fc4be;
   --blue-color:#41649f;
   --red-color: #f93131;
+  font-family: "poppins";
   p {
     margin-bottom: 0;
   }
@@ -31,11 +32,22 @@ $box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border-radius: 10px;
     box-shadow: $box-shadow;
     z-index: 3;
+    .logo-setup{
+      display: flex;
+      align-items: center;
+      gap: FontSize(20);
+      .logo-text{
+        font-size: FontSize(40);
+        font-family: 'Black Ops One';
+      }
+    
+    }
     .logo {
       width: FontSize(50);
+      aspect-ratio: 1/1.6;
     }
     .logo-topic {
-      font-family: "DynaPuff";
+      font-family: "poppins";
     }
     .sign-info {
       text-align: center;
@@ -54,6 +66,7 @@ $box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 @mixin scroll-bar{
   &::-webkit-scrollbar {
     width: 7px;
+    height: 7px;
   }
   
   /* Track */

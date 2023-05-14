@@ -8,9 +8,9 @@ exports.sendMessage = catchAsyncError(async (req, res, next) => {
   const {
     params: { toId },
     user: { id },
-    body: { message },
+    body: { message,location },
   } = req;
-  console.log("sfadsgdsf",message);
+  console.log("sfadsgdsf",JSON.parse(location).length,location.split(",").map(parseFloat));
 
   let image;
 
@@ -24,15 +24,16 @@ exports.sendMessage = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Reciveing ID is not found"));
   }
 
-  if(!message && !image){
-    return next(new ErrorHandler("Enter message or send image"));
+  if(!message && !image && !JSON.parse(location).length){
+    return next(new ErrorHandler("Enter message or send image,location"));
   }
 
   const chat = await Chat.create({
     from: id,
     to: toId,
     message:!message ? undefined : message,
-    image
+    image,
+    location:JSON.parse(location).length&&{type:"Point",coordinates:JSON.parse(location)}
   });
 
   return res.status(200).json({ message: "Message sended successfully", chat });
@@ -123,12 +124,14 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
             id: "$_id",
             message: "$message",
             createdAt: "$created_at",
-            image:"$image"
+            image:"$image",
+            location:"$location"
           },
+          //  $sort: { "created_at": -1 } 
         },
       },
     },
-    { $sort: { createdAt: -1 } },
+    { $sort: { "message.createdAt": -1 } },
   ]);
 
   // const message = await Chat.aggregate([

@@ -4,6 +4,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const sendEmail = require("../utils/sendOTPMail");
 const crypto = require("crypto");
 const sendToken = require("../utils/jwt");
+const exphbs=require("express-handlebars");
 
 exports.getAllUser = catchAsyncError(async (req, res, next) => {
   const users = await User.find();
@@ -18,21 +19,24 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
   if(req.file){
     profile=`${req.protocol}://${req.get("host")}/uploads/user/${req.file.originalname}`
   }
+  const otp= crypto.randomInt(1000, 10000).toString()
     const user = await User.create({
       name,
       email,
       password,
       profile,
-      OTP: crypto.randomInt(1000, 10000).toString(),
+      OTP:otp,
       OTPExpires:Date.now()+30*60*1000
     });
     
-    // sendEmail({
-    //   email: user.email,
-    //   res,
-    //   subject: `OTP sended by chat-app`,
-    //   message: `<h1>${crypto.randomInt(1000, 10000).toString()}</h1>`,
-    // });
+    sendEmail({
+      email: user.email,
+      req,
+      res,
+      subject: `OTP sended by postbox-app`,
+      message: otp,
+    });
+
     res.status(200).json(`Register successfully and OTP send ${email}`);
 });
 

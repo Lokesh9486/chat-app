@@ -5,6 +5,7 @@
     justify-content: space-evenly;
     height: 100vh;
     padding: FontSize(15);
+    box-shadow:rgb(255 255 255) 0px -37vh 288px -28px inset;
     aside {
       width: FontSize(350);
       position: sticky;
@@ -51,6 +52,9 @@
               text-overflow: ellipsis;
               font-size: FontSize(17);
             }
+            .image-placeholder{
+              width: FontSize(25);
+            }
             &.active {
               background-color: aliceblue;
               box-shadow: rgba(100, 100, 111, 0.2) 0px 5px 13px 0px;
@@ -67,6 +71,14 @@
         align-items: center;
         gap: FontSize(30);
         border-bottom: 1px solid var(--blue-color);
+        .group-btn{
+          background-color: transparent;
+          border: 0;
+          margin-left: auto;
+          img{
+            width: FontSize(40);
+          }
+        }
       }
       .chat-body {
         height: 75vh;
@@ -136,6 +148,16 @@
               }
             }
           }
+          .map-con{
+            width: 400px;
+            height: 400px;
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+            .leaflet-control-attribution {
+              display: none;
+            }
+          }
         }
         .other-chat-list {
           .message-con {
@@ -168,7 +190,17 @@
             width: 100%;
             background-color: #fff;
             padding: 10px;
-            img{
+            .location-img{
+              width: FontSize(25);
+            }
+            .cancel-img{
+              background-color: transparent;
+              border: 0;
+              img{
+                width: FontSize(10);
+              }
+            }
+            .preview-img-upload{
               width: 100px;
               aspect-ratio: 1/1;
             }
@@ -191,7 +223,7 @@
             .upload-img-label{
               margin-right: FontSize(25);
             }
-            button {
+            .send-btn {
               text-transform: uppercase;
               border: 0;
               background-color: var(--blue-color);
@@ -211,6 +243,14 @@
             width: 100px;
             aspect-ratio: 1/1;
           }
+        }
+        .location-btn{
+          background-color: transparent;
+          border: 0;
+          img{
+            width: FontSize(25);
+          }
+
         }
       }
     }

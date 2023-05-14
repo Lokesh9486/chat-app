@@ -20,6 +20,15 @@ import Modal from "../components/Modal";
 import { getModalShow, modalAction } from "../features/auth";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Skeleton from "../components/Skeleton";
+import loctioinImg from "../assets/images/location1.png";
+import loctioinplaceholderImg from "../assets/images/placeholder.png";
+import cancel from "../assets/images/cancel.png";
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import "leaflet/dist/leaflet.css";
+import MapCom from "../components/MapCom";
+import GroupImg from "../assets/images/group.png";
+import imageplaceholder from "../assets/images/imageplaceholder.png"
+
 
 const Chat = () => {
   const ulElement = useRef<HTMLInputElement | null>(null);
@@ -27,12 +36,13 @@ const Chat = () => {
   const {
     data,
     // , isError, isFetching, isLoading, isSuccess
-  } =  useGetChatDetailsQuery()
+  } =  useGetChatDetailsQuery();
   // useGetChatDetailsQuery(
-  //   "asdas", {
-  //   pollingInterval: 500,
-  // }
-  // );
+  //     "asdas", {
+  //     pollingInterval: 500,
+  //   }
+  //   );
+  
 
   const [sendMessage, { data: value, isError, isLoading, isSuccess }] =
     useSendMessageMutation();
@@ -56,6 +66,8 @@ const Chat = () => {
         name,
         active: Date.now() - Number(new Date(active)) < 20 * 1000,
         lastmessage: message[message.length - 1].message,
+        image: message[message.length - 1].image?true:false,
+        location: message[message.length - 1].location?true:false,
         id: _id,
         profile,
       });
@@ -72,7 +84,7 @@ const Chat = () => {
   const [userSendMessage, setUserSendMaessage] = useState<string>("");
   const [preview,setPreview]=useState<string| ArrayBuffer | null>("");
   const [uploadImg,setUploadImg]=useState<File | undefined>();
-
+  const [location,setLocation]=useState<number[]>([]);
 
   const dispatch=useAppDispatch();
 
@@ -86,6 +98,13 @@ const Chat = () => {
     top: ulElement?.current?.scrollHeight,
     behavior: "smooth",
   });
+
+  useEffect(()=>{
+    ulElement?.current?.scrollTo({
+      top: ulElement?.current?.scrollHeight,
+      behavior: "smooth",
+    });
+  },[value])
 
   useEffect(() => {
     if (currentChat === undefined) {
@@ -125,10 +144,12 @@ const Chat = () => {
   const sendMessageFun = () => {
     const formData=new FormData();
     formData.append("message",userSendMessage)
+    formData.append("location",JSON.stringify(location))
     formData.append("image",(uploadImg as any))
     sendMessage({ currentChat, formData });
     setUserSendMaessage("");
     setPreview("");
+    setLocation([]);
     setUploadImg(undefined)
   };
 
@@ -138,13 +159,10 @@ const Chat = () => {
   };
 
   const imageUpload=(e:ChangeEvent<HTMLInputElement>)=>{
-    console.log(e);
     const reader=new FileReader();
     reader.onload=()=>{
        if(reader.readyState===2){
         setPreview(reader.result);
-        console.log(e.target.files?.[0]);
-        
         setUploadImg(e.target.files?.[0]);
        }
       }
@@ -153,14 +171,23 @@ const Chat = () => {
      }
   }
 
-  // let renderDate = "";
-
+  const getLocation=()=> {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position)=>{
+        setLocation([position.coords.longitude,position.coords.latitude])
+      });
+    } else {
+     console.log("Geolocation is not supported by this browser.");
+    }
+  }
+  
   return (
     <div className="chat-page">
       {
         data?
       <section className="chat-pages-main">
         <aside>
+          {/* sidebar header */}
           <div className="side-bar-header">
             <button type="button" className="primary-transparent-btn"
             onClick={()=>dispatch(modalAction({modal:!modalShow,userID:userDetails?.user._id}))}>
@@ -176,6 +203,7 @@ const Chat = () => {
               onChange={(e) => setSearchUser(e.target.value)}
             />
           </div>
+          {/* sidebar body */}
           <div className="side-bar-body">
             {searchUser ? (
               searchUserLoading ? (
@@ -207,13 +235,12 @@ const Chat = () => {
                   </ul>
                 </>
               )
-            ) : (
-              ""
-            )}
+            ) : null}
+            {/* chat container start */}
             <p className="side-bar-topic ternary-topic">Chats</p>
             <ul>
               {sidebarData?.map(
-                ({ name, lastmessage, id, active, profile }, index) => {
+                ({ name, lastmessage, id, active, profile,image,location }, index) => {
                   return (
                     <li
                       key={index}
@@ -228,6 +255,8 @@ const Chat = () => {
                       <div>
                         <p className="user-name">{name}</p>
                         <p className="last-message">{lastmessage}</p>
+                        {image? <div className="d-flex align-items-center"><img src={imageplaceholder} alt="imageplaceholder" className="image-placeholder"/> <p>Photos</p></div>:null}
+                        {location? <div className="d-flex align-items-center"><img src={loctioinplaceholderImg} alt="imageplaceholder" className="image-placeholder"/> <p>Location</p></div>:null}
                       </div>
                     </li>
                   );
@@ -255,6 +284,8 @@ const Chat = () => {
                         </Fragment>
                       );
                     }))()}
+                
+                <button type="button" className="group-btn"><img src={GroupImg} alt="GroupImg" /></button>
               </div>
               <div className="chat-body" ref={ulElement}>
                 {(() => {
@@ -263,8 +294,9 @@ const Chat = () => {
                   let renderDate = "";
                   for (const [
                     index,
-                    { type, message, createdAt, id,image },
+                    { type, message, createdAt, id,image ,location},
                   ] of currentChatData?.message?.entries() ?? []) {
+                    
                     const date = new Date(createdAt).toLocaleString("en-US", {
                       weekday: "long",
                       year: "numeric",
@@ -325,12 +357,16 @@ const Chat = () => {
                             />
                           </div>
                           <div className="message-con">
+                           
                             {
                               message&&<p className="message">{message}</p>
                             }
                             {image &&<div className="uploaded-img-con">
                             <img src={image} alt="" />
                             </div>}
+                            {
+                              location?.coordinates.length? <div className="map-con"><MapCom {...location.coordinates}/></div>:null
+                            }
                             <p className="message-time">
                               {shortTime.format(new Date(createdAt))}
                             </p>
@@ -347,10 +383,15 @@ const Chat = () => {
                   onSubmit={formSubmitFunc}
                   className="user-message-conatiner"
                 >
+                  {
+                    location.length ? <div className="show-img-con">
+                    <img src={loctioinplaceholderImg} alt="loctioinImg" className="location-img"/>
+                   Share the current location <button type="button" className="cancel-img" onClick={()=>setLocation([])}><img src={cancel} alt="cancel" /></button>
+                    </div>:null
+                  }
                   {preview &&<div className="show-img-con">
-                    <img src={(preview as any)} alt="preview" />
+                    <img src={(preview as any)} alt="preview"  className="preview-img-upload"/>
                     </div>}
-                  
                   <div className="send-form-con">
                   <input
                     type="text"
@@ -361,6 +402,9 @@ const Chat = () => {
                       setUserSendMaessage(e.target?.value)
                     }
                   />
+                  <button type="button" className="location-btn" onClick={getLocation}>
+                    <img src={loctioinImg} alt="loctioinImg" />
+                  </button>
                   <label htmlFor="upload-img" className="upload-img-label">
                     <img src={link} alt="link" className="loader-img" />
                   </label>
@@ -368,7 +412,7 @@ const Chat = () => {
                   {isLoading ? (
                     <img src={dotLoader} alt="" className="loader-img" />
                   ) : (
-                    <button type="submit">Send</button>
+                    <button type="submit" className="send-btn">Send</button>
                   )}
                   </div>
                 </form>
