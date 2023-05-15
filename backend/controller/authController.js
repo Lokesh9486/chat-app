@@ -10,6 +10,8 @@ exports.getAllUser = catchAsyncError(async (req, res, next) => {
   res.status(200).json(users);
 });
 
+// const BASE_URL=`${req.protocol}://${req.get('host')}`
+
 // const generateOTP = crypto.randomInt(1000, 10000).toString();
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
