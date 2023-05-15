@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/images/logo1.png";
+import logo from "../assets/images/postboxlogo.jpg";
 import { SyntheticEvent, useState, useEffect } from "react";
 import { useLoginMutation } from "../app/authApi";
 import dotLoader from "../assets/images/dotloader.gif";
@@ -48,7 +48,10 @@ const SignIn = () => {
   return (
     <section className="sign-in">
       <form action="" onSubmit={formSubmit}>
+        <div className="logo-setup">
         <img src={logo} alt="logo" className="logo" />
+        <p className="logo-text">postbox</p>
+        </div>
         <p className="secondary-topic logo-topic">Sign In</p>
         <div className="position-relative">
           <input
@@ -83,7 +86,7 @@ const SignIn = () => {
           <p className="error-msg">{(error as any)?.data}</p>
         </div>
 
-        <Link to="/">Sign Up</Link>
+        <Link to="/signup">Sign Up</Link>
       </form>
     </section>
   );

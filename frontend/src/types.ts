@@ -22,6 +22,9 @@ export interface messageType {
   type: string;
   message: string;
   image?:string;
+  location?:{
+    type: string, coordinates: number[]
+  }
   createdAt: Date;
   id:string
 }
@@ -34,4 +37,12 @@ export interface registerApiData {
 }
 
 
-export interface sidebarDataType{name: string, lastmessage: string,id:string,active:boolean,profile:string}
+export interface sidebarDataType{
+  name: string, 
+  lastmessage: string,
+  id:string,
+  active:boolean,
+  profile:string,
+  image:boolean
+  location:boolean
+}

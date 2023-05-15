@@ -1,5 +1,5 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import logo from "../assets/images/logo1.png";
+import logo from "../assets/images/postboxlogo.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { signUpInterface } from "../types";
 import { useRegisterMutation } from "../app/authApi";
@@ -17,7 +17,7 @@ const SignUp = () => {
       value: "",
       palceholder: " name",
       error: false,
-      errMessage:"Name must contain 5-15 character"
+      errMessage:"Name must contain 3-15 character"
     },
     {
       type: "email",
@@ -114,7 +114,10 @@ const SignUp = () => {
   return (
     <section className="sign-screen">
       <form action="" onSubmit={registerSubmit}>
+      <div className="logo-setup">
         <img src={logo} alt="logo" className="logo" />
+        <p className="logo-text">postbox</p>
+        </div>
         <p className="secondary-topic logo-topic">Sign Up</p>
         <p className="sign-info">
           Please Sign Up and start chat with <br /> your friends
@@ -152,8 +155,10 @@ const SignUp = () => {
         {isLoading? <img src={dotLoader} alt="" className="loader-img m-auto"/>:<button type="submit" className="log-btn">
           SignUp
         </button>}
+        <div>
         <p>Once sign up you receive OTP to email</p>
         <p>OTP expires in 30 minutes</p>
+        </div>
         <div className="split-topic">
           <Link to="/signin">Sign in</Link>
         </div>

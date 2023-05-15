@@ -6,15 +6,23 @@ import { getModalShow, modalAction,getSideBarUserID } from "../features/auth";
 import Modal from "../components/Modal";
 import cancel from "../assets/images/cancel.png";
 import clock from "../assets/images/clock.png";
-import { useFoundUserQuery } from "../app/authApi";
+import { useFoundUserQuery, useGetUserProfileQuery, useLogoutUserQuery } from "../app/authApi";
 import clockgif from "../assets/images/clock.gif";
+import { useState } from "react";
 
 const Layout = () => {
+  const [userLogout,setUserLogo]=useState(false);
   const modalShow = useAppSelector(getModalShow);
   const userId = useAppSelector(getSideBarUserID);
   const dispatch = useAppDispatch();
   const { data, isError, isLoading, isSuccess, error } = useFoundUserQuery(userId,{ skip: !modalShow }
 );
+const { data: userDetails } = useGetUserProfileQuery();
+
+// const {data:userLogoOutData} = useLogoutUserQuery({skip:userLogout});
+
+// console.log(data,userDetails,userLogoOutData);
+
 
   return (
     <section className={`layout ${modalShow ? "layout-overflow-hide" : ""}`}>
@@ -74,9 +82,12 @@ const Layout = () => {
               <p className="user-detail-name">Contact</p>
               <p>{data?.email}</p>
             </div>
-            <button type="button" className="logout-btn">
+            {
+              (data?._id===userDetails?.user._id)&&
+            <button type="button" className="logout-btn" onClick={()=>setUserLogo(false)}>
               Logout 
             </button>
+            }
           </div>
         )}
       </div>

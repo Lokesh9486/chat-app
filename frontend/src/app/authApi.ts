@@ -46,6 +46,9 @@ export const authApi = createApi({
     }),
     foundUser:builder.query<foundUser,string>({
       query: (data) => `/get-single-user/${data}`,
+    }),
+    logoutUser:builder.query({
+      query:()=>`/logout`
     })
   }),
 });
@@ -56,5 +59,6 @@ export const {
   useLoginMutation,
   useGetUserProfileQuery,
   useSearchUserQuery,
-  useFoundUserQuery
+  useFoundUserQuery,
+  useLogoutUserQuery
 } = authApi;

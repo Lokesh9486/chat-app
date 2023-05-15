@@ -1,5 +1,5 @@
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
-import logo from "../assets/images/logo1.png";
+import logo from "../assets/images/postboxlogo.jpg";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useOtpVerificationMutation } from "../app/authApi";
 import dotLoader from "../assets/images/dotloader.gif";
@@ -31,7 +31,10 @@ const OTP = () => {
   return (
     <section className="otp-screen">
         <form action="" onSubmit={otpSubmit}>
+        <div className="logo-setup">
         <img src={logo} alt="logo" className="logo" />
+        <p className="logo-text">postbox</p>
+        </div>
         <p className="secondary-topic logo-topic">OTP verification</p>
         <div className="position-relative">
         <input type="number"  className="log-input" onChange={(e:ChangeEvent<HTMLInputElement>)=>setOtp(e.target.value)} value={otp}/>

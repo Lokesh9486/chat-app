@@ -11,7 +11,7 @@ export const chatApi = createApi({
       query: () => "/message",
     }),
     sendMessage: builder.mutation({
-      query:(data)=>(console.log(data),{
+      query:(data)=>({
         url: `/message/${data.currentChat}`,
         method:"POST",
         body:data.formData
