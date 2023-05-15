@@ -1,5 +1,5 @@
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
-import logo from "../assets/images/postboxlogo.jpg";
+import logo from "../assets/images/postboxlogo.png";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useOtpVerificationMutation } from "../app/authApi";
 import dotLoader from "../assets/images/dotloader.gif";
@@ -9,7 +9,7 @@ const OTP = () => {
     const history = useNavigate();
     const [otp,setOtp]=useState<string>("");
     const [error,setError]=useState<boolean>(false);
-    const  [otpVerfy,{data,isError,isLoading,isSuccess,error:otpError}]=useOtpVerificationMutation();
+    const [otpVerfy,{data,isError,isLoading,isSuccess,error:otpError}]=useOtpVerificationMutation();
     
     useEffect(()=>{
       if(isSuccess){

@@ -3,6 +3,7 @@ const { catchAsyncError } = require("../middleware/catchAsyncError");
 const Chat = require("../model/chatModel");
 const User = require("../model/userModel");
 const ErrorHandler = require("../utils/errorHandler");
+const Group=require("../model/group");
 
 exports.sendMessage = catchAsyncError(async (req, res, next) => {
   const {
@@ -10,7 +11,6 @@ exports.sendMessage = catchAsyncError(async (req, res, next) => {
     user: { id },
     body: { message,location },
   } = req;
-  console.log("sfadsgdsf",JSON.parse(location).length,location.split(",").map(parseFloat));
 
   let image;
 
@@ -184,3 +184,21 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
   return res.status(202).json(message);
 });
 
+exports.sendGroupMsg=catchAsyncError(async(req,res,next)=>{
+  const {
+    user: { id },
+    body: { message,location },
+  } = req;
+});
+
+exports.createGroup=catchAsyncError(async(req,res,next)=>{
+  const {
+    user: { id },
+    body: { name,description,participance },
+  } = req;
+
+  await Group.create({
+
+  })
+
+})

@@ -1,5 +1,5 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import logo from "../assets/images/postboxlogo.jpg";
+import logo from "../assets/images/postboxlogo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { signUpInterface } from "../types";
 import { useRegisterMutation } from "../app/authApi";

@@ -26,13 +26,7 @@ const { data: userDetails } = useGetUserProfileQuery();
 
   return (
     <section className={`layout ${modalShow ? "layout-overflow-hide" : ""}`}>
-      {/* <header>
-        <div>
-        <button type="button" className="logo-img"><img src={logo} alt="logo" /></button>
-        <Link to="/userprofile"><img src={user} alt="user" /></Link>
-        </div>
-      </header> */}
-      <Outlet></Outlet>
+      <Outlet/>
       {modalShow && (
         <div
           className="modal-section"

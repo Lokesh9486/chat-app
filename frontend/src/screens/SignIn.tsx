@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/images/postboxlogo.jpg";
+import logo from "../assets/images/postboxlogo.png";
 import { SyntheticEvent, useState, useEffect } from "react";
 import { useLoginMutation } from "../app/authApi";
 import dotLoader from "../assets/images/dotloader.gif";
