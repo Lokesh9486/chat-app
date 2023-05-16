@@ -1,9 +1,10 @@
 const express = require("express");
 const { isAuthenticateUser } = require("../middleware/authentication");
-const { sendMessage, getMessage, updateMessage, deleteMessage, getAllMessage, sendGroupMsg, createGroup } = require("../controller/chatController");
+const { sendMessage, getMessage, updateMessage, deleteMessage, getAllMessage } = require("../controller/chatController");
 const multer = require("multer");
 const router = express.Router();
 const path=require("path");
+const { createGroup , sendGroupMsg} = require("../controller/groupController");
 
 
 const upload=multer({
@@ -30,8 +31,8 @@ router.route("/message/update").put(isAuthenticateUser, updateMessage)
 
 router.route("/message/delete").delete(isAuthenticateUser, deleteMessage);
 
-// router.route('/groupChat/:id').post(isAuthenticateUser, sendGroupMsg);
+router.route('/groupChat/:toGroupId').post(isAuthenticateUser, sendGroupMsg);
 
-// router.route('/createGroup').post(isAuthenticateUser, createGroup);
+router.route('/createGroup').post(isAuthenticateUser, createGroup);
 
 module.exports = router;

@@ -1,10 +1,12 @@
 const {Schema,model,SchemaTypes}=require('mongoose');
 
 const groupChatSchema=new Schema({
-    participant:{
-        type:[SchemaTypes.ObjectId],
-        required:true,
-        ref:"user"
+    participance:{
+        type:[{
+                type:SchemaTypes.ObjectId, 
+                ref:"user"
+            }],
+        required:true
     },
     message:String,
     image:String,
@@ -22,10 +24,10 @@ const groupChatSchema=new Schema({
         require:true,
         ref:"user"
     },
-    // created_by:{
-    //     type:Date,
-    //     default:Date.now
-    // }
+    created_at:{
+        type:Date,
+        default:Date.now
+    }
 });
 
 module.exports=model('groupChat',groupChatSchema)

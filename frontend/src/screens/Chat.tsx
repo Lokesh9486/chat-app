@@ -36,7 +36,7 @@ const Chat = () => {
   const {
     data,
     // , isError, isFetching, isLoading, isSuccess
-  } =  useGetChatDetailsQuery();
+  } =  useGetChatDetailsQuery("");
   // useGetChatDetailsQuery(
   //     "asdas", {
   //     pollingInterval: 500,

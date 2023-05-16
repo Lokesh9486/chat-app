@@ -3,6 +3,8 @@ import logo from "../assets/images/postboxlogo.png";
 import { SyntheticEvent, useState, useEffect } from "react";
 import { useLoginMutation } from "../app/authApi";
 import dotLoader from "../assets/images/dotloader.gif";
+import { chatApi, useGetChatDetailsQuery } from "../app/chatApi";
+import { useAppDispatch } from "../app/hooks";
 
 const SignIn = () => {
   const history = useNavigate();
@@ -16,8 +18,9 @@ const SignIn = () => {
   }>({ email: false, password: false });
   const [loginApi, { data, isError, isLoading, isSuccess, error, status }] =
     useLoginMutation();
+const dispatch=useAppDispatch();
 
-  const errorHandler = (match: string, regex: RegExp) => {
+const errorHandler = (match: string, regex: RegExp) => {
     if (!state[match].match(regex)) {
       return setErrorState((prev) => ({ ...prev, [match]: true }));
     } else {
@@ -30,6 +33,7 @@ const SignIn = () => {
     errorHandler("email", /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/);
     errorHandler("password", /[A-Za-z\d]{8,}/);
   };
+
   useEffect(() => {
     if (
       !Object.values(errorState).every((item) => item === true) &&
@@ -41,6 +45,7 @@ const SignIn = () => {
   
   useEffect(() => {
     if (isSuccess) {
+      dispatch(chatApi.util.resetApiState());
       return history("/");
     }
   }, [isSuccess]);

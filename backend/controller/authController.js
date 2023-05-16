@@ -96,7 +96,7 @@ exports.logout = (req, res, next) => {
       expires: new Date(Date.now()),
       httpsOnly: true,
     })
-    .send("logout successful");
+    .json("logout successful");
 };
 
 exports.forgotPassword = catchAsyncError(async (req, res, next) => {

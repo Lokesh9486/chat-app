@@ -184,21 +184,5 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
   return res.status(202).json(message);
 });
 
-exports.sendGroupMsg=catchAsyncError(async(req,res,next)=>{
-  const {
-    user: { id },
-    body: { message,location },
-  } = req;
-});
 
-exports.createGroup=catchAsyncError(async(req,res,next)=>{
-  const {
-    user: { id },
-    body: { name,description,participance },
-  } = req;
 
-  await Group.create({
-
-  })
-
-})

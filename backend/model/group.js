@@ -1,4 +1,4 @@
-const {Schema,SchemaType, model}=require("mongoose");
+const {Schema, model, SchemaTypes}=require("mongoose");
 
 const group=new Schema({
     name:{
@@ -6,17 +6,21 @@ const group=new Schema({
         require:true
     },
     description:String,
-    // created_by:{
-    //     type:SchemaType.ObjectId,
-    //     require:true
-    // },
-    // participance:{
-    //     type:[{
-    //         type:SchemaType.ObjectId,
-    //         ref:"user"
-    //     }],
-    //     validate:[participatelimit,' exceeds the limit of 10']
-    // }
+    created_by:{
+        type:SchemaTypes.ObjectId,
+        require:true
+    },
+    participance:{
+        type:[{
+            type:SchemaTypes.ObjectId,
+            ref:"user"
+        }],
+        validate:[participatelimit,' exceeds the limit of 10']
+    },
+    created_at:{
+        type:Date,
+        default:Date.now
+    }
 });
 
 function participatelimit(val){

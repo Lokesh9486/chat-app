@@ -7,8 +7,9 @@ export const chatApi = createApi({
     baseUrl: "/chat",
   }),
   endpoints: (builder) => ({
-    getChatDetails: builder.query<registerApiData[], void>({
+    getChatDetails: builder.query<registerApiData[],any>({
       query: () => "/message",
+      
     }),
     sendMessage: builder.mutation({
       query:(data)=>({

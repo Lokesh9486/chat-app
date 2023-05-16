@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
 import user from "../assets/images/user.png";
 import logo from "../assets/images/logo1.png";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -8,20 +8,26 @@ import cancel from "../assets/images/cancel.png";
 import clock from "../assets/images/clock.png";
 import { useFoundUserQuery, useGetUserProfileQuery, useLogoutUserQuery } from "../app/authApi";
 import clockgif from "../assets/images/clock.gif";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 const Layout = () => {
-  const [userLogout,setUserLogo]=useState(false);
+  const [userLogout,setUserLogo]=useState(true);
   const modalShow = useAppSelector(getModalShow);
   const userId = useAppSelector(getSideBarUserID);
   const dispatch = useAppDispatch();
-  const { data, isError, isLoading, isSuccess, error } = useFoundUserQuery(userId,{ skip: !modalShow }
-);
+  const history=useNavigate();
+  const { data, isError, isLoading, isSuccess, error } = useFoundUserQuery(userId,{ skip: !modalShow });
 const { data: userDetails } = useGetUserProfileQuery();
 
-// const {data:userLogoOutData} = useLogoutUserQuery({skip:userLogout});
+const {data:userLogoOutData,isSuccess:userLogoSuccess} = useLogoutUserQuery("",{skip:userLogout});
 
-// console.log(data,userDetails,userLogoOutData);
+useEffect(()=>{
+  console.log(userLogoOutData,userLogoSuccess,userLogout);
+   if(userLogoSuccess){
+    dispatch(modalAction({ modal: !modalShow, userID: "" }))
+    history("/signin");
+   }
+},[userLogout,userLogoOutData,userLogoSuccess]);
 
 
   return (
