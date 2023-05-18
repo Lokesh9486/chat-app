@@ -78,7 +78,7 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
   const { user } = req;
   console.log(`exports.getAllMessage=catchAsyncError ~ user:`, user);
   const userId = new mongoose.Types.ObjectId(user.id);
-
+  // https://we.tl/t-xDqcf1SDJO
   await User.findByIdAndUpdate(userId,{active:Date.now()},{new :true});
   
   const message = await Chat.aggregate([
