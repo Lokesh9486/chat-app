@@ -90,10 +90,24 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
         as:"groupChat"
       }
     },
+    {
+      $lookup:{
+        from:"users",
+        localField:"groupChat.send_by",
+        foreignField:"_id",
+        as:"sender"
+      }
+    },
+    {$unwind:"$sender"},
     {$unwind:"$groupChat"},
+    {
+      $project:{"sender.password":0,"sender.OTP":0,"sender.OTPExpires":0,"sender.created_at":0,"sender.OTPVerifed":0,"sender.__v":0,}
+    },
     {
       $group:{
         _id:"$groupChat._id",
+        data:{$first:"$groupChat"},
+        sender:{$first:"$sender"}
       }
     }
   ]);
@@ -124,36 +138,33 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
     {
       $unwind: "$user",
     },
-    {$group:{
-      _id: "$user._id",
-    }}
-    // {
-    //   $group: {
-    //     _id: "$user._id",
-    //     name: { $first: "$user.name" },
-    //     createdAt: { $first: "$created_at" },
-    //     active: { $first: "$user.active" },
-    //     profile:{ $first:"$user.profile"},
-    //     message: {
-    //       $push: {
-    //         type: {
-    //           $cond: {
-    //             if: { $eq: [userId, "$from"] },
-    //             then: "send",
-    //             else: "received",
-    //           },
-    //         },
-    //         id: "$_id",
-    //         message: "$message",
-    //         createdAt: "$created_at",
-    //         image:"$image",
-    //         location:"$location"
-    //       },
-    //       //  $sort: { "created_at": -1 } 
-    //     },
-    //   },
-    // },
-    // { $sort: { "message.createdAt": -1 } },
+    {
+      $group: {
+        _id: "$user._id",
+        name: { $first: "$user.name" },
+        createdAt: { $first: "$created_at" },
+        active: { $first: "$user.active" },
+        profile:{ $first:"$user.profile"},
+        message: {
+          $push: {
+            type: {
+              $cond: {
+                if: { $eq: [userId, "$from"] },
+                then: "send",
+                else: "received",
+              },
+            },
+            id: "$_id",
+            message: "$message",
+            createdAt: "$created_at",
+            image:"$image",
+            location:"$location"
+          },
+          //  $sort: { "created_at": -1 } 
+        },
+      },
+    },
+    { $sort: { "message.createdAt": -1 } },
   ]);
 
   // const message = await Chat.aggregate([
