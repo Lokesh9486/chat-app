@@ -15,7 +15,7 @@ exports.createGroup=catchAsyncError(async(req,res,next)=>{
     
     const demoString=foundedParticipent.map(item=>item.toString());
 
-    const misMatchedparticipance=participance.reduce((arr,item)=>!demoString.includes(item)?item:null,[]);
+    const misMatchedparticipance=participance.reduce((_,item)=>!demoString.includes(item)?item:null,[]);
 
     if(misMatchedparticipance?.length){
         return next(new ErrorHandler(`This user's are not found ${misMatchedparticipance.toString()}`));
@@ -43,9 +43,10 @@ exports.sendGroupMsg=catchAsyncError(async(req,res,next)=>{
     }
 
    const groupChat= await Groupchat.create({
-      participance:group.participance,
+      participance:[...group.participance,id],
       message,
       send_by:id,
+      group:toGroupId
     })
     
     return res.json(groupChat)

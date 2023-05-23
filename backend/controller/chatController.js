@@ -78,8 +78,27 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
   const { user } = req;
   console.log(`exports.getAllMessage=catchAsyncError ~ user:`, user);
   const userId = new mongoose.Types.ObjectId(user.id);
-  // https://we.tl/t-xDqcf1SDJO
   await User.findByIdAndUpdate(userId,{active:Date.now()},{new :true});
+
+  const group=await Group.aggregate([
+    {$match:{participance:userId}},
+    {
+      $lookup:{
+        from:"groupchats",
+        localField:"_id",
+        foreignField:"group",
+        as:"groupChat"
+      }
+    },
+    {$unwind:"$groupChat"},
+    {
+      $group:{
+        _id:"$groupChat._id",
+      }
+    }
+  ]);
+  console.log("exports.getAllMessage=catchAsyncError ~ group:", group)
+  
   
   const message = await Chat.aggregate([
     {
@@ -105,33 +124,36 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
     {
       $unwind: "$user",
     },
-    {
-      $group: {
-        _id: "$user._id",
-        name: { $first: "$user.name" },
-        createdAt: { $first: "$created_at" },
-        active: { $first: "$user.active" },
-        profile:{ $first:"$user.profile"},
-        message: {
-          $push: {
-            type: {
-              $cond: {
-                if: { $eq: [userId, "$from"] },
-                then: "send",
-                else: "received",
-              },
-            },
-            id: "$_id",
-            message: "$message",
-            createdAt: "$created_at",
-            image:"$image",
-            location:"$location"
-          },
-          //  $sort: { "created_at": -1 } 
-        },
-      },
-    },
-    { $sort: { "message.createdAt": -1 } },
+    {$group:{
+      _id: "$user._id",
+    }}
+    // {
+    //   $group: {
+    //     _id: "$user._id",
+    //     name: { $first: "$user.name" },
+    //     createdAt: { $first: "$created_at" },
+    //     active: { $first: "$user.active" },
+    //     profile:{ $first:"$user.profile"},
+    //     message: {
+    //       $push: {
+    //         type: {
+    //           $cond: {
+    //             if: { $eq: [userId, "$from"] },
+    //             then: "send",
+    //             else: "received",
+    //           },
+    //         },
+    //         id: "$_id",
+    //         message: "$message",
+    //         createdAt: "$created_at",
+    //         image:"$image",
+    //         location:"$location"
+    //       },
+    //       //  $sort: { "created_at": -1 } 
+    //     },
+    //   },
+    // },
+    // { $sort: { "message.createdAt": -1 } },
   ]);
 
   // const message = await Chat.aggregate([
@@ -141,26 +163,30 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
   //     },
   //   },
   //   {
-  //     $addFields:{
-  //       nameField: { $cond: { if: { $eq: [userId, "$from"] }, then: "$to", else: "$from" } },
-  //     }
+  //     $addFields: {
+  //       nameField: {
+  //         $cond: { if: { $eq: [userId, "$from"] }, then: "$to", else: "$from" },
+  //       },
+  //     },
   //   },
   //   {
   //     $lookup: {
   //       from: "users",
   //       localField: "nameField",
   //       foreignField: "_id",
-  //       as: "user"
-  //     }
+  //       as: "user",
+  //     },
   //   },
   //   {
-  //     $unwind: "$user"
+  //     $unwind: "$user",
   //   },
-  //   {$sort:{"created_at":1}},
   //   {
   //     $group: {
   //       _id: "$user._id",
   //       name: { $first: "$user.name" },
+  //       createdAt: { $first: "$created_at" },
+  //       active: { $first: "$user.active" },
+  //       profile:{ $first:"$user.profile"},
   //       message: {
   //         $push: {
   //           type: {
@@ -170,16 +196,21 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
   //               else: "received",
   //             },
   //           },
-  //           id:"$_id",
+  //           id: "$_id",
   //           message: "$message",
   //           createdAt: "$created_at",
+  //           image:"$image",
+  //           location:"$location"
   //         },
+  //         //  $sort: { "created_at": -1 } 
   //       },
   //     },
   //   },
+  //   { $sort: { "message.createdAt": -1 } },
   // ]);
 
-  console.log(message);
+
+  // console.log(message);
 
   return res.status(202).json(message);
 });

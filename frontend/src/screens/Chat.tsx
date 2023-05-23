@@ -175,7 +175,11 @@ const Chat = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position)=>{
         setLocation([position.coords.longitude,position.coords.latitude])
-      });
+      },function(e){
+        
+      }, {
+        enableHighAccuracy: true
+    });
     } else {
      console.log("Geolocation is not supported by this browser.");
     }

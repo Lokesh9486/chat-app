@@ -8,6 +8,11 @@ const groupChatSchema=new Schema({
             }],
         required:true
     },
+    group:{
+        type:SchemaTypes.ObjectId,
+        required:true,
+        ref:"group"
+    },
     message:String,
     image:String,
     location:{
