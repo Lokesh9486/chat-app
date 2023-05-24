@@ -105,14 +105,38 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
     },
     {
       $group:{
-        _id:"$groupChat._id",
-        data:{$first:"$groupChat"},
-        sender:{$first:"$sender"}
+        _id:"$_id",
+        name:{$first:"$name"},
+        groups:{$first:true},
+        description:{$first:"$description"},
+        profile:{$first:"$profile"},
+        created_by:{$first:"$created_by"},
+        message:{
+         $push:{
+          type:{
+            $cond:{
+              if:{$eq:[userId,"$groupChat.send_by"]},then:"send",else:"received"
+            }
+          },
+          message:"$groupChat.message",
+          created_at:"$groupChat.created_at",
+          send_by:{
+            id:"$groupChat.send_by",
+            name:"$sender.name",
+            email:"$sender.email",
+            profile:"$sender.profile",
+            active:"$sender.active",
+          },
+         }
+        },
+        // data:{$first:"$groupChat"},
+        // sender:{$first:"$sender"},
+        // demo:{$first:"$name"}
       }
-    }
+    },
+    { $sort: { "message.createdAt": -1 } },
   ]);
-  console.log("exports.getAllMessage=catchAsyncError ~ group:", group)
-  
+  console.log("exports ~ group:", group)
   
   const message = await Chat.aggregate([
     {
@@ -223,7 +247,7 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
 
   // console.log(message);
 
-  return res.status(202).json(message);
+  return res.status(202).json([...message,...group]);
 });
 
 

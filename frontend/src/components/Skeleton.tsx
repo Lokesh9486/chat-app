@@ -42,6 +42,7 @@ const Skeleton = () => {
             )
         }
         </div>
+        {/* <button class="custom-btn btn-11">Read More 1<div class="dot"></div></button> */}
       </section>
     </div>
   );
