@@ -31,13 +31,13 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
       OTPExpires:Date.now()+30*60*1000
     });
     
-    sendEmail({
-      email: user.email,
-      req,
-      res,
-      subject: `OTP sended by postbox-app`,
-      message: otp,
-    });
+    // sendEmail({
+    //   email: user.email,
+    //   req,
+    //   res,
+    //   subject: `OTP sended by postbox-app`,
+    //   message: otp,
+    // });
 
     res.status(200).json(`Register successfully and OTP send ${email}`);
 });

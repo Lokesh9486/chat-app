@@ -80,12 +80,146 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
   const userId = new mongoose.Types.ObjectId(user.id);
   await User.findByIdAndUpdate(userId,{active:Date.now()},{new :true});
 
-  const group=await Group.aggregate([
-    {$match:{participance:userId}},
+  // const group=await Group.aggregate([
+  //   {$match:{participance:userId}},
+  //   {
+  //     $lookup:{
+  //       from:"groupchats",
+  //       localField:"_id",
+  //       foreignField:"group",
+  //       as:"groupChat"
+  //     }
+  //   },
+  //   {
+  //     $lookup:{
+  //       from:"users",
+  //       localField:"groupChat.send_by",
+  //       foreignField:"_id",
+  //       as:"sender"
+  //     }
+  //   },
+  //   {$unwind:"$sender"},
+  //   {$unwind:"$groupChat"},
+  //   {
+  //     $project:{"sender.password":0,"sender.OTP":0,"sender.OTPExpires":0,"sender.created_at":0,"sender.OTPVerifed":0,"sender.__v":0,}
+  //   },
+  //   {
+  //     $group:{
+  //       _id:"$_id",
+  //       name:{$first:"$name"},
+  //       group:{$first:true},
+  //       description:{$first:"$description"},
+  //       profile:{$first:"$profile"},
+  //       created_by:{$first:"$created_by"},
+  //       message:{
+  //        $push:{
+  //         type:{
+  //           $cond:{
+  //             if:{$eq:[userId,"$groupChat.send_by"]},then:"send",else:"received"
+  //           }
+  //         },
+  //         message:"$groupChat.message",
+  //         created_at:"$groupChat.created_at",
+  //         send_by:{
+  //           id:"$groupChat.send_by",
+  //           name:"$sender.name",
+  //           email:"$sender.email",
+  //           profile:"$sender.profile",
+  //           active:"$sender.active",
+  //         },
+  //        }
+  //       },
+  //       // data:{$first:"$groupChat"},
+  //       // sender:{$first:"$sender"},
+  //       // demo:{$first:"$name"}
+  //     }
+  //   },
+  //   { $sort: { "message.createdAt": -1 } },
+  // ]);
+  // console.log("exports ~ group:", group)
+  
+  // const message = await Chat.aggregate([
+  //   {
+  //     $match: {
+  //       $or: [{ from: userId }, { to: userId }],
+  //     },
+  //   },
+  //   {
+  //     $addFields: {
+  //       nameField: {
+  //         $cond: { if: { $eq: [userId, "$from"] }, then: "$to", else: "$from" },
+  //       },
+  //     },
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "users",
+  //       localField: "nameField",
+  //       foreignField: "_id",
+  //       as: "user",
+  //     },
+  //   },
+  //   {
+  //     $unwind: "$user",
+  //   },
+  //   {
+  //     $group: {
+  //       _id: "$user._id",
+  //       name: { $first: "$user.name" },
+  //       createdAt: { $first: "$created_at" },
+  //       active: { $first: "$user.active" },
+  //       profile:{ $first:"$user.profile"},
+  //       message: {
+  //         $push: {
+  //           type: {
+  //             $cond: {
+  //               if: { $eq: [userId, "$from"] },
+  //               then: "send",
+  //               else: "received",
+  //             },
+  //           },
+  //           id: "$_id",
+  //           message: "$message",
+  //           createdAt: "$created_at",
+  //           image:"$image",
+  //           location:"$location"
+  //         },
+  //         //  $sort: { "created_at": -1 } 
+  //       },
+  //     },
+  //   },
+  //   { $sort: { "message.createdAt": -1 } },
+  // ]);
+
+  
+  const message=await Chat.aggregate([
+    {
+      $match: {
+        $or: [{ from: userId }, { to: userId }],
+      },
+    },
+    {
+      $addFields: {
+        nameField: {
+          $cond: { if: { $eq: [userId, "$from"] }, then: "$to", else: "$from" },
+        },
+        findInGroup:{
+          $cond:{if:{$eq:[userId,"$to"]},then:"$to",else:"$from"},
+        }
+      },
+    },
+    {
+      $lookup:{
+        from:"groups",
+        localField:"findInGroup",
+        foreignField:"participance",
+        as:"groups"
+      }
+    },
     {
       $lookup:{
         from:"groupchats",
-        localField:"_id",
+        localField:"groups._id",
         foreignField:"group",
         as:"groupChat"
       }
@@ -98,59 +232,6 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
         as:"sender"
       }
     },
-    {$unwind:"$sender"},
-    {$unwind:"$groupChat"},
-    {
-      $project:{"sender.password":0,"sender.OTP":0,"sender.OTPExpires":0,"sender.created_at":0,"sender.OTPVerifed":0,"sender.__v":0,}
-    },
-    {
-      $group:{
-        _id:"$_id",
-        name:{$first:"$name"},
-        groups:{$first:true},
-        description:{$first:"$description"},
-        profile:{$first:"$profile"},
-        created_by:{$first:"$created_by"},
-        message:{
-         $push:{
-          type:{
-            $cond:{
-              if:{$eq:[userId,"$groupChat.send_by"]},then:"send",else:"received"
-            }
-          },
-          message:"$groupChat.message",
-          created_at:"$groupChat.created_at",
-          send_by:{
-            id:"$groupChat.send_by",
-            name:"$sender.name",
-            email:"$sender.email",
-            profile:"$sender.profile",
-            active:"$sender.active",
-          },
-         }
-        },
-        // data:{$first:"$groupChat"},
-        // sender:{$first:"$sender"},
-        // demo:{$first:"$name"}
-      }
-    },
-    { $sort: { "message.createdAt": -1 } },
-  ]);
-  console.log("exports ~ group:", group)
-  
-  const message = await Chat.aggregate([
-    {
-      $match: {
-        $or: [{ from: userId }, { to: userId }],
-      },
-    },
-    {
-      $addFields: {
-        nameField: {
-          $cond: { if: { $eq: [userId, "$from"] }, then: "$to", else: "$from" },
-        },
-      },
-    },
     {
       $lookup: {
         from: "users",
@@ -159,37 +240,98 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
         as: "user",
       },
     },
+    {$unwind: {
+      path:"$user",
+      preserveNullAndEmptyArrays:true
+    }},
+    {$unwind:{
+      path:"$groups",
+      preserveNullAndEmptyArrays:true
+    }},
+    {$unwind:{
+      path:"$groupChat",
+      preserveNullAndEmptyArrays:true
+    }},
+    {$unwind:{
+      path:"$sender",
+      preserveNullAndEmptyArrays:true
+    }},
     {
-      $unwind: "$user",
-    },
-    {
-      $group: {
-        _id: "$user._id",
-        name: { $first: "$user.name" },
-        createdAt: { $first: "$created_at" },
-        active: { $first: "$user.active" },
-        profile:{ $first:"$user.profile"},
-        message: {
-          $push: {
-            type: {
-              $cond: {
-                if: { $eq: [userId, "$from"] },
-                then: "send",
-                else: "received",
+      $facet:{
+        personalChat:[
+          {
+            $group: {
+              _id: "$user._id",
+              name: { $first: "$user.name" },
+              createdAt: { $first: "$created_at" },
+              active: { $first: "$user.active" },
+              profile:{ $first:"$user.profile"},
+              message: {
+                $push: {
+                  type: {
+                    $cond: {
+                      if: { $eq: [userId, "$from"] },
+                      then: "send",
+                      else: "received",
+                    },
+                  },
+                  id: "$_id",
+                  message: "$message",
+                  createdAt: "$created_at",
+                  image:"$image",
+                  location:"$location"
+                },
               },
             },
-            id: "$_id",
-            message: "$message",
-            createdAt: "$created_at",
-            image:"$image",
-            location:"$location"
           },
-          //  $sort: { "created_at": -1 } 
-        },
-      },
+        ],
+        groupChat:[
+          {
+            $group:{
+              _id:"$groups._id",
+              name:{$first:"$groups.name"},
+              group:{$first:true},
+              description:{$first:"$groups.description"},
+              profile:{$first:"$groups.profile"},
+              created_by:{$first:"$groups.created_by"},
+              message:{
+               $addToSet :{
+                type:{
+                  $cond:{
+                    if:{$eq:[userId,"$groupChat.send_by"]},then:"send",else:"received"
+                  }
+                },
+                message:"$groupChat.message",
+                createdAt:"$groupChat.created_at",
+                send_by:{
+                  id:"$groupChat.send_by",
+                  name:"$sender.name",
+                  email:"$sender.email",
+                  profile:"$sender.profile",
+                  active:"$sender.active",
+                },
+               }
+              },
+            }
+          },
+        ]
+      }
+    },
+    {
+      $project:{
+        combinedChat:{
+          $concatArrays:["$personalChat","$groupChat"]
+        }
+      }
+    },
+    {
+      $unwind:"$combinedChat"
+    },
+    {
+      $replaceRoot:{newRoot:"$combinedChat"}
     },
     { $sort: { "message.createdAt": -1 } },
-  ]);
+  ])
 
   // const message = await Chat.aggregate([
   //   {
@@ -245,9 +387,9 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
   // ]);
 
 
-  // console.log(message);
+  console.log(message);
 
-  return res.status(202).json([...message,...group]);
+  return res.status(202).json(message);
 });
 
 

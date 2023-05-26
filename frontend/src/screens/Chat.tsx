@@ -43,6 +43,8 @@ const Chat = () => {
   //   }
   //   );
   
+  console.log(data);
+  
 
   const [sendMessage, { data: value, isError, isLoading, isSuccess }] =
     useSendMessageMutation();
