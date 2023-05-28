@@ -98,6 +98,7 @@ const SignUp = () => {
       signUp(formData);
     }
   }
+  
   const fileOnChange=(e:ChangeEvent<HTMLInputElement>)=>{
     const reader=new FileReader();
     reader.onload=()=>{

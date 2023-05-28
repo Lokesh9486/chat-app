@@ -80,6 +80,10 @@ const Chat = () => {
 
   const [currentChat, setCurrentChat] = useState<string | undefined>();
   const [currentChatData, setCurrentChatData] = useState<{
+    description?:string,
+    group?:boolean,
+    createdAt?:Date;
+    createdBy?:string;
     message?: messageType[];
     profile?: string;
   }>({});
@@ -114,8 +118,11 @@ const Chat = () => {
       const chatData: registerApiData[] | undefined = data?.filter(
         ({ _id }) => _id === sidebarData?.[0]?.id
       );
-
+      console.log(chatData);
       setCurrentChatData({
+        createdBy:chatData?.[0]?.created_by,
+        description:chatData?.[0]?.description,
+        group:chatData?.[0]?.group,
         message: chatData?.[0]?.message,
         profile: chatData?.[0]?.profile,
       });
@@ -123,7 +130,11 @@ const Chat = () => {
       const chatData: registerApiData[] | undefined = data?.filter(
         ({ _id }) => _id === currentChat
       );
+      console.log(chatData);
       setCurrentChatData({
+        createdBy:chatData?.[0]?.created_by,
+        description:chatData?.[0]?.description,
+        group:chatData?.[0]?.group,
         message: chatData?.[0]?.message,
         profile: chatData?.[0]?.profile,
       });
@@ -136,7 +147,13 @@ const Chat = () => {
       const chatData: registerApiData[] | undefined = data?.filter(
         ({ _id }) => _id === currentChat
       );
+      console.log(chatData);
+      
       setCurrentChatData({
+        createdBy:chatData?.[0]?.created_by,
+        createdAt:chatData?.[0]?.created_at,
+        description:chatData?.[0]?.description,
+        group:chatData?.[0]?.group,
         message: chatData?.[0]?.message,
         profile: chatData?.[0]?.profile,
       });
@@ -147,8 +164,13 @@ const Chat = () => {
     const formData=new FormData();
     formData.append("message",userSendMessage)
     formData.append("location",JSON.stringify(location))
-    formData.append("image",(uploadImg as any))
-    sendMessage({ currentChat, formData });
+    formData.append("image",(uploadImg as any));
+    if(currentChatData.group){
+       
+    }
+    else{
+      sendMessage({ currentChat, formData });
+    }
     setUserSendMaessage("");
     setPreview("");
     setLocation([]);
@@ -290,17 +312,31 @@ const Chat = () => {
                         </Fragment>
                       );
                     }))()}
-                
-                <button type="button" className="group-btn"><img src={GroupImg} alt="GroupImg" /></button>
+                <button type="button" className="group-btn" data-bs-toggle="modal" data-bs-target="#groupCreation"><img src={GroupImg} alt="GroupImg" /></button>
               </div>
               <div className="chat-body" ref={ulElement}>
+                {
+                  (()=>{
+                    const {createdBy,description,group,profile,createdAt}=currentChatData
+                   return createdBy&& <div className="unique-date mb-2">
+                            <p>{createdBy} at {createdAt&&new Date(createdAt).toLocaleString("en-US", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}</p>
+                          </div>
+                  }
+                  )()
+                }
                 {(() => {
                   const messsage = [];
                   const renderDateArr: string[] = [];
+                  const {createdBy,description,group,profile}=currentChatData
                   let renderDate = "";
                   for (const [
                     index,
-                    { type, message, createdAt, id,image ,location},
+                    { type, message, createdAt, id,image ,location,},
                   ] of currentChatData?.message?.entries() ?? []) {
                     
                     const date = new Date(createdAt).toLocaleString("en-US", {
@@ -309,18 +345,21 @@ const Chat = () => {
                       month: "long",
                       day: "numeric",
                     });
+
                     renderDate = date;
                     if (renderDateArr.includes(date)) {
                       renderDate = "";
                     }
                     messsage.push(
+                      
                       <Fragment key={index}>
                         {renderDate && (
-                          <div className="unique-date">
+                         createdAt&& <div className="unique-date">
                             <p>{renderDate}</p>
                           </div>
                         )}
-                        <div
+                        {createdAt&&
+                          <div
                           className={
                             type === "received"
                               ? "other-chat-list"
@@ -374,10 +413,10 @@ const Chat = () => {
                               location?.coordinates.length? <div className="map-con"><MapCom {...location.coordinates}/></div>:null
                             }
                             <p className="message-time">
-                              {shortTime.format(new Date(createdAt))}
+                              {createdAt&&shortTime?.format(new Date(createdAt))}
                             </p>
                           </div>
-                        </div>
+                        </div>}
                       </Fragment>
                     );
                     renderDateArr.push(date);

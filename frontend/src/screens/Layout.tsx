@@ -91,7 +91,7 @@ useEffect(()=>{
           </div>
         )}
       </div>
-      {/* <Modal/>   */}
+      <Modal/>  
     </section>
   );
 };

@@ -43,7 +43,7 @@ exports.sendGroupMsg=catchAsyncError(async(req,res,next)=>{
     }
 
    const groupChat= await Groupchat.create({
-      participance:[...group.participance,id],
+      // participance:[...group.participance,id],
       message,
       send_by:id,
       group:toGroupId

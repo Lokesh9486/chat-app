@@ -33,7 +33,11 @@ export interface registerApiData {
   name: string;
   active:string;
   message: messageType[];
-  profile:string
+  profile:string,
+  created_by?:string,
+  created_at?:Date,
+  description?:string,
+  group?:boolean,
 }
 
 
