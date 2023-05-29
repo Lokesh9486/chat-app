@@ -16,7 +16,7 @@ exports.sendMessage = catchAsyncError(async (req, res, next) => {
 
   if (req.file) {
     image = `${req.protocol}://${req.get("host")}/uploads/sharedImages/${
-      req.file.originalname
+      req.file.filename
     }`;
   }
 
@@ -354,7 +354,8 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
               message: {
                 $addToSet: {
                   $cond: [
-                    { $ne: ["$groupChat.send_by", "$sender._id"] },{},
+                    { $ne: ["$groupChat.send_by", "$sender._id"] },
+                    {},
                     {
                       type: {
                         $cond: {
@@ -364,6 +365,8 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
                         },
                       },
                       message: "$groupChat.message",
+                      image: "$groupChat.image",
+                      location: "$groupChat.location",
                       createdAt: "$groupChat.created_at",
                       send_by: {
                         id: "$groupChat.send_by",
@@ -375,18 +378,41 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
                     },
                   ],
                 },
-                // $project:{
-                //   $filter:{
-                //     input:"$message",
-                //     as:"message",
-                //     cond:{$ne:["$$message",null]}
-                //   }
-                // }
               },
             },
           },
           {
-            $sort:{"message":-1}
+            $unwind: "$message",
+          },
+          {
+            $sort: { "message.createdAt": 1 },
+          },
+          {
+            $group: {
+              _id: "$_id",
+              name: { $first: "$name" },
+              group: { $first: true },
+              created_at: { $first: "$created_at" },
+              description: { $first: "$description" },
+              created_by: { $first: "$created_by" },
+              active: { $first: "$active" },
+              profile: { $first: "$profile" },
+              message: { $push: "$message" },
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              groupChat: {
+                $cond: [{ $eq: ["$_id", null] }, [], "$$ROOT"],
+              },
+            },
+          },
+          {
+            $unwind: "$groupChat",
+          },
+          {
+            $replaceRoot: { newRoot: "$groupChat" },
           },
           {
             $project: {

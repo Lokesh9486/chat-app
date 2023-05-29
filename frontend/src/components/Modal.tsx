@@ -2,6 +2,11 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { getModalShow, modalAction } from "../features/auth";
 import { signUpInterface } from "../types";
+import searchIcon from "../assets/images/seacrh.png";
+import userImage from "../assets/images/user.png";
+import tickImg from "../assets/images/tick.png";
+import chipCancel from "../assets/images/chipcancel.png";
+
 
 const Modal = () => {
   const [signUpdetail, setSignUpdetail] = useState<signUpInterface[]>([
@@ -21,15 +26,8 @@ const Modal = () => {
       error: false,
       errMessage:"Please enter description"
     },
-    {
-      type: "password",
-      name: "userPassword",
-      value: "",
-      palceholder: " password",
-      error: false,
-      errMessage:"Passwrod must contain 8-15 character"
-    },
   ]);
+  const participants=useState()
   function inputChange(trigger: string, value: string) {
     const filterData = signUpdetail.map((item) => {
       if (item.name === trigger) {
@@ -41,7 +39,7 @@ const Modal = () => {
     setSignUpdetail(filterData);
   }
   return (
-<div className="modal fade" id="groupCreation" tabIndex={-1} aria-hidden="true">
+<div className="modal fade show" id="groupCreation" tabIndex={-1} style={{display: "block"}}>
   <div className="modal-dialog modal-dialog-centered">
     <div className="modal-content">
       <div className="modal-header border-0">
@@ -68,6 +66,60 @@ const Modal = () => {
             </div>
           )
         )}
+        <div className="search-user-con">
+          <div className="input-con">
+          <input type="text" placeholder="Search participants"/>
+          <button type="button"><img src={searchIcon} alt="searchIcon" />
+          <img src="" alt="" />
+          </button>
+          </div>
+          <ul className="chip-con">
+            <li><img src={userImage} className="user-logo" alt="userImage" />
+             <span>user1</span> <button type="button" className="cancel-btn">
+              <img src={chipCancel} alt="" /></button></li>
+            <li><img src={userImage} className="user-logo" alt="userImage" />
+             <span>user1</span> <button type="button" className="cancel-btn">
+              <img src={chipCancel} alt="" /></button></li>
+            <li><img src={userImage} className="user-logo" alt="userImage" />
+             <span>user1</span> <button type="button" className="cancel-btn">
+              <img src={chipCancel} alt="" /></button></li>
+            <li><img src={userImage} className="user-logo" alt="userImage" />
+             <span>user1</span> <button type="button" className="cancel-btn">
+              <img src={chipCancel} alt="" /></button></li>
+            <li><img src={userImage} className="user-logo" alt="userImage" />
+             <span>user1</span> <button type="button" className="cancel-btn">
+              <img src={chipCancel} alt="" /></button></li>
+            <li><img src={userImage} className="user-logo" alt="userImage" />
+             <span>user1</span> <button type="button" className="cancel-btn">
+              <img src={chipCancel} alt="" /></button></li>
+            <li><img src={userImage} className="user-logo" alt="userImage" />
+             <span>user1</span> <button type="button" className="cancel-btn">
+              <img src={chipCancel} alt="" /></button></li>
+            <li><img src={userImage} className="user-logo" alt="userImage" />
+             <span>user1</span> <button type="button" className="cancel-btn">
+              <img src={chipCancel} alt="" /></button></li>
+            <li><img src={userImage} className="user-logo" alt="userImage" />
+             <span>user1</span> <button type="button" className="cancel-btn">
+              <img src={chipCancel} alt="" /></button></li>
+            <li><img src={userImage} className="user-logo" alt="userImage" />
+             <span>user1</span> <button type="button" className="cancel-btn">
+              <img src={chipCancel} alt="" /></button></li>
+          </ul>
+          <ul className="search-participants-con">
+            <li className="active"><img src={userImage} alt="userImage" /> <span>user1</span> <img src={tickImg} className="tick-img" alt="tickImg" /></li>
+            <li>user2</li>
+            <li>user3</li>
+            <li>user1</li>
+            <li>user2</li>
+            <li>user3</li>
+            <li>user1</li>
+            <li>user2</li>
+            <li>user3</li>
+            <li>user1</li>
+            <li>user2</li>
+            <li>user3</li>
+          </ul>
+        </div>
         </form>
       </div>
     </div>

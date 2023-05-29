@@ -17,7 +17,7 @@ const groupChatSchema=new Schema({
     image:String,
     location:{
         type:{
-            typr:String,
+            type:String,
             enum:["Point"],
         },
         coordinates:{

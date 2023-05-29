@@ -7,27 +7,23 @@ import user from "../assets/images/user.png";
 import { ChangeEvent, FormEvent, Fragment, useEffect, useRef, useState } from "react";
 import { messageType, registerApiData, sidebarDataType } from "../types";
 import more from "../assets/images/more.png";
-import edit from "../assets/images/edit.gif";
 import trash from "../assets/images/trash.gif";
-import logo from "../assets/images/logo1.png";
-import { Link } from "react-router-dom";
 import { useGetUserProfileQuery, useSearchUserQuery } from "../app/authApi";
 import UserImgCon from "../components/UserImgCon";
 import link from "../assets/images/link.png";
 import dotLoader from "../assets/images/dotloader.gif";
 import happyemoji from "../assets/images/happyemoji.png";
-import Modal from "../components/Modal";
 import { getModalShow, modalAction } from "../features/auth";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Skeleton from "../components/Skeleton";
 import loctioinImg from "../assets/images/location1.png";
 import loctioinplaceholderImg from "../assets/images/placeholder.png";
 import cancel from "../assets/images/cancel.png";
-import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import MapCom from "../components/MapCom";
 import GroupImg from "../assets/images/group.png";
 import imageplaceholder from "../assets/images/imageplaceholder.png"
+import { useSendMessageGroupMutation } from "../app/groupApi";
 
 
 const Chat = () => {
@@ -43,11 +39,14 @@ const Chat = () => {
   //   }
   //   );
   
-  console.log(data);
+  // console.log(data);
   
 
-  const [sendMessage, { data: value, isError, isLoading, isSuccess }] =
-    useSendMessageMutation();
+  const [sendMessage, { data: value, isError, isLoading, isSuccess }] = useSendMessageMutation();
+
+  const [groupSendMessage,{data:groupMsg,error:groupError}]=useSendMessageGroupMutation();
+  // console.log(`Chat ~ groupError:`, groupError)
+  // console.log(`Chat ~ groupMsg:`, groupMsg)
   
   const [deleteMsg] = useDeleteMessageMutation();
   const { data: userSeacrh, isLoading: searchUserLoading } = useSearchUserQuery(
@@ -166,7 +165,7 @@ const Chat = () => {
     formData.append("location",JSON.stringify(location))
     formData.append("image",(uploadImg as any));
     if(currentChatData.group){
-       
+      groupSendMessage({ currentChat, formData})
     }
     else{
       sendMessage({ currentChat, formData });
@@ -318,6 +317,8 @@ const Chat = () => {
                 {
                   (()=>{
                     const {createdBy,description,group,profile,createdAt}=currentChatData
+                    console.log(createdAt);
+                    
                    return createdBy&& <div className="unique-date mb-2">
                             <p>{createdBy} at {createdAt&&new Date(createdAt).toLocaleString("en-US", {
                       weekday: "long",
@@ -410,7 +411,7 @@ const Chat = () => {
                             <img src={image} alt="" />
                             </div>}
                             {
-                              location?.coordinates.length? <div className="map-con"><MapCom {...location.coordinates}/></div>:null
+                              location?.coordinates?.length? <div className="map-con"><MapCom {...location.coordinates}/></div>:null
                             }
                             <p className="message-time">
                               {createdAt&&shortTime?.format(new Date(createdAt))}

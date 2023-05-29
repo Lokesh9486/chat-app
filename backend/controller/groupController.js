@@ -36,20 +36,39 @@ exports.sendGroupMsg=catchAsyncError(async(req,res,next)=>{
       body: { message,location },
     } = req;
 
+    let image;
+
+    console.log(message,image,location)
+
+    if (req.file) {
+      image = `${req.protocol}://${req.get("host")}/uploads/sharedImages/${
+        req.file.filename
+      }`;
+    }
+
     const group=await Group.findById(toGroupId);
 
     if(!group){
       return next(new ErrorHandler("group not found"));
     }
 
-   const groupChat= await Groupchat.create({
-      // participance:[...group.participance,id],
-      message,
+    if (!message && !image && !JSON.parse(location).length) {
+      return next(new ErrorHandler("Enter message or send image,location"));
+    }
+    
+     const groupChat= await Groupchat.create({
+      participance:group.participance,
+      message: !message ? undefined : message,
+      image,
+      location:JSON.parse(location).length &&  {
+      type: "Point",
+      coordinates: JSON.parse(location),
+      },
       send_by:id,
       group:toGroupId
     })
     
-    return res.json(groupChat)
+    return res.status(200).json(groupChat)
     
 });
 

@@ -2,7 +2,114 @@
     .modal-content{
         border: 0;
         border-radius: 3px;
-    }
-        
+        .log-input{
+            width: 100%;
+        }
+        .search-user-con{
+            .input-con{
+                display: flex;
+                align-items: center;
+                padding: clamp(5px, 8vw * 100 / 1920, 8px) clamp(8.125px, 13vw * 100 / 1920, 13px);
+                border-radius: 4px;
+                box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+                border: 0;
+                margin-bottom: 15px;
+                input{
+                    width: 100%;
+                    border: 0;
+                }
+                button{
+                    border: 0;
+                    background-color: transparent;
+                    img{
+                        width: 1em;
+                    }
+                }
 
+            }
+            .chip-con{
+                display: flex;
+                align-items: center;
+                padding: 0;
+                gap: .5em;
+                padding-bottom:.5em ;
+                overflow: auto;
+                @include scroll-bar;
+                li{
+                    display: flex;
+                    align-items: center;
+                    list-style: none;
+                    font-size: .9em;
+                    border: 1px solid #ccc;
+                    padding:.2em .4em;
+                    border-radius: 20px;
+                    .user-logo{
+                        width: 1.2em;
+                    }
+                    .cancel-btn{
+                        border: 0;
+                        background-color: transparent;
+                        img{
+                            width: 1em;
+                        }
+                    }
+                }
+            }
+            .search-participants-con{
+                height: 200px;
+                border: 1px solid #ccc;
+                padding: .5em;
+                border-radius: 3px;
+                overflow: auto;
+                @include scroll-bar;
+                li{
+                    list-style: none;
+                    padding: .5em;
+                    display: flex;
+                    align-items: center;
+                    span{
+                        margin-left: 1em;
+                    }
+                    img{
+                        width: 2em;
+                        aspect-ratio: 1/1;
+                        border-radius: 50%;
+                        &.tick-img{
+                            width: 1.3em;
+                            margin-left: auto;
+                        }
+                    }
+                    &.active{
+                        background-color: aliceblue;
+                    }
+                }
+            }
+        }
+    }
 }
+.modal-backdrop{
+    backdrop-filter: blur(2px);
+}
+
+// animation-duration: 1.25s;
+// animation-fill-mode: forwards;
+// animation-iteration-count: infinite;
+// animation-name: i8-gradient-loader__blink;
+// animation-timing-function: linear;
+// background: #a9a9a9;
+// background: linear-gradient(90deg,rgba(0,0,0,.1) 10%,rgba(0,0,0,.05) 18%,rgba(0,0,0,.1) 33%);
+// background: linear-gradient(to right,var(--gradient-loader-background-color,rgba(0,0,0,.1)) 10%,rgba(0,0,0,.05) 18%,var(--gradient-loader-background-color,rgba(0,0,0,.1)) 33%);
+// background-size: 1000px 104px;
+// border-radius: 4px;
+// flex-shrink: 0;
+// height: 100%;
+// position: relative;
+// width: 100%;
+
+// 0% {
+//     background-position: -500px 0;
+// }
+
+// 100% {
+//     background-position: 500px 0;
+// }

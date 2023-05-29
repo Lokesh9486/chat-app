@@ -6,6 +6,8 @@ const router = express.Router();
 const path=require("path");
 const { createGroup , sendGroupMsg} = require("../controller/groupController");
 
+//upload.single("avatar") single
+//upload.array("avatar") multi 
 
 const upload=multer({
   storage:multer.diskStorage({
@@ -14,8 +16,10 @@ const upload=multer({
       cb(null,path.join(__dirname,'..','uploads/sharedImages'))
     },
     filename:function(req,file,cb){
-      console.log(`file:`, file)
-      cb(null,file.originalname);
+      console.log(`file:`, file);
+      const uniqueSuffix=Date.now()+"_"+Math.round(Math.random()*1E9)
+      console.log(uniqueSuffix,file.fieldname);
+      cb(null,file.fieldname+'_'+uniqueSuffix+file.originalname);
     }
   })
 })
@@ -31,7 +35,7 @@ router.route("/message/update").put(isAuthenticateUser, updateMessage)
 
 router.route("/message/delete").delete(isAuthenticateUser, deleteMessage);
 
-router.route('/groupChat/:toGroupId').post(isAuthenticateUser, sendGroupMsg);
+router.route('/groupChat/:toGroupId').post(isAuthenticateUser,upload.single("image"), sendGroupMsg);
 
 router.route('/createGroup').post(isAuthenticateUser, createGroup);
 
