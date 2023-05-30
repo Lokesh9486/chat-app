@@ -40,19 +40,9 @@
         }
     }
     @keyframes skeleton {
-        0%{
-            opacity: .2;
-        }
-        25%{
-            opacity: .4;
-        }
         50%{
-            opacity: .6;
+            opacity: .3;
         }
-        75%{
-            opacity: .8;
-        }
-        100%{ opacity: 1;}
     }
 
     // .btn-11 {

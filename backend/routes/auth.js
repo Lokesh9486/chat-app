@@ -29,7 +29,7 @@ const upload = multer({storage: multer.diskStorage({
  }) 
 })
 
-router.route("/getalluser").get(getAllUser);
+router.route("/getalluser").get(isAuthenticateUser,getAllUser);
 
 router.route("/register").post(upload.single("profile"),registerUser);
 

@@ -11,21 +11,22 @@ exports.createGroup=catchAsyncError(async(req,res,next)=>{
       body: { name,description,participance },
     } = req;
 
-    const foundedParticipent=await User.find({_id:{$in:participance}}).distinct('_id').lean();
+    const participances=JSON.parse(participance);
+    const foundedParticipent=await User.find({_id:{$in:participances}}).distinct('_id').lean();
     
-    const demoString=foundedParticipent.map(item=>item.toString());
-
-    const misMatchedparticipance=participance.reduce((_,item)=>!demoString.includes(item)?item:null,[]);
-
-    if(misMatchedparticipance?.length){
-        return next(new ErrorHandler(`This user's are not found ${misMatchedparticipance.toString()}`));
-    }
+        const demoString=foundedParticipent.map(item=>item.toString());
     
-    await Group.create({
-        name,description,participance:[...participance,id],created_by:id
-    });
-
-    return res.status(200).json("Group create successfully");
+        const misMatchedparticipance=participances.reduce((_,item)=>!demoString.includes(item)?item:null,[]);
+    
+        if(misMatchedparticipance?.length){
+            return next(new ErrorHandler(`This user's are not found ${misMatchedparticipance.toString()}`));
+        }
+        
+        await Group.create({
+            name,description,participance:[...participances,id],created_by:id
+        });
+    
+        return res.status(200).json("Group create successfully");
   
 });
 

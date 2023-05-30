@@ -353,30 +353,31 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
               created_by: { $first: "$groupCreatedBy.name" },
               message: {
                 $addToSet: {
-                  $cond: [
-                    { $ne: ["$groupChat.send_by", "$sender._id"] },
-                    {},
-                    {
-                      type: {
-                        $cond: {
-                          if: { $eq: [userId, "$groupChat.send_by"] },
-                          then: "send",
-                          else: "received",
+                  $cond:{
+                    if:{$and:[{$eq:["$groupChat.send_by", "$sender._id"]},
+                    {$eq:["$groupChat.group", "$groups._id"]}]},
+                    then:{
+                          type: {
+                            $cond: {
+                              if: { $eq: [userId, "$groupChat.send_by"] },
+                              then: "send",
+                              else: "received",
+                            },
+                          },
+                          message: "$groupChat.message",
+                          image: "$groupChat.image",
+                          location: "$groupChat.location",
+                          createdAt: "$groupChat.created_at",
+                          send_by: {
+                            id: "$groupChat.send_by",
+                            name: "$sender.name",
+                            email: "$sender.email",
+                            profile: "$sender.profile",
+                            active: "$sender.active",
+                          },
                         },
-                      },
-                      message: "$groupChat.message",
-                      image: "$groupChat.image",
-                      location: "$groupChat.location",
-                      createdAt: "$groupChat.created_at",
-                      send_by: {
-                        id: "$groupChat.send_by",
-                        name: "$sender.name",
-                        email: "$sender.email",
-                        profile: "$sender.profile",
-                        active: "$sender.active",
-                      },
-                    },
-                  ],
+                    else:{ createdAt: "$groups.created_at",}
+                  }
                 },
               },
             },

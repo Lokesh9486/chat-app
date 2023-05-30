@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { FormEvent, useState,ChangeEvent, useEffect, useRef, MutableRefObject } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { getModalShow, modalAction } from "../features/auth";
-import { signUpInterface } from "../types";
+import { getAllUser, signUpInterface } from "../types";
 import searchIcon from "../assets/images/seacrh.png";
 import userImage from "../assets/images/user.png";
 import tickImg from "../assets/images/tick.png";
 import chipCancel from "../assets/images/chipcancel.png";
+import { useCreateGroupMutation, useGetAllUserQuery } from "../app/groupApi";
 
 
 const Modal = () => {
@@ -27,7 +28,12 @@ const Modal = () => {
       errMessage:"Please enter description"
     },
   ]);
-  const participants=useState()
+  const [participants,setparticipants]=useState<getAllUser[]>([]);
+  const [proifle,setProfile]=useState<any>(undefined);
+  const [participantsError,setparticipantsError]=useState<boolean>(false);
+  const [createGroup,{data:createGroupData,isSuccess}]=useCreateGroupMutation();
+  const cancelButton=useRef<HTMLButtonElement | null>(null);
+
   function inputChange(trigger: string, value: string) {
     const filterData = signUpdetail.map((item) => {
       if (item.name === trigger) {
@@ -38,16 +44,90 @@ const Modal = () => {
     });
     setSignUpdetail(filterData);
   }
+
+  function setparticipantsFunc(data:getAllUser){
+    if(!participants.some(({_id}) =>  data._id===_id )){
+      setparticipants([...participants,data]);
+    }
+  }
+
+  function removeParticipants(id:string){
+    setparticipants(participants.filter(({_id})=>_id!==id))
+  }
+
+  const fileOnChange=(e:ChangeEvent<HTMLInputElement>)=>{
+    const reader=new FileReader();
+    reader.onload=()=>{
+      if(reader.readyState===2){
+        setProfile(e.target.files?.[0]);
+      }
+    }
+    if(e.target?.files){
+      reader.readAsDataURL(e.target.files?.[0])
+    }
+  }
+  
+  function formSubmit(e:FormEvent){
+    e.preventDefault();
+    const errorFunc = (
+      patt: RegExp,
+      value: string | undefined,
+      item: signUpInterface
+    ) => {
+      if (!value?.match(patt)) {
+        item["error"] = true;
+      } else {
+        item["error"] = false;
+      }
+      return item;
+    };
+    const errorMap: signUpInterface[] = signUpdetail.map((item) => {
+      const { type, value } = item;
+      if (type === "text") {
+        return errorFunc(/[a-zA-Z]{3,15}/, value, item);
+      }
+      return item;
+    });
+    setSignUpdetail(errorMap);
+    const errorValu = errorMap.every(({ error }) => !error);
+    const participantsCheck=participants.length>0&&participants.length<=10
+    if(!participantsCheck){
+      setparticipantsError(true);
+    }
+    else{
+      setparticipantsError(false);
+    }
+    
+    if (errorValu&&!participantsError) {
+      const formData=new FormData();
+      formData.append("name",signUpdetail[0].value)
+      formData.append("description",signUpdetail[1].value)
+      formData.append("image",proifle);
+      formData.append("participance",JSON.stringify(participants.map(({_id})=>_id)));
+      createGroup(formData);
+    }
+
+  }
+
+  useEffect(()=>{
+    if(isSuccess){
+      cancelButton?.current?.click();
+    }
+  },[isSuccess])
+  
+  const {data}=useGetAllUserQuery();
+  console.log(`Modal ~ data:`, data)
+  // 34567891
   return (
-<div className="modal fade show" id="groupCreation" tabIndex={-1} style={{display: "block"}}>
+<div className="modal fade" id="groupCreation" tabIndex={-1} >
   <div className="modal-dialog modal-dialog-centered">
     <div className="modal-content">
       <div className="modal-header border-0">
         <h1 className="modal-title fs-5" id="exampleModalLabel">Create group</h1>
-        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" ref={cancelButton} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body">
-        <form action="">
+        <form onSubmit={formSubmit}>
         {signUpdetail.map(
           ({ name, type, value, palceholder,error,errMessage}, index: number) => (
             <div className="position-relative" key={index}>
@@ -66,60 +146,61 @@ const Modal = () => {
             </div>
           )
         )}
+        <div className="input-group">
+          <input type="file" accept="image/*" onChange={fileOnChange} className="form-control log-input" id="inputGroupFile04"/>
+       </div>
         <div className="search-user-con">
+          <div className="position-relative">
           <div className="input-con">
-          <input type="text" placeholder="Search participants"/>
+          <input type="text" className={participantsError?"error":""}  placeholder="Search participants"/>
           <button type="button"><img src={searchIcon} alt="searchIcon" />
-          <img src="" alt="" />
           </button>
           </div>
+          {
+             participantsError && <p className="error-msg">select participants 1 to 10</p>
+          }
+          </div>
+          
           <ul className="chip-con">
-            <li><img src={userImage} className="user-logo" alt="userImage" />
-             <span>user1</span> <button type="button" className="cancel-btn">
-              <img src={chipCancel} alt="" /></button></li>
-            <li><img src={userImage} className="user-logo" alt="userImage" />
-             <span>user1</span> <button type="button" className="cancel-btn">
-              <img src={chipCancel} alt="" /></button></li>
-            <li><img src={userImage} className="user-logo" alt="userImage" />
-             <span>user1</span> <button type="button" className="cancel-btn">
-              <img src={chipCancel} alt="" /></button></li>
-            <li><img src={userImage} className="user-logo" alt="userImage" />
-             <span>user1</span> <button type="button" className="cancel-btn">
-              <img src={chipCancel} alt="" /></button></li>
-            <li><img src={userImage} className="user-logo" alt="userImage" />
-             <span>user1</span> <button type="button" className="cancel-btn">
-              <img src={chipCancel} alt="" /></button></li>
-            <li><img src={userImage} className="user-logo" alt="userImage" />
-             <span>user1</span> <button type="button" className="cancel-btn">
-              <img src={chipCancel} alt="" /></button></li>
-            <li><img src={userImage} className="user-logo" alt="userImage" />
-             <span>user1</span> <button type="button" className="cancel-btn">
-              <img src={chipCancel} alt="" /></button></li>
-            <li><img src={userImage} className="user-logo" alt="userImage" />
-             <span>user1</span> <button type="button" className="cancel-btn">
-              <img src={chipCancel} alt="" /></button></li>
-            <li><img src={userImage} className="user-logo" alt="userImage" />
-             <span>user1</span> <button type="button" className="cancel-btn">
-              <img src={chipCancel} alt="" /></button></li>
-            <li><img src={userImage} className="user-logo" alt="userImage" />
-             <span>user1</span> <button type="button" className="cancel-btn">
-              <img src={chipCancel} alt="" /></button></li>
+            {
+              participants?.map(({_id,name,profile},index)=>{
+             return <li  key={index}><img src={profile??userImage} className="user-logo" alt="userImage" />
+             <span>{name}</span> 
+             <button type="button" className="cancel-btn" onClick={()=>removeParticipants(_id)}>
+              <img src={chipCancel} alt="" />
+             </button>
+            </li>
+              })
+            }
           </ul>
           <ul className="search-participants-con">
-            <li className="active"><img src={userImage} alt="userImage" /> <span>user1</span> <img src={tickImg} className="tick-img" alt="tickImg" /></li>
-            <li>user2</li>
-            <li>user3</li>
-            <li>user1</li>
-            <li>user2</li>
-            <li>user3</li>
-            <li>user1</li>
-            <li>user2</li>
-            <li>user3</li>
-            <li>user1</li>
-            <li>user2</li>
-            <li>user3</li>
+            {
+           data? data.map(({name,email,_id,active,profile},index)=>{
+            return <li onClick={()=>setparticipantsFunc({name,email,_id,active,profile})} key={index}>
+              <img src={profile??userImage} alt="userImage" />
+              <div>
+               <span>{name}</span>
+               <span>{email}</span>
+              </div>
+              <img src={tickImg} className="tick-img" alt="tickImg" /></li>
+              }):
+              <div className="skeleton">
+                   {[...Array(4)].map((_, index) => (
+                    <div className="split" key={index}>
+                      <div className="user-round"></div>
+                      <div className="w-100 d-flex alig-items-center flex-column gap-3">
+                        <div className="input-straight"></div>
+                        <div className="input-straight w-50"></div>
+                      </div>
+                    </div>
+                  ))
+                }
+              </div>
+          }
           </ul>
         </div>
+        <button type="submit">Create group</button>
+
         </form>
       </div>
     </div>

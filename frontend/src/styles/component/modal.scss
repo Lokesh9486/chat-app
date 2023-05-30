@@ -4,6 +4,10 @@
         border-radius: 3px;
         .log-input{
             width: 100%;
+            margin-bottom: 30px;
+        }
+        input[type=file]{
+            border: transparent;
         }
         .search-user-con{
             .input-con{
@@ -77,10 +81,14 @@
                         &.tick-img{
                             width: 1.3em;
                             margin-left: auto;
+                            display: none;
                         }
                     }
                     &.active{
                         background-color: aliceblue;
+                        .tick-img{
+                            display: block;
+                        }
                     }
                 }
             }

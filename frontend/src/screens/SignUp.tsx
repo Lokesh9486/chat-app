@@ -8,7 +8,7 @@ import user from "../assets/images/user.png";
 import dotLoader from "../assets/images/dotloader.gif";
 
 const SignUp = () => {
-  const [signUp, { data, isError, isLoading, isSuccess, error ,isUninitialized}] =useRegisterMutation();
+  const [signUp, { data, isError, isLoading, isSuccess, error }] =useRegisterMutation();
   const history = useNavigate();
   const [signUpdetail, setSignUpdetail] = useState<signUpInterface[]>([
     {

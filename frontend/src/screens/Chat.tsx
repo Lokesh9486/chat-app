@@ -24,6 +24,7 @@ import MapCom from "../components/MapCom";
 import GroupImg from "../assets/images/group.png";
 import imageplaceholder from "../assets/images/imageplaceholder.png"
 import { useSendMessageGroupMutation } from "../app/groupApi";
+import addGroupIcon from "../assets/images/addGroup.png";
 
 
 const Chat = () => {
@@ -301,17 +302,22 @@ const Chat = () => {
                     ?.filter(({ id }) => id === currentChat)
                     ?.map(({ active, id, lastmessage, name, profile },index) => {
                       return (
-                        <Fragment key={index}>
+                        <div className="d-flex align-items-center" key={index}>
                           <UserImgCon
                             profile={profile}
                             status={active ? " currently-active" : ""}
                             id={id}
                           />
                           <p className="user-name">{name}</p>
-                        </Fragment>
+                        </div>
                       );
                     }))()}
+                <div className="ml-auto">
+                {
+                  currentChatData.group && <button type="button" className="group-btn"><img src={addGroupIcon} alt="addGroupIcon" /></button>
+                }
                 <button type="button" className="group-btn" data-bs-toggle="modal" data-bs-target="#groupCreation"><img src={GroupImg} alt="GroupImg" /></button>
+                </div>
               </div>
               <div className="chat-body" ref={ulElement}>
                 {

@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
+import { getAllUser } from "../types";
 
 export const groupApi=createApi({
     reducerPath:"groupApi",
@@ -19,8 +20,13 @@ export const groupApi=createApi({
             method:"POST",
             body:data.formData
         })
+    }),
+    getAllUser:builder.query<getAllUser[],void>({
+        query:()=> `/getalluser`
     })
    })
 })
 
-export const {useCreateGroupMutation,useSendMessageGroupMutation}=groupApi
+export const {useCreateGroupMutation,useSendMessageGroupMutation,
+    useGetAllUserQuery
+}=groupApi

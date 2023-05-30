@@ -37,6 +37,6 @@ router.route("/message/delete").delete(isAuthenticateUser, deleteMessage);
 
 router.route('/groupChat/:toGroupId').post(isAuthenticateUser,upload.single("image"), sendGroupMsg);
 
-router.route('/createGroup').post(isAuthenticateUser, createGroup);
+router.route('/createGroup').post(isAuthenticateUser,upload.single("image"), createGroup);
 
 module.exports = router;

@@ -50,3 +50,7 @@ export interface sidebarDataType{
   image:boolean
   location:boolean
 }
+
+export interface getAllUser{
+  email: string; name: string; _id:string ,profile:string,active:Date
+}

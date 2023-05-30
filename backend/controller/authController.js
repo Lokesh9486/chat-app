@@ -7,7 +7,7 @@ const sendToken = require("../utils/jwt");
 const exphbs=require("express-handlebars");
 
 exports.getAllUser = catchAsyncError(async (req, res, next) => {
-  const users = await User.find();
+  const users = await User.find({},"name _id email active profile ");
   res.status(200).json(users);
 });
 
