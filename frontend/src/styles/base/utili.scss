@@ -110,6 +110,7 @@ input:focus{
     &.currently-active{
       &:after{
         background-color: rgb(39, 214, 39);
+        border: 2px solid #fff;
       }
   }
 }

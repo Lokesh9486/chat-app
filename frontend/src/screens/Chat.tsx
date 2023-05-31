@@ -25,6 +25,7 @@ import GroupImg from "../assets/images/group.png";
 import imageplaceholder from "../assets/images/imageplaceholder.png"
 import { useSendMessageGroupMutation } from "../app/groupApi";
 import addGroupIcon from "../assets/images/addGroup.png";
+import { group } from "console";
 
 
 const Chat = () => {
@@ -62,7 +63,7 @@ const Chat = () => {
   const sidebarData = data?.reduce(
     (
       array: sidebarDataType[],
-      { name, message, _id, active, profile }: registerApiData
+      { name, message, _id, active, profile,group }: registerApiData
     ) => {
       array.push({
         name,
@@ -72,6 +73,7 @@ const Chat = () => {
         location: message[message.length - 1].location?true:false,
         id: _id,
         profile,
+        group
       });
       return array;
     },
@@ -268,7 +270,7 @@ const Chat = () => {
             <p className="side-bar-topic ternary-topic">Chats</p>
             <ul>
               {sidebarData?.map(
-                ({ name, lastmessage, id, active, profile,image,location }, index) => {
+                ({ name, lastmessage, id, active, profile,image,location,group }, index) => {
                   return (
                     <li
                       key={index}
@@ -276,6 +278,7 @@ const Chat = () => {
                       onClick={() => setCurrentChat(id)}
                     >
                       <UserImgCon
+                      isGroup={group}
                         profile={profile}
                         status={active ? " currently-active" : ""}
                         id={id}
@@ -300,10 +303,11 @@ const Chat = () => {
                 {(() =>
                   sidebarData
                     ?.filter(({ id }) => id === currentChat)
-                    ?.map(({ active, id, lastmessage, name, profile },index) => {
+                    ?.map(({ active, id, lastmessage, name, profile,group },index) => {
                       return (
                         <div className="d-flex align-items-center" key={index}>
                           <UserImgCon
+                           isGroup={group}
                             profile={profile}
                             status={active ? " currently-active" : ""}
                             id={id}

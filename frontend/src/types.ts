@@ -48,7 +48,8 @@ export interface sidebarDataType{
   active:boolean,
   profile:string,
   image:boolean
-  location:boolean
+  location:boolean,
+  group?:boolean
 }
 
 export interface getAllUser{
