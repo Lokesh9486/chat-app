@@ -4,7 +4,7 @@ const { sendMessage, getMessage, updateMessage, deleteMessage, getAllMessage } =
 const multer = require("multer");
 const router = express.Router();
 const path=require("path");
-const { createGroup , sendGroupMsg} = require("../controller/groupController");
+const { createGroup , sendGroupMsg, getSingleGroup} = require("../controller/groupController");
 
 //upload.single("avatar") single
 //upload.array("avatar") multi 
@@ -38,5 +38,7 @@ router.route("/message/delete").delete(isAuthenticateUser, deleteMessage);
 router.route('/groupChat/:toGroupId').post(isAuthenticateUser,upload.single("image"), sendGroupMsg);
 
 router.route('/createGroup').post(isAuthenticateUser,upload.single("image"), createGroup);
+
+router.route('/group/:groupId').get(isAuthenticateUser,getSingleGroup)
 
 module.exports = router;

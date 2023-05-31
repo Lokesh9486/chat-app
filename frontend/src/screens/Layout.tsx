@@ -16,13 +16,12 @@ const Layout = () => {
   const userId = useAppSelector(getSideBarUserID);
   const dispatch = useAppDispatch();
   const history=useNavigate();
-  const { data, isError, isLoading, isSuccess, error } = useFoundUserQuery(userId,{ skip: !modalShow });
+  // const { data, isError, isLoading, isSuccess, error } = useFoundUserQuery(userId,{ skip: !modalShow });
 const { data: userDetails } = useGetUserProfileQuery();
 
 const {data:userLogoOutData,isSuccess:userLogoSuccess} = useLogoutUserQuery("",{skip:userLogout});
 
 useEffect(()=>{
-  console.log(userLogoOutData,userLogoSuccess,userLogout);
    if(userLogoSuccess){
     dispatch(modalAction({ modal: !modalShow, userID: "" }))
     history("/signin");
@@ -54,7 +53,7 @@ useEffect(()=>{
             <img src={cancel} alt="" className="profile-img-upload" />
           </button>
         </div>
-        {isLoading ? (
+        {/* {isLoading ? (
           <div className="user-while-loader">
             <img src={clockgif} alt="clock" />
           </div>
@@ -89,7 +88,7 @@ useEffect(()=>{
             </button>
             }
           </div>
-        )}
+        )} */}
       </div>
       <Modal/>  
     </section>

@@ -6,6 +6,7 @@ const group=new Schema({
         require:true
     },
     description:String,
+    profile:String,
     created_by:{
         type:SchemaTypes.ObjectId,
         require:true

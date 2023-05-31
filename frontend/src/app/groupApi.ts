@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { getAllUser } from "../types";
+import { getAllUser, getSingleGroup } from "../types";
 
 export const groupApi=createApi({
     reducerPath:"groupApi",
@@ -23,10 +23,14 @@ export const groupApi=createApi({
     }),
     getAllUser:builder.query<getAllUser[],void>({
         query:()=> `/getalluser`
-    })
+    }),
+    getSingleGroup:builder.query<getSingleGroup[],string>({
+        query:(data)=>`/group/${data}`
+    }) 
    })
 })
 
 export const {useCreateGroupMutation,useSendMessageGroupMutation,
-    useGetAllUserQuery
+    useGetAllUserQuery,
+    useGetSingleGroupQuery
 }=groupApi

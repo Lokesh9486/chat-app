@@ -41,7 +41,7 @@ export const authApi = createApi({
     getUserProfile: builder.query<any, void>({
       query: () => "/getuser",
     }),
-    searchUser: builder.query<{ email: string; name: string; _id:string }[], string>({
+    searchUser: builder.query<{ email: string; name: string; _id:string,profile:string }[], string>({
       query: (data) => `/search/${data}`,
     }),
     foundUser:builder.query<foundUser,string>({

@@ -55,3 +55,13 @@ export interface sidebarDataType{
 export interface getAllUser{
   email: string; name: string; _id:string ,profile:string,active:Date
 }
+
+export interface getSingleGroup{
+    _id: string,
+    name: string,
+    description: string,
+    profile: string,
+    created_by: string,
+    participance: {name:string,profile:string}[],
+    created_at: Date
+}

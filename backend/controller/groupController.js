@@ -3,6 +3,7 @@ const User = require("../model/userModel");
 const Group=require("../model/group");
 const Groupchat=require("../model/groupChatModel");
 const ErrorHandler = require("../utils/errorHandler");
+const mongoose = require("mongoose");
 
 
 exports.createGroup=catchAsyncError(async(req,res,next)=>{
@@ -10,6 +11,14 @@ exports.createGroup=catchAsyncError(async(req,res,next)=>{
       user: { id },
       body: { name,description,participance },
     } = req;
+
+    let profile;
+
+    if (req.file) {
+      profile = `${req.protocol}://${req.get("host")}/uploads/sharedImages/${
+        req.file.filename
+      }`;
+    }
 
     const participances=JSON.parse(participance);
     const foundedParticipent=await User.find({_id:{$in:participances}}).distinct('_id').lean();
@@ -23,7 +32,7 @@ exports.createGroup=catchAsyncError(async(req,res,next)=>{
         }
         
         await Group.create({
-            name,description,participance:[...participances,id],created_by:id
+            name,description,profile,participance:[...participances,id],created_by:id
         });
     
         return res.status(200).json("Group create successfully");
@@ -73,4 +82,24 @@ exports.sendGroupMsg=catchAsyncError(async(req,res,next)=>{
     
 });
 
+exports.getSingleGroup=catchAsyncError(async(req,res,next)=>{
+  const {groupId}=req.params;
+    console.log(`exports.getSingleGroup=catchAsyncError ~ groupId:`, groupId)
+    // const user=await Group.findById(groupId).select(" -__v ");
+    const id= new mongoose.Types.ObjectId(groupId);
+    const user=await Group.aggregate()
+    .match({_id:id})
+    .lookup({from:'users',localField:'created_by',foreignField:'_id',as:'createdBy'})
+    .lookup({from:'users',localField:'participance',foreignField:'_id',as:'participances'})
+    .unwind("createdBy","participances")
+    .group({
+      _id:"$_id",
+      name:{$first:"$name"},
+      description:{$first:"$description"},
+      profile:{$first:"$profile"},
+      created_by:{$first:"$createdBy.name"},
+      participance:{$push:{name:"$participances.name",profile:"$participances.profile"}}
+    });
+   return res.status(200).json(user);
+})
 

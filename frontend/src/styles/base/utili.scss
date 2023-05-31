@@ -112,6 +112,40 @@ input:focus{
         background-color: rgb(39, 214, 39);
         border: 2px solid #fff;
       }
+    }
+    &.dropdown-toggle{
+      &::after{
+        display: none;
+      }
+    }
+
+}
+
+.sidebar-dropdown-con{
+  width: 300px;
+  padding-inline: 0.5rem;
+  .img-con{
+    display: flex;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    img{
+      width: 5em;
+      border-radius: 0;
+    }
+    .user-detail{
+      display: flex;
+      align-items: center;
+      gap: .5em;
+      .user-icon{
+        width: 1em;
+      }
+    }
+  }
+  .participance-con{
+    padding-top: 0.5rem;
+    .participance-logo{
+      width: 2em;
+    }
   }
 }
 

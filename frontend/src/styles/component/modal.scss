@@ -9,6 +9,10 @@
         input[type=file]{
             border: transparent;
         }
+        .select-img-label{
+            display: flex;
+            margin-left: auto;
+        }
         .search-user-con{
             .input-con{
                 display: flex;
@@ -71,6 +75,7 @@
                     padding: .5em;
                     display: flex;
                     align-items: center;
+                    cursor: default;
                     span{
                         margin-left: 1em;
                     }
@@ -92,6 +97,13 @@
                     }
                 }
             }
+        }
+        .create-btn{
+            background-color: var(--blue-color);
+            border: 0;
+            border-radius: 2px;
+            color: #fff;
+            padding:.5em 1em;
         }
     }
 }

@@ -45,6 +45,7 @@
             align-items: center;
             gap: 6%;
             font-size: FontSize(18);
+            cursor: default;
             .last-message{
               width: 140px;
               white-space: nowrap;
@@ -61,6 +62,7 @@
             }
           }
         }
+        
       }
     }
     .chat-container {

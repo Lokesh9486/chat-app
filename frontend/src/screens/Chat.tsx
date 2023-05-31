@@ -25,7 +25,6 @@ import GroupImg from "../assets/images/group.png";
 import imageplaceholder from "../assets/images/imageplaceholder.png"
 import { useSendMessageGroupMutation } from "../app/groupApi";
 import addGroupIcon from "../assets/images/addGroup.png";
-import { group } from "console";
 
 
 const Chat = () => {
@@ -41,7 +40,7 @@ const Chat = () => {
   //   }
   //   );
   
-  // console.log(data);
+  console.log(data);
   
 
   const [sendMessage, { data: value, isError, isLoading, isSuccess }] = useSendMessageMutation();
@@ -220,7 +219,8 @@ const Chat = () => {
           {/* sidebar header */}
           <div className="side-bar-header">
             <button type="button" className="primary-transparent-btn"
-            onClick={()=>dispatch(modalAction({modal:!modalShow,userID:userDetails?.user._id}))}>
+            // onClick={()=>dispatch(modalAction({modal:!modalShow,userID:userDetails?.user._id}))}
+            >
             <img
               src={userDetails?.user.profile ?? user}
               alt="user"
@@ -242,7 +242,7 @@ const Chat = () => {
                 <>
                   <p className="side-bar-topic ternary-topic">Users</p>
                   <ul>
-                    {userSeacrh?.map(({ name, email, _id: id }, index) => {
+                    {userSeacrh?.map(({ name, email, _id: id,profile }, index) => {
                       return (
                         <li
                           key={index}
@@ -250,10 +250,10 @@ const Chat = () => {
                           onClick={() => setCurrentChat(id)}
                         >
                           <img
-                            src={user}
+                            src={profile??user}
                             alt="user"
                             className="profile-img-upload"
-                            onClick={()=>dispatch(modalAction({modal:!modalShow,userID:id}))}
+                            // onClick={()=>dispatch(modalAction({modal:!modalShow,userID:id}))}
                           />
                           <div>
                             <p className="user-name">{name}</p>
@@ -278,7 +278,7 @@ const Chat = () => {
                       onClick={() => setCurrentChat(id)}
                     >
                       <UserImgCon
-                      isGroup={group}
+                       isGroup={group}
                         profile={profile}
                         status={active ? " currently-active" : ""}
                         id={id}
@@ -361,8 +361,7 @@ const Chat = () => {
                     if (renderDateArr.includes(date)) {
                       renderDate = "";
                     }
-                    messsage.push(
-                      
+                    id&& messsage.push(
                       <Fragment key={index}>
                         {renderDate && (
                          createdAt&& <div className="unique-date">
