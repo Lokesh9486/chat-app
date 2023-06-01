@@ -124,6 +124,8 @@ input:focus{
 .sidebar-dropdown-con{
   width: 300px;
   padding-inline: 0.5rem;
+  border: 0;
+  box-shadow: 0 1px 3px -1px #e6ebf0,0 2px 5px -1px #a3a9c0;
   .img-con{
     display: flex;
     align-items: center;
@@ -133,11 +135,13 @@ input:focus{
       border-radius: 0;
     }
     .user-detail{
-      display: flex;
-      align-items: center;
-      gap: .5em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: calc( 100% );
       .user-icon{
         width: 1em;
+        margin-right: .5em;
       }
     }
   }
@@ -145,6 +149,14 @@ input:focus{
     padding-top: 0.5rem;
     .participance-logo{
       width: 2em;
+    }
+    ul{
+      max-height: 200px;
+      overflow: auto;
+      @include scroll-bar;
+      li{
+        font-size: .9em !important;
+      }
     }
   }
 }
@@ -158,17 +170,16 @@ input:focus{
   border: 0;
 }
 
-.cancel-btn{
-  // width: ;
-}
-
 .logout-btn{
   border: 0;
   background-color: var(--blue-color);
-  padding: FontSize(6);
+  padding: .3em 1em;
   color: var(--white-color);
-  border-radius: 5px;
-  font-size: FontSize(17);
-  margin-top: 10%;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px -1px #e6ebf0,0 2px 5px -1px #a3a9c0;
+  margin-left: auto;
+  display: flex;
+  // font-size: FontSize(17);
+  // margin-top: 10%;
 }
 

@@ -5,6 +5,9 @@ import { useLoginMutation } from "../app/authApi";
 import dotLoader from "../assets/images/dotloader.gif";
 import { chatApi, useGetChatDetailsQuery } from "../app/chatApi";
 import { useAppDispatch } from "../app/hooks";
+import { motion } from "framer-motion";
+import successIson from "../assets/images/success.png";
+
 
 const SignIn = () => {
   const history = useNavigate();
@@ -46,13 +49,33 @@ const errorHandler = (match: string, regex: RegExp) => {
   useEffect(() => {
     if (isSuccess) {
       dispatch(chatApi.util.resetApiState());
-      return history("/");
+      // return history("/");
     }
   }, [isSuccess]);
 
+  const variants = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1, y: "0"},
+    exit: { opacity: 0, y: "100%" }
+  };
+
   return (
     <section className="sign-in">
-      <form action="" onSubmit={formSubmit}>
+      <div
+      className={`message-con ${isSuccess?"active":""}`}
+      >
+        <img src={successIson} alt="" />
+        <div>
+          <h5>Success</h5>
+          <p>Login successfull</p>
+        </div>
+        </div>
+      <motion.form
+      initial={variants.initial}
+      animate={ variants.animate}
+      exit={variants.exit}
+      transition={{ duration: 0.5 }}
+       onSubmit={formSubmit}>
         <div className="logo-setup">
         <img src={logo} alt="logo" className="logo" />
         <p className="logo-text">postbox</p>
@@ -92,7 +115,7 @@ const errorHandler = (match: string, regex: RegExp) => {
         </div>
 
         <Link to="/signup">Sign Up</Link>
-      </form>
+      </motion.form>
     </section>
   );
 };

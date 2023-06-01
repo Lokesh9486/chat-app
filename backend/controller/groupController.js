@@ -84,8 +84,6 @@ exports.sendGroupMsg=catchAsyncError(async(req,res,next)=>{
 
 exports.getSingleGroup=catchAsyncError(async(req,res,next)=>{
   const {groupId}=req.params;
-    console.log(`exports.getSingleGroup=catchAsyncError ~ groupId:`, groupId)
-    // const user=await Group.findById(groupId).select(" -__v ");
     const id= new mongoose.Types.ObjectId(groupId);
     const user=await Group.aggregate()
     .match({_id:id})
@@ -98,8 +96,25 @@ exports.getSingleGroup=catchAsyncError(async(req,res,next)=>{
       description:{$first:"$description"},
       profile:{$first:"$profile"},
       created_by:{$first:"$createdBy.name"},
-      participance:{$push:{name:"$participances.name",profile:"$participances.profile"}}
+      participance:{$push:{name:"$participances.name",profile:"$participances.profile",email:"$participances.email"}}
     });
    return res.status(200).json(user);
 })
 
+exports.deleteGroupMsg=catchAsyncError(async(req,res,next)=>{
+  const { id } = req.params;
+  const user=req.user;
+  const isParticipant=await Groupchat.find({participance:user});
+  
+  if(!isParticipant){
+    return res.status(200).json("user is not a participant")
+  }
+
+  const result=await Groupchat.findByIdAndDelete(id);
+
+  if(!result){
+    return res.status(200).json("Unable to delete message")
+  }
+
+  return res.status(200).json("Message deleted successfully");
+})

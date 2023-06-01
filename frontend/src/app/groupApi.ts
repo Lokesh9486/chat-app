@@ -26,11 +26,18 @@ export const groupApi=createApi({
     }),
     getSingleGroup:builder.query<getSingleGroup[],string>({
         query:(data)=>`/group/${data}`
-    }) 
+    }),
+    deleteGroupMessage:builder.mutation({
+        query:(data)=>({
+            url:`/group/message/delete/${data}`,
+            method:"DELETE"
+        })
+    })
    })
 })
 
 export const {useCreateGroupMutation,useSendMessageGroupMutation,
     useGetAllUserQuery,
-    useGetSingleGroupQuery
+    useGetSingleGroupQuery,
+    useDeleteGroupMessageMutation
 }=groupApi

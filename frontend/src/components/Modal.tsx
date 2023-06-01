@@ -117,8 +117,7 @@ const Modal = () => {
   },[isSuccess])
   
   const {data}=useGetAllUserQuery();
-  console.log(`Modal ~ data:`, data)
-  // 34567891
+
   return (
 <div className="modal fade" id="groupCreation" tabIndex={-1} >
   <div className="modal-dialog modal-dialog-centered">

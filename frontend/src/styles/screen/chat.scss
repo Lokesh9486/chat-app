@@ -20,6 +20,11 @@
         align-items: center;
         border-bottom: 1px solid var(--background-color);
         gap: 10px;
+        .dropdown-toggle{
+          &::after{
+            display: none;
+          }
+        }
         input {
           width: 100%;
           padding: FontSize(9) FontSize(14);
@@ -39,7 +44,7 @@
           padding: 0;
           li {
             padding: FontSize(10) FontSize(25);
-            border-radius: 5px;
+            border-radius: 3px;
             list-style: none;
             display: flex;
             align-items: center;
@@ -58,7 +63,8 @@
             }
             &.active {
               background-color: aliceblue;
-              box-shadow: rgba(100, 100, 111, 0.2) 0px 5px 13px 0px;
+              // box-shadow: rgba(100, 100, 111, 0.2) 0px 5px 13px 0px;
+              box-shadow: 0 1px 3px -1px #e6ebf0, 0 2px 5px -1px #a3a9c0;
             }
           }
         }
@@ -80,6 +86,19 @@
           margin-left: auto;
           img{
             width: FontSize(40);
+          }
+        }
+        .participants-user-con{
+          list-style: none;
+          padding: 0px;
+          max-height: 200px;
+          overflow: auto;
+          @include scroll-bar;
+          li{
+            display: flex;
+            align-items: center;
+            padding: .6em;
+            gap: .5em;
           }
         }
       }

@@ -364,6 +364,7 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
                               else: "received",
                             },
                           },
+                          id: "$groupChat._id",
                           message: "$groupChat.message",
                           image: "$groupChat.image",
                           location: "$groupChat.location",
@@ -401,20 +402,20 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
               message: { $push: "$message" },
             },
           },
-          {
-            $project: {
-              _id: 0,
-              groupChat: {
-                $cond: [{ $eq: ["$_id", null] }, [], "$$ROOT"],
-              },
-            },
-          },
-          {
-            $unwind: "$groupChat",
-          },
-          {
-            $replaceRoot: { newRoot: "$groupChat" },
-          },
+          // {
+          //   $project: {
+          //     _id: 0,
+          //     groupChat: {
+          //       $cond: [{ $eq: ["$_id", null] }, [], "$$ROOT"],
+          //     },
+          //   },
+          // },
+          // {
+          //   $unwind: "$groupChat",
+          // },
+          // {
+          //   $replaceRoot: { newRoot: "$groupChat" },
+          // },
           {
             $project: {
               _id: 0,

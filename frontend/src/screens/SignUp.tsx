@@ -6,6 +6,7 @@ import { useRegisterMutation } from "../app/authApi";
 import  uploadImg from "../assets/images/uploadimage.png";
 import user from "../assets/images/user.png";
 import dotLoader from "../assets/images/dotloader.gif";
+import { motion  } from "framer-motion";
 
 const SignUp = () => {
   const [signUp, { data, isError, isLoading, isSuccess, error }] =useRegisterMutation();
@@ -111,10 +112,22 @@ const SignUp = () => {
       reader.readAsDataURL(e.target.files?.[0])
     }
   }
+  const variants = {
+    initial: { opacity: 0, y: "-100%" },
+    animate: { opacity: 1, y: "0"},
+    exit: { opacity: 0, y: "100%"  }
+  };
 
   return (
-    <section className="sign-screen">
-      <form action="" onSubmit={registerSubmit}>
+    <section
+     className="sign-screen">
+      
+      <motion.form
+      initial={variants.initial}
+      animate={variants.animate}
+      exit={variants.exit}
+      transition={{ duration: 0.5 }}
+      onSubmit={registerSubmit}>
       <div className="logo-setup">
         <img src={logo} alt="logo" className="logo" />
         <p className="logo-text">postbox</p>
@@ -148,7 +161,7 @@ const SignUp = () => {
         </label>
         <div className="d-flex align-items-center  gap-3">
         <img src={preview||user} alt="preview"   className="profile-img-upload"/>
-        <p className="image-name">{proifle?.name || "Image name"}</p>
+        <p className="image-name">{proifle?.name || ""}</p>
         </div>
         {isError&&<div className="position-relative">
              <p className="error-msg">{(error as any)?.data}</p>
@@ -163,7 +176,7 @@ const SignUp = () => {
         <div className="split-topic">
           <Link to="/signin">Sign in</Link>
         </div>
-      </form>
+      </motion.form>
     </section>
   );
 };

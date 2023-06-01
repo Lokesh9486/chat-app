@@ -4,10 +4,7 @@ const { sendMessage, getMessage, updateMessage, deleteMessage, getAllMessage } =
 const multer = require("multer");
 const router = express.Router();
 const path=require("path");
-const { createGroup , sendGroupMsg, getSingleGroup} = require("../controller/groupController");
-
-//upload.single("avatar") single
-//upload.array("avatar") multi 
+const { createGroup , sendGroupMsg, getSingleGroup, deleteGroupMsg} = require("../controller/groupController");
 
 const upload=multer({
   storage:multer.diskStorage({
@@ -40,5 +37,7 @@ router.route('/groupChat/:toGroupId').post(isAuthenticateUser,upload.single("ima
 router.route('/createGroup').post(isAuthenticateUser,upload.single("image"), createGroup);
 
 router.route('/group/:groupId').get(isAuthenticateUser,getSingleGroup)
+
+router.route("/group/message/delete/:id").delete(isAuthenticateUser, deleteGroupMsg);
 
 module.exports = router;

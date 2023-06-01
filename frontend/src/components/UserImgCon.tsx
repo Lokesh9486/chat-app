@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import {useState} from "react";
 import user from "../assets/images/user.png";
 import group from "../assets/images/group.png";
 import name from "../assets/images/name.png";
@@ -7,54 +8,53 @@ import online from "../assets/images/online.png";
 import description from "../assets/images/description.png";
 import offline from "../assets/images/offline.png";
 import groupIcon from "../assets/images/groupicon.png";
-import { getModalShow, modalAction } from "../features/auth";
-import { useFoundUserQuery } from "../app/authApi";
+import { useFoundUserQuery, useLogoutUserQuery } from "../app/authApi";
 import { useGetSingleGroupQuery } from "../app/groupApi";
 import { Fragment } from "react";
 
-const UserImgCon = ({profile,status,id,isGroup}:{profile:string,status:string,id:string,isGroup?:boolean}) => {
-  // const dispatch=useAppDispatch();
-  // const modalShow=useAppSelector(getModalShow);
-  
-  const { data, isError, isLoading, isSuccess, error } = useFoundUserQuery(id);
+const UserImgCon = ({profile,id,isGroup,isUser}:{profile:string,id:string,isGroup?:boolean,isUser?:boolean}) => {
+  const [userLogout,setUserLogo]=useState(true);
+  const {data} = useFoundUserQuery(id);
   const {data:groupData}=useGetSingleGroupQuery(id);
-  console.log(`UserImgCon ~ groupData:`, groupData)
-  // console.log(data);
   const active=((Date.now() - Number(new Date(data?.active?new Date(data?.active):""))) < 20 * 1000) ;
+  const {data:userLogoOutData,isSuccess:userLogoSuccess} = useLogoutUserQuery("",{skip:userLogout});
+
   return (
     <div className="dropdown">
-    <button type="button" data-bs-toggle="dropdown"  className={`sidebar-user dropdown-toggle primary-transparent-btn ${status}`}
-    // onClick={()=>dispatch(modalAction({modal:!modalShow,userID:id}))}
+    <button type="button" data-bs-toggle="dropdown"  
+    className={`sidebar-user dropdown-toggle primary-transparent-btn 
+    ${active ? " currently-active" : ""}`}
     >
       <img src={profile||(isGroup?group: user)} alt="user" className="profile-img-upload" />
     </button>
     <div className="dropdown-menu sidebar-dropdown-con">
+    {isGroup&&<h6 className="user-detail">Create by : <span>{groupData?.[0]?.created_by}</span> </h6>}
       <div className="img-con ">
       <img src={profile||(isGroup?group: user)} alt="user" className="profile-img-upload border-end" />
-      <div className="ps-3">
+      <div className="ps-3" style={{width: "calc(100% - 5em)"}}>
       {
         isGroup?
         <Fragment>
-          <p className="user-detail"><img src={groupIcon} alt=""  className="user-icon"/>{groupData?.[0]?.name}</p>
-          <p className="user-detail"><img src={description} alt=""  className="user-icon"/>{groupData?.[0]?.description}</p>
+          <p className="user-detail"><img src={groupIcon} alt="groupIcon"  className="user-icon"/>{groupData?.[0]?.name}</p>
+          <p className="user-detail"><img src={description} alt="description"  className="user-icon"/>{groupData?.[0]?.description}</p>
         </Fragment>
         :
         <Fragment>
-          <p className="user-detail"><img src={name} alt=""  className="user-icon"/>{data?.name}</p>
-          <p className="user-detail"><img src={email} alt=""  className="user-icon"/>{data?.email}</p>
+          <p className="user-detail"><img src={name} alt="name"  className="user-icon"/>{data?.name}</p>
+          <p className="user-detail"><img src={email} alt="email"  className="user-icon"/>{data?.email}</p>
           <p className="user-detail"><img src={active?online:offline} alt=""  className="user-icon"/>{active? "Active":  "Away"}</p>
+          {isUser&& <button type="button" className="logout-btn"onClick={()=>setUserLogo(false)}>logout</button>}
         </Fragment>
       }
       </div>
       </div>
       {isGroup&&
         <div className="participance-con border-top">
-          <h6 className="user-detail"><span>Create by :</span> {groupData?.[0]?.created_by}</h6>
           <h6>Participants :</h6>
-          <ul>
+          <ul className="participants-user-con">
             {
-              groupData?.[0]?.participance.map(({name,profile},index)=>
-                <li key={index}><img src={profile??user} alt="user" className="participance-logo" /><span>{name}</span></li>
+              groupData?.[0]?.participance.map(({name,profile,email},index)=>
+                <li key={index}><img src={profile??user} alt="user" className="participance-logo" /><span>{name}</span><span>({email})</span></li>
               )
             }
           </ul>

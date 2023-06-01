@@ -62,6 +62,6 @@ export interface getSingleGroup{
     description: string,
     profile: string,
     created_by: string,
-    participance: {name:string,profile:string}[],
+    participance: {name:string,profile:string,email:string}[],
     created_at: Date
 }
