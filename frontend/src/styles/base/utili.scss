@@ -96,7 +96,7 @@ input:focus{
 
 .sidebar-user{
   position: relative;
-    &:after{
+    &::before{
       content:"";
       top: 70%;
       right: -5%;
@@ -108,7 +108,7 @@ input:focus{
       // background-color: rgb(39, 214, 39);
     }
     &.currently-active{
-      &:after{
+      &::before{
         background-color: rgb(39, 214, 39);
         border: 2px solid #fff;
       }

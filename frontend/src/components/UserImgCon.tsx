@@ -1,4 +1,3 @@
-import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {useState} from "react";
 import user from "../assets/images/user.png";
 import group from "../assets/images/group.png";
@@ -12,18 +11,17 @@ import { useFoundUserQuery, useLogoutUserQuery } from "../app/authApi";
 import { useGetSingleGroupQuery } from "../app/groupApi";
 import { Fragment } from "react";
 
-const UserImgCon = ({profile,id,isGroup,isUser}:{profile:string,id:string,isGroup?:boolean,isUser?:boolean}) => {
+const UserImgCon = ({profile,id,isGroup,status,isUser}:{profile:string,id:string,isGroup?:boolean,isUser?:boolean,status?:string}) => {
   const [userLogout,setUserLogo]=useState(true);
   const {data} = useFoundUserQuery(id);
   const {data:groupData}=useGetSingleGroupQuery(id);
-  const active=((Date.now() - Number(new Date(data?.active?new Date(data?.active):""))) < 20 * 1000) ;
   const {data:userLogoOutData,isSuccess:userLogoSuccess} = useLogoutUserQuery("",{skip:userLogout});
 
   return (
     <div className="dropdown">
     <button type="button" data-bs-toggle="dropdown"  
     className={`sidebar-user dropdown-toggle primary-transparent-btn 
-    ${active ? " currently-active" : ""}`}
+    ${status}`}
     >
       <img src={profile||(isGroup?group: user)} alt="user" className="profile-img-upload" />
     </button>
@@ -42,7 +40,7 @@ const UserImgCon = ({profile,id,isGroup,isUser}:{profile:string,id:string,isGrou
         <Fragment>
           <p className="user-detail"><img src={name} alt="name"  className="user-icon"/>{data?.name}</p>
           <p className="user-detail"><img src={email} alt="email"  className="user-icon"/>{data?.email}</p>
-          <p className="user-detail"><img src={active?online:offline} alt=""  className="user-icon"/>{active? "Active":  "Away"}</p>
+          <p className="user-detail"><img src={status?online:offline} alt=""  className="user-icon"/>{status? "Active":  "Away"}</p>
           {isUser&& <button type="button" className="logout-btn"onClick={()=>setUserLogo(false)}>logout</button>}
         </Fragment>
       }

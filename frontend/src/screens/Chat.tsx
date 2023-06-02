@@ -32,7 +32,12 @@ const Chat = () => {
   const {
     data,
     // , isError, isFetching, isLoading, isSuccess
-  } =  useGetChatDetailsQuery("");
+  } =  
+  useGetChatDetailsQuery(
+         "asdas", {
+         pollingInterval: 500,
+       });
+  // useGetChatDetailsQuery("");
 
   const [sendMessage, { data: value, isError, isLoading, isSuccess }] = useSendMessageMutation();
 
@@ -276,7 +281,7 @@ const Chat = () => {
                     <UserImgCon
                      isGroup={group}
                       profile={profile}
-                      // status={active ? "currently-active" : ""}
+                      status={active ? "currently-active" : ""}
                       id={id}
                     />
                     <div>
@@ -305,6 +310,7 @@ const Chat = () => {
                         <UserImgCon
                          isGroup={group}
                           profile={profile}
+                          status={active ? "currently-active" : ""}
                           id={id}
                         />
                         <p className="user-name">{name}</p>
