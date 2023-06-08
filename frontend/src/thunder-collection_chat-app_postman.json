@@ -1,0 +1,519 @@
+{
+    "info": {
+        "_postman_id": "e46c74ee-915c-4736-a4ac-5f7880fcb440",
+        "name": "chat-app",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "message",
+            "item": [
+                {
+                    "name": "Send  message",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/message/64708c8196d02457ece94c3f",
+                            "path": [
+                                "chat",
+                                "message",
+                                "64708c8196d02457ece94c3f"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"message\": \"Hi this is loky\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get message",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/message/643e3c9f3b618a979d92617e",
+                            "path": [
+                                "chat",
+                                "message",
+                                "643e3c9f3b618a979d92617e"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        }
+                    }
+                },
+                {
+                    "name": "update Message",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/message/update",
+                            "path": [
+                                "chat",
+                                "message",
+                                "update"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"message\":\"bye\",\n  \"id\":\"643504f2f27795d05ecb3b6c\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "delete message",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/message/delete",
+                            "path": [
+                                "chat",
+                                "message",
+                                "delete"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"id\":\"643500a4820b0175e41c22f4\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "get all message",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/message",
+                            "path": [
+                                "chat",
+                                "message"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "auth",
+            "item": [
+                {
+                    "name": "Register user",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/register",
+                            "path": [
+                                "chat",
+                                "register"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "\n  {\n    \"name\": \"vicky\",\n    \"email\":\"vicky@gmail.com\",\n    \"password\":\"34567891\"\n  }\n"
+                        }
+                    }
+                },
+                {
+                    "name": "Get all users",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/getalluser",
+                            "path": [
+                                "chat",
+                                "getalluser"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        }
+                    }
+                },
+                {
+                    "name": "otp Verification",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/otpVerify",
+                            "path": [
+                                "chat",
+                                "otpVerify"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"email\":\"vicky@gmail.com\",\n  \"otp\":3032\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "login",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/login",
+                            "path": [
+                                "chat",
+                                "login"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"email\":\"raji@gmail.com\",\n  \"password\":\"12345678\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "logout",
+                    "request": {
+                        "method": "GET"
+                    }
+                },
+                {
+                    "name": "Forgot  password",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/forgotPassword",
+                            "path": [
+                                "chat",
+                                "forgotPassword"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"email\":\"lokesh.apr24@gmail.com\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "reset password",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/reset/191bad68487bada2d5dc23ca12492d055bf2efda",
+                            "path": [
+                                "chat",
+                                "reset",
+                                "191bad68487bada2d5dc23ca12492d055bf2efda"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"password\":\"87654321\",\n  \"confirmPassword\":\"87654321\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get user details",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/getuser",
+                            "path": [
+                                "chat",
+                                "getuser"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        }
+                    }
+                },
+                {
+                    "name": "change password",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/change-password",
+                            "path": [
+                                "chat",
+                                "change-password"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"password\":\"12345678\",\n  \"oldpassword\":\"87654321\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "get single user",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/get-single-user/644614e0faf7c5683dd92c11",
+                            "path": [
+                                "chat",
+                                "get-single-user",
+                                "644614e0faf7c5683dd92c11"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "group chat",
+            "item": [
+                {
+                    "name": "post message",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/groupChat/64731fa4cac1dc4ec9b79c25",
+                            "path": [
+                                "chat",
+                                "groupChat",
+                                "64731fa4cac1dc4ec9b79c25"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"message\": \" welcome robot\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "create new group",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/createGroup",
+                            "path": [
+                                "chat",
+                                "createGroup"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"name\": \"demo\",\n  \"description\": \"demo perpose\",\n  \"participance\": [\n    \"646110d9d2ef15a83785eee4\",\n    \"645f89f04e227239990c0ea5\"\n  ]\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "get single group",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/group/64771c705bde89b1e7f889a3",
+                            "path": [
+                                "chat",
+                                "group",
+                                "64771c705bde89b1e7f889a3"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        }
+                    }
+                },
+                {
+                    "name": "deleteGroupMessage",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "http://127.0.0.1:8000/chat/group/message/delete/647830a7bf4448bc02a586e0",
+                            "path": [
+                                "chat",
+                                "group",
+                                "message",
+                                "delete",
+                                "647830a7bf4448bc02a586e0"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "port": "8000"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

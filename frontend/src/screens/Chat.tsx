@@ -32,11 +32,12 @@ const Chat = () => {
   const {
     data,
     // , isError, isFetching, isLoading, isSuccess
-  } =  
-  useGetChatDetailsQuery(
-         "asdas", {
-         pollingInterval: 500,
-       });
+  } =  useGetChatDetailsQuery("");
+  
+  // useGetChatDetailsQuery(
+  //        "asdas", {
+  //        pollingInterval: 500,
+  //      });
   // useGetChatDetailsQuery("");
 
   const [sendMessage, { data: value, isError, isLoading, isSuccess }] = useSendMessageMutation();
