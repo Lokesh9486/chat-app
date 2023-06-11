@@ -24,6 +24,7 @@ import imageplaceholder from "../assets/images/imageplaceholder.png"
 import { useDeleteGroupMessageMutation, useSendMessageGroupMutation } from "../app/groupApi";
 import { motion } from "framer-motion";
 import Modal from "../components/Modal";
+import { io } from "socket.io-client";
 
 
 const Chat = () => {
@@ -39,6 +40,8 @@ const Chat = () => {
   //        pollingInterval: 500,
   //      });
   // useGetChatDetailsQuery("");
+
+
 
   const [sendMessage, { data: value, isError, isLoading, isSuccess }] = useSendMessageMutation();
 
@@ -206,6 +209,13 @@ const Chat = () => {
      console.log("Geolocation is not supported by this browser.");
     }
   }
+
+  useEffect(() => {
+    const socket=io("http://localhost:8000");
+    socket.emit("setup",userDetails);
+    socket.on("connection",(data) => {console.log(data);
+    });
+  },[])
 
   return (
   <>

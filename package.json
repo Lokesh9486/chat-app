@@ -24,6 +24,7 @@
     "nodemailer-express-handlebars": "^6.1.0",
     "nodemon": "^2.0.22",
     "pug": "^3.0.2",
-    "react-redux": "^8.0.5"
+    "react-redux": "^8.0.5",
+    "socket.io": "^4.6.2"
   }
 }
