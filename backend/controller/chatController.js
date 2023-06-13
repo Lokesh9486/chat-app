@@ -81,7 +81,7 @@ exports.deleteMessage = catchAsyncError(async (req, res, next) => {
 
 exports.getAllMessage = catchAsyncError(async (req, res, next) => {
   const { user } = req;
-  console.log(`exports.getAllMessage=catchAsyncError ~ user:`, user);
+  // console.log(`exports.getAllMessage=catchAsyncError ~ user:`, user);
   const userId = new mongoose.Types.ObjectId(user.id);
   await User.findByIdAndUpdate(userId, { active: Date.now() }, { new: true });
 
@@ -502,7 +502,7 @@ exports.getAllMessage = catchAsyncError(async (req, res, next) => {
   //   { $sort: { "message.createdAt": -1 } },
   // ]);
 
-  console.log(message);
+  // console.log(message);
 
   return res.status(202).json(message);
 });

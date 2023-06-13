@@ -97,11 +97,20 @@ const Chat = () => {
   const shortTime = new Intl.DateTimeFormat("en", {
     timeStyle: "short",
   });
-
+  let socket=io("http://localhost:8000");
   // ulElement?.current?.scrollTo({
   //   top: ulElement?.current?.scrollHeight,
   //   behavior: "smooth",
   // });
+  useEffect(() => {
+    if(userDetails){
+      console.log("useEffect ~ userDetails:", userDetails)
+     
+      socket.emit("setup",userDetails);
+      // socket.on("connection",(data) => {console.log(data);
+      // });
+    }
+  },[userDetails])
 
   useEffect(()=>{
     ulElement?.current?.scrollTo({
@@ -158,6 +167,7 @@ const Chat = () => {
         message: chatData?.[0]?.message,
         profile: chatData?.[0]?.profile,
       });
+      socket.emit('join room', currentChat)
     }
   }, [currentChat]);
 
@@ -171,6 +181,7 @@ const Chat = () => {
     }
     else{
       sendMessage({ currentChat, formData });
+      socket.emit('new message',userSendMessage);
     }
     setUserSendMaessage("");
     setPreview("");
@@ -210,12 +221,7 @@ const Chat = () => {
     }
   }
 
-  useEffect(() => {
-    const socket=io("http://localhost:8000");
-    socket.emit("setup",userDetails);
-    socket.on("connection",(data) => {console.log(data);
-    });
-  },[])
+ 
 
   return (
   <>
