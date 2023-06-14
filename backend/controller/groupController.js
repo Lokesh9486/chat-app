@@ -48,7 +48,7 @@ exports.sendGroupMsg=catchAsyncError(async(req,res,next)=>{
 
     let image;
 
-    console.log(message,image,location)
+    // console.log(message,image,location)
 
     if (req.file) {
       image = `${req.protocol}://${req.get("host")}/uploads/sharedImages/${

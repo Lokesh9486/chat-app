@@ -102,11 +102,15 @@ const Chat = () => {
   //   top: ulElement?.current?.scrollHeight,
   //   behavior: "smooth",
   // });
+  // socket.on("message",(data)=>{
+  //   console.log(data);
+  // })
+
   useEffect(() => {
     if(userDetails){
-      console.log("useEffect ~ userDetails:", userDetails)
+      // console.log("useEffect ~ userDetails:", userDetails)
      
-      socket.emit("setup",userDetails);
+      // socket.emit("setup",userDetails);
       // socket.on("connection",(data) => {console.log(data);
       // });
     }
@@ -119,7 +123,10 @@ const Chat = () => {
     });
   },[value])
 
+  
+
   useEffect(() => {
+  
     if (currentChat === undefined) {
       setCurrentChat(sidebarData?.[0]?.id);
       const chatData: registerApiData[] | undefined = data?.filter(
@@ -167,7 +174,7 @@ const Chat = () => {
         message: chatData?.[0]?.message,
         profile: chatData?.[0]?.profile,
       });
-      socket.emit('join room', currentChat)
+      // socket.emit('join room', currentChat)
     }
   }, [currentChat]);
 
@@ -181,7 +188,7 @@ const Chat = () => {
     }
     else{
       sendMessage({ currentChat, formData });
-      socket.emit('new message',userSendMessage);
+      // socket.emit('new message',formData);
     }
     setUserSendMaessage("");
     setPreview("");
@@ -220,7 +227,11 @@ const Chat = () => {
      console.log("Geolocation is not supported by this browser.");
     }
   }
-
+  useEffect(()=>{
+    socket.on("message",(data) => {
+      console.log("dfgdsfsg",data);
+    });
+  })
  
 
   return (

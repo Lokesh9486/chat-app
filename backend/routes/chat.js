@@ -9,13 +9,13 @@ const { createGroup , sendGroupMsg, getSingleGroup, deleteGroupMsg} = require(".
 const upload=multer({
   storage:multer.diskStorage({
     destination:function(req,file,cb){
-      console.log(`file:`, req)
+      // console.log(`file:`, req)
       cb(null,path.join(__dirname,'..','uploads/sharedImages'))
     },
     filename:function(req,file,cb){
-      console.log(`file:`, file);
+      // console.log(`file:`, file);
       const uniqueSuffix=Date.now()+"_"+Math.round(Math.random()*1E9)
-      console.log(uniqueSuffix,file.fieldname);
+      // console.log(uniqueSuffix,file.fieldname);
       cb(null,file.fieldname+'_'+uniqueSuffix+file.originalname);
     }
   })

@@ -4,6 +4,7 @@ const Chat = require("../model/chatModel");
 const User = require("../model/userModel");
 const ErrorHandler = require("../utils/errorHandler");
 const Group = require("../model/group");
+const { getIO } = require("../utils/socket");
 
 exports.sendMessage = catchAsyncError(async (req, res, next) => {
   const {
@@ -30,6 +31,7 @@ exports.sendMessage = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Enter message or send image,location"));
   }
 
+  
   const chat = await Chat.create({
     from: id,
     to: toId,
@@ -40,6 +42,10 @@ exports.sendMessage = catchAsyncError(async (req, res, next) => {
       coordinates: JSON.parse(location),
     },
   });
+
+  const io=getIO();
+  
+  io.emit("message",chat)
 
   return res.status(200).json({ message: "Message sended successfully", chat });
 });
