@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import user from "../assets/images/user.png";
 import group from "../assets/images/group.png";
 import name from "../assets/images/name.png";
@@ -10,12 +10,16 @@ import groupIcon from "../assets/images/groupicon.png";
 import { useFoundUserQuery, useLogoutUserQuery } from "../app/authApi";
 import { useGetSingleGroupQuery } from "../app/groupApi";
 import { Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserImgCon = ({profile,id,isGroup,status,isUser}:{profile:string,id:string,isGroup?:boolean,isUser?:boolean,status?:string}) => {
   const [userLogout,setUserLogo]=useState(true);
   const {data} = useFoundUserQuery(id);
   const {data:groupData}=useGetSingleGroupQuery(id);
   const {data:userLogoOutData,isSuccess:userLogoSuccess} = useLogoutUserQuery("",{skip:userLogout});
+  const history=useNavigate();
+
+  useEffect(()=>{userLogoSuccess&& history("/signin")},[userLogoSuccess])
 
   return (
     <div className="dropdown">
@@ -58,7 +62,7 @@ const UserImgCon = ({profile,id,isGroup,status,isUser}:{profile:string,id:string
           </ul>
         </div>}
     </div>
-  </div>
+    </div>
   );
 };
 

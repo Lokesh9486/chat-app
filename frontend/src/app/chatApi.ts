@@ -23,8 +23,11 @@ export const chatApi = createApi({
         method:"DELETE",
         body:{id:data}
        })
+    }),
+    getSpecificUserChat:builder.query({
+      query:(data)=>`/message/${data}`
     })
   }),
 });
 
-export const { useGetChatDetailsQuery,useSendMessageMutation,useDeleteMessageMutation } = chatApi;
+export const { useGetChatDetailsQuery,useSendMessageMutation,useDeleteMessageMutation,useGetSpecificUserChatQuery } = chatApi;

@@ -22,22 +22,22 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
     profile=`${req.protocol}://${req.get("host")}/uploads/user/${req.file.originalname}`
   }
   const otp= crypto.randomInt(1000, 10000).toString()
-    // const user = await User.create({
-    //   name,
-    //   email,
-    //   password,
-    //   profile,
-    //   OTP:otp,
-    //   OTPExpires:Date.now()+30*60*1000
-    // });
-    
-    sendEmail({
-      email: email,
-      req,
-      res,
-      subject: `OTP sended by postbox-app`,
-      message: otp,
+    const user = await User.create({
+      name,
+      email,
+      password,
+      profile,
+      OTP:otp,
+      OTPExpires:Date.now()+30*60*1000
     });
+    
+    // sendEmail({
+    //   email: email,
+    //   req,
+    //   res,
+    //   subject: `OTP sended by postbox-app`,
+    //   message: otp,
+    // });
 
     res.status(200).json(`Register successfully and OTP send ${email}`);
 });
@@ -117,12 +117,12 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
   const message = `Password reset URL \n\n<b>${resetUrl}</b>`;
 
   try {
-    sendEmail({
-      email: user.email,
-      res,
-      subject: `Password reset url`,
-      message,
-    });
+    // sendEmail({
+    //   email: user.email,
+    //   res,
+    //   subject: `Password reset url`,
+    //   message,
+    // });
     return res.status(200).json(`Email sent to ${email} ${resetToken}`);
   } catch (error) {
     user.resetPasswordToken = undefined;

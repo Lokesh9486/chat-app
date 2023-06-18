@@ -7,6 +7,7 @@ import  uploadImg from "../assets/images/uploadimage.png";
 import user from "../assets/images/user.png";
 import dotLoader from "../assets/images/dotloader.gif";
 import { motion  } from "framer-motion";
+import { SuccessMsg } from "../components/SuccessMsg";
 
 const SignUp = () => {
   const [signUp, { data, isError, isLoading, isSuccess, error }] =useRegisterMutation();
@@ -42,7 +43,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      history("/otp", { state: { email: signUpdetail[1].value } });
+     setTimeout(()=>history("/otp", { state: { email: signUpdetail[1].value } }),1000) ;
     }
   }, [isSuccess]);
 
@@ -121,7 +122,7 @@ const SignUp = () => {
   return (
     <section
      className="sign-screen">
-      
+      <SuccessMsg isSuccess={isSuccess} message="Registered successfull"/>
       <motion.form
       initial={variants.initial}
       animate={variants.animate}

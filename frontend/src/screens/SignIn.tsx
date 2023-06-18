@@ -6,7 +6,8 @@ import dotLoader from "../assets/images/dotloader.gif";
 import { chatApi, useGetChatDetailsQuery } from "../app/chatApi";
 import { useAppDispatch } from "../app/hooks";
 import { motion } from "framer-motion";
-import successIson from "../assets/images/success.png";
+import { SuccessMsg } from "../components/SuccessMsg";
+
 
 
 const SignIn = () => {
@@ -49,7 +50,7 @@ const errorHandler = (match: string, regex: RegExp) => {
   useEffect(() => {
     if (isSuccess) {
       dispatch(chatApi.util.resetApiState());
-      // return history("/");
+      setTimeout(()=> history("/"),1000)
     }
   }, [isSuccess]);
 
@@ -61,7 +62,7 @@ const errorHandler = (match: string, regex: RegExp) => {
 
   return (
     <section className="sign-in">
-      <div
+      {/* <div
       className={`message-con ${isSuccess?"active":""}`}
       >
         <img src={successIson} alt="" />
@@ -69,7 +70,8 @@ const errorHandler = (match: string, regex: RegExp) => {
           <h5>Success</h5>
           <p>Login successfull</p>
         </div>
-        </div>
+        </div> */}
+        <SuccessMsg isSuccess={isSuccess} message="Login successfull"/>
       <motion.form
       initial={variants.initial}
       animate={ variants.animate}

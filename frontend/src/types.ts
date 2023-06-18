@@ -32,7 +32,7 @@ export interface registerApiData {
   _id: string;
   name: string;
   active:string;
-  message: messageType[];
+  message: any;
   profile:string,
   created_by?:string,
   created_at?:Date,

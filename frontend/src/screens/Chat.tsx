@@ -30,6 +30,7 @@ import { io } from "socket.io-client";
 const Chat = () => {
   const ulElement = useRef<HTMLInputElement | null>(null);
   const [searchUser, setSearchUser] = useState<string>("");
+  const socket=useRef<any>();
   const {
     data,
     // , isError, isFetching, isLoading, isSuccess
@@ -42,13 +43,13 @@ const Chat = () => {
   // useGetChatDetailsQuery("");
 
 
-
   const [sendMessage, { data: value, isError, isLoading, isSuccess }] = useSendMessageMutation();
 
   const [groupSendMessage,{data:groupMsg,error:groupError}]=useSendMessageGroupMutation();
   
   const [deleteMsg] = useDeleteMessageMutation();
   const [deletGroupMsg]=useDeleteGroupMessageMutation();
+ 
 
   const { data: userSeacrh, isLoading: searchUserLoading } = useSearchUserQuery(
     searchUser,
@@ -97,24 +98,20 @@ const Chat = () => {
   const shortTime = new Intl.DateTimeFormat("en", {
     timeStyle: "short",
   });
-  let socket=io("http://localhost:8000");
+  
+
+  useEffect(()=>{ 
+    if(userDetails){ 
+      socket.current=io("http://localhost:8000");
+      socket.current.emit("add-user",userDetails.user._id);
+    }
+  },[userDetails])
   // ulElement?.current?.scrollTo({
   //   top: ulElement?.current?.scrollHeight,
   //   behavior: "smooth",
   // });
-  // socket.on("message",(data)=>{
-  //   console.log(data);
-  // })
+ 
 
-  useEffect(() => {
-    if(userDetails){
-      // console.log("useEffect ~ userDetails:", userDetails)
-     
-      // socket.emit("setup",userDetails);
-      // socket.on("connection",(data) => {console.log(data);
-      // });
-    }
-  },[userDetails])
 
   useEffect(()=>{
     ulElement?.current?.scrollTo({
@@ -122,8 +119,6 @@ const Chat = () => {
       behavior: "smooth",
     });
   },[value])
-
-  
 
   useEffect(() => {
   
@@ -153,7 +148,7 @@ const Chat = () => {
         profile: chatData?.[0]?.profile,
       });
     }
-    
+
   }, [data, userSendMessage]);
 
   useEffect(() => {
@@ -174,7 +169,9 @@ const Chat = () => {
         message: chatData?.[0]?.message,
         profile: chatData?.[0]?.profile,
       });
-      // socket.emit('join room', currentChat)
+     
+      // socket.current.emit("add-user",currentChat);
+      // socket.emit("join-room",currentChat)
     }
   }, [currentChat]);
 
@@ -188,7 +185,8 @@ const Chat = () => {
     }
     else{
       sendMessage({ currentChat, formData });
-      // socket.emit('new message',formData);
+      // socket.emit("new message",{ currentChat, userSendMessage })
+      socket.current.emit("send-message",{ currentChat, userSendMessage })
     }
     setUserSendMaessage("");
     setPreview("");
@@ -227,11 +225,14 @@ const Chat = () => {
      console.log("Geolocation is not supported by this browser.");
     }
   }
-  useEffect(()=>{
-    socket.on("message",(data) => {
-      console.log("dfgdsfsg",data);
-    });
-  })
+  
+  // useEffect(()=>{
+  // })
+  if(socket.current){
+    socket.current.on("msg-received",(data:any)=>{
+      console.log(data);
+    })
+  }
  
 
   return (
@@ -266,11 +267,7 @@ const Chat = () => {
                 <ul>
                   {userSeacrh?.map(({ name, email, _id: id,profile }, index) => {
                     return (
-                      <motion.li
-                      transition={{delay:1*index}}
-                      initial={{opacity:0,y:50}}
-                      animate={{opacity:1,y:0}}
-                      exit={{opacity:0,y:50}}
+                      <li
                         key={index}
                         className={currentChat === id ? "active" : ""}
                         onClick={() => setCurrentChat(id)}
@@ -284,7 +281,7 @@ const Chat = () => {
                           <p className="user-name">{name}</p>
                           <p className="last-message">{email}</p>
                         </div>
-                      </motion.li>
+                      </li>
                     );
                   })}
                 </ul>
